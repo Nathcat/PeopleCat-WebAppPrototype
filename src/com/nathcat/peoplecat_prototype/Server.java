@@ -15,7 +15,12 @@ import java.util.Scanner;
 
 public class Server {
     public static void main(String[] args) throws Exception {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+        if (args.length != 1) {
+            System.out.println("Invalid args, please add the port as the argument.");
+            System.exit(-1);
+        }
+
+        HttpServer server = HttpServer.create(new InetSocketAddress(Integer.parseInt(args[0])), 0);
         server.createContext("/", new WelcomePageHandler());
         server.createContext("/script", new ServeStaticHandler("text/javascript", "Assets/static/scripts"));
         server.createContext("/styles", new ServeStaticHandler("text/css", "Assets/static/styles"));
