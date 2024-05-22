@@ -8,17 +8,17 @@ class Page {
     }
 
     async get_page_content() {
-        let url = "http://localhost:8000";
+        let url = "http://13.40.94.202";
 
         if (this.state == Page.PAGE_LOGIN) {
-            url = "http://localhost:8000/pages?path=Login-page.html";
+            url = "http://13.40.94.202/pages?path=Login-page.html";
         }
         else if (this.state == Page.PAGE_MAIN) {
-            url = "http://localhost:8000/pages?path=Main-page.html";
+            url = "http://13.40.94.202/pages?path=Main-page.html";
             setTimeout(setup_messenger, 1000);
         }
         else if (this.state = Page.PAGE_CONNECT_ERR) {
-            url = "http://localhost:8000/pages?path=Connect-error.html";
+            url = "http://13.40.94.202/pages?path=Connect-error.html";
         }
 
         return await fetch(url);
@@ -38,7 +38,7 @@ class Application {
     static PACKET_TYPE_JOIN_CHAT = 9;
 
     constructor() {
-        this.sock = new WebSocket("ws://localhost:1234");
+        this.sock = new WebSocket("ws://13.40.94.202:1234");
         this.page = new Page(Page.PAGE_LOGIN);
         this.data = {};
         this.data.known_users = [];
