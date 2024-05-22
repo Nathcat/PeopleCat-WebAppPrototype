@@ -119,6 +119,7 @@ public class Server {
             }
 
             responseHeaders.set("Content-Type", cType);
+            responseHeaders.set("Access-Control-Allow-Origin", "*");
             t.sendResponseHeaders(responseCode, response.length);
             OutputStream os = t.getResponseBody();
             os.write(response);
