@@ -174,7 +174,7 @@ input[type=text], input[type=password]{
     margin-bottom: 5px;
 }
 
-.message-from pre {
+.message-from p {
     margin-top: 16px;
     margin-bottom: 16px;
     margin-left: 0px;
@@ -201,7 +201,7 @@ input[type=text], input[type=password]{
     color: var(--secondary-color);
 }
 
-.message-to pre {
+.message-to p {
     color: var(--secondary-color);
     margin-top: 16px;
     margin-bottom: 16px;
