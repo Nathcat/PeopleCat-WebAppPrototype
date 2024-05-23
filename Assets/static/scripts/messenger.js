@@ -85,7 +85,7 @@ function push_message(messages, i) {
 
 function send_message() {
     let msg_entry = document.getElementById("message_entry");
-    let content = msg_entry.value;
+    let content = msg_entry.value.replace(/[^\x00-\x7F]/g, "??");
     msg_entry.value = "";
 
     app.sock.onmessage = (e) => {
