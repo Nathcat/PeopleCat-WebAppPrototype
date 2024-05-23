@@ -16,7 +16,7 @@ body {
     box-sizing: border-box;
 }
 
-li, p, h1, h2, h3, h4, h5, h6 {
+li, p, pre, h1, h2, h3, h4, h5, h6 {
     color: var(--quad-color);
     font-family: 'Montserrat', sans-serif;
 }
@@ -174,6 +174,13 @@ input[type=text], input[type=password]{
     margin-bottom: 5px;
 }
 
+.message-from pre {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
 .message-to {
     display: flex;
     flex-direction: column;
@@ -194,8 +201,12 @@ input[type=text], input[type=password]{
     color: var(--secondary-color);
 }
 
-.message-to p {
+.message-to pre {
     color: var(--secondary-color);
+    margin-top: 16px;
+    margin-bottom: 16px;
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 .message-entry-box {

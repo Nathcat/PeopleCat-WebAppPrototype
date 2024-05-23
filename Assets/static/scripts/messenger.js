@@ -45,7 +45,7 @@ function message_to_html(message, displayName) {
         str += "from\">"
     }
 
-    str += "<h3>" + displayName + "</h3><p>" + message.Content + "</p></div></div>";
+    str += "<h3>" + displayName + "</h3><pre>" + message.Content + "</pre></div></div>";
     return str;
 }
 
@@ -87,6 +87,8 @@ function send_message() {
     let msg_entry = document.getElementById("message_entry");
     let content = msg_entry.value.replace(/[^\x00-\x7F]/g, "??");
     msg_entry.value = "";
+
+    if (content == "") return;
 
     app.sock.onmessage = (e) => {
         let response = JSON.parse(e.data);
