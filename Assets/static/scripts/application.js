@@ -107,10 +107,10 @@ class Application {
 var THEME = 0;
 function toggle_theme() {
     THEME = (THEME + 1) % 2;
-    if (theme == 0) {
+    if (THEME == 0) {
         document.querySelector(":root").style.setProperty('--primary-color', '#251D3A', 'important');document.querySelector(":root").style.setProperty('--secondary-color', '#2A2550', 'important');document.querySelector(":root").style.setProperty('--tertiary-color', '#E04D01', 'important');document.querySelector(":root").style.setProperty('--quad-color', '#FF7700', 'important');
     }
-    else if (theme == 1) {
+    else if (THEME == 1) {
         document.querySelector(":root").style.setProperty('--primary-color', '#2c2f33', 'important');document.querySelector(":root").style.setProperty('--secondary-color', '#262729', 'important');document.querySelector(":root").style.setProperty('--tertiary-color', '#ff7700', 'important');document.querySelector(":root").style.setProperty('--quad-color', '#ffffff', 'important');
     }
     else {
