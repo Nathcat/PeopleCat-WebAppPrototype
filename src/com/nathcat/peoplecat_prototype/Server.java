@@ -5,22 +5,55 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.net.InetSocketAddress;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Server {
-    public static void main(String[] args) throws Exception {
-        if (args.length != 1) {
-            System.out.println("Invalid args, please add the port as the argument.");
-            System.exit(-1);
+    public static String phpExecPath;
+
+    /**
+     * Get the server's configuration file located at Assets/Server_Config.json
+     * @return A JSONObject with the files contents
+     * @throws FileNotFoundException Thrown if the config file does not exist
+     * @throws ParseException Thrown if the config file contains a JSON syntax error
+     */
+    public static JSONObject getConfigFile() throws FileNotFoundException, ParseException {
+        Scanner f = new Scanner(new File("Assets/Server_Config.json"));
+        StringBuilder sb = new StringBuilder();
+        while (f.hasNextLine()) {
+            sb.append(f.nextLine());
         }
 
-        HttpServer server = HttpServer.create(new InetSocketAddress(Integer.parseInt(args[0])), 0);
+        return (JSONObject) new JSONParser().parse(sb.toString());
+    }
+
+    public static void main(String[] args) throws Exception {
+        JSONObject config = null;
+        try {
+            config = getConfigFile();
+        } catch (FileNotFoundException e) {
+            System.err.println("Config file not found! Please make sure the config file exists at Assets/Server_Config.json!");
+            System.exit(-1);
+        } catch (ParseException e) {
+            System.err.println("Syntax error in config file! Please check your JSON.");
+            System.exit(-2);
+        }
+
+        assert config != null;
+        phpExecPath = (String) config.get("php_exec_path");
+
+        if (phpExecPath == null || config.get("port") == null) {
+            System.err.println("Missing one or more fields in the config file, please ensure it includes \"php_exec_path\" and \"port\" fields.");
+            System.exit(-3);
+        }
+
+        HttpServer server = HttpServer.create(new InetSocketAddress(Math.toIntExact((long) config.get("port"))), 0);
         server.createContext("/", new WelcomePageHandler());
         server.createContext("/script", new ServeStaticHandler("text/javascript", "Assets/static/scripts"));
         server.createContext("/styles", new ServeStaticHandler("text/css", "Assets/static/styles"));
@@ -28,6 +61,8 @@ public class Server {
         server.createContext("/pages", new ServeStaticHandler("text/html", "Assets/static/HTML"));
         server.createContext("/login", new LoginHandler());
         server.setExecutor(null);
+
+        System.out.println("Ready to accept HTTP connections on port " + config.get("port"));
         server.start();
     }
 
