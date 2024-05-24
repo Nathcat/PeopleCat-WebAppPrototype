@@ -48,12 +48,12 @@ public class Server {
         assert config != null;
         phpExecPath = (String) config.get("php_exec_path");
 
-        if (phpExecPath != null || config.get("port") != null) {
+        if (phpExecPath == null || config.get("port") == null) {
             System.err.println("Missing one or more fields in the config file, please ensure it includes \"php_exec_path\" and \"port\" fields.");
             System.exit(-3);
         }
 
-        HttpServer server = HttpServer.create(new InetSocketAddress((int) config.get("port")), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(Math.toIntExact((long) config.get("port"))), 0);
         server.createContext("/", new WelcomePageHandler());
         server.createContext("/script", new ServeStaticHandler("text/javascript", "Assets/static/scripts"));
         server.createContext("/styles", new ServeStaticHandler("text/css", "Assets/static/styles"));
@@ -61,6 +61,8 @@ public class Server {
         server.createContext("/pages", new ServeStaticHandler("text/html", "Assets/static/HTML"));
         server.createContext("/login", new LoginHandler());
         server.setExecutor(null);
+
+        System.out.println("Ready to accept HTTP connections on port " + config.get("port"));
         server.start();
     }
 
