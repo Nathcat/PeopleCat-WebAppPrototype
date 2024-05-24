@@ -7,7 +7,7 @@ _PeopleCat © Nathcat 2024_
 ## Usage
 To use, clone the repository, and either:
 - Compile the project yourself using Intellij Idea.
-- Download the latest release jar file and run using `java -cp PeopleCat-WebAppPrototype.jar com.nathcat.peoplecat_prototype.Server`
+- Download the [latest release jar file](https://github.com/Nathcat/PeopleCat-WebAppPrototype/releases/latest/download/PeopleCat-WebAppPrototype.jar) and run using `java -cp PeopleCat-WebAppPrototype.jar com.nathcat.peoplecat_prototype.Server`
 
 ## Config file
 The server uses a configuration file to define some information it needs to
