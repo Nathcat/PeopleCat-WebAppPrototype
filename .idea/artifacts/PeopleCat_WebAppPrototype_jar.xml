@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PeopleCat-WebAppPrototype:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PeopleCat_WebAppPrototype_jar</output-path>
+    <root id="archive" name="PeopleCat-WebAppPrototype.jar">
+      <element id="module-output" name="PeopleCat-WebAppPrototype" />
+      <element id="extracted-dir" path="/media/nathcat/Data/Projects/Java/libs/json-simple-1.1.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
