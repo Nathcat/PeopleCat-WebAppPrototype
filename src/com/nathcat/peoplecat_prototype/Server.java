@@ -58,6 +58,7 @@ public class Server {
         server.createContext("/script", new ServeStaticHandler("text/javascript", "Assets/static/scripts"));
         server.createContext("/styles", new ServeStaticHandler("text/css", "Assets/static/styles"));
         server.createContext("/images", new ServeStaticHandler("image/apng", "Assets/static/images"));
+        server.createContext("/sounds", new ServeStaticHandler("audio/mpeg", "Assets/static/sounds"));
         server.createContext("/pages", new ServeStaticHandler("text/html", "Assets/static/HTML"));
         server.createContext("/login", new LoginHandler());
         server.setExecutor(null);
@@ -96,7 +97,7 @@ public class Server {
      */
     public static String getPHPFile(String file, Map<String, String> params) throws IOException {
         String[] commands = new String[params.size() + 2];
-        commands[0] = "/usr/bin/php"; commands[1] = file;
+        commands[0] = phpExecPath; commands[1] = file;
         int i = 2;
         for (String key : params.keySet()) {
             commands[i] = key + "=" + params.get(key).replace(" ", "%20");

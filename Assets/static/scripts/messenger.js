@@ -52,6 +52,11 @@ function message_to_html(message, displayName) {
 function push_message(messages, i) {
     if (i == messages.length) return;
 
+    if (!VISIBLE) {
+        document.getElementById("icon").href = "/images?path=favicon_notification.png";
+        new Audio("/sounds?path=notification.mp3").play();
+    }
+
     let message = messages[i];
     let container = document.getElementById("message-container");
 
