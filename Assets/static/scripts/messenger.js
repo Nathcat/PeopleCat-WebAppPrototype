@@ -54,7 +54,7 @@ function push_message(messages, i) {
 
     if (!VISIBLE) {
         document.getElementById("icon").href = "/images?path=favicon_notification.png";
-        new Audio("http://127.0.0.1:8080/sounds?path=notification.mp3").play();
+        new Audio("/sounds?path=notification.mp3").play();
     }
 
     let message = messages[i];
