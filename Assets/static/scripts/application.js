@@ -8,17 +8,17 @@ class Page {
     }
 
     async get_page_content() {
-        let url = "http://13.40.94.202";
+        let url = "/";
 
         if (this.state == Page.PAGE_LOGIN) {
-            url = "http://13.40.94.202/pages?path=Login-page.html";
+            url = "/pages?path=Login-page.html";
         }
         else if (this.state == Page.PAGE_MAIN) {
-            url = "http://13.40.94.202/pages?path=Main-page.html";
+            url = "/pages?path=Main-page.html";
             setTimeout(setup_messenger, 1000);
         }
         else if (this.state = Page.PAGE_CONNECT_ERR) {
-            url = "http://13.40.94.202/pages?path=Connect-error.html";
+            url = "/pages?path=Connect-error.html";
         }
 
         return await fetch(url);
