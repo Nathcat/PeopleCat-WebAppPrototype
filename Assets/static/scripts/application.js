@@ -38,7 +38,7 @@ class Application {
     static PACKET_TYPE_JOIN_CHAT = 9;
 
     constructor() {
-        this.sock = new WebSocket("ws://13.40.94.202:1234");
+        this.sock = new WebSocket("ws://peoplecat.nathcat.cloudns.cl:1234");
         this.page = new Page(Page.PAGE_LOGIN);
         this.data = {};
         this.data.known_users = [];
