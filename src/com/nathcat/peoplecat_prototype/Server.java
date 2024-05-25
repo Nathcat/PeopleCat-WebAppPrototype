@@ -96,7 +96,7 @@ public class Server {
      */
     public static String getPHPFile(String file, Map<String, String> params) throws IOException {
         String[] commands = new String[params.size() + 2];
-        commands[0] = "/usr/bin/php"; commands[1] = file;
+        commands[0] = phpExecPath; commands[1] = file;
         int i = 2;
         for (String key : params.keySet()) {
             commands[i] = key + "=" + params.get(key).replace(" ", "%20");
