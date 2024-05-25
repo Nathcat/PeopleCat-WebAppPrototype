@@ -58,6 +58,7 @@ public class Server {
         server.createContext("/script", new ServeStaticHandler("text/javascript", "Assets/static/scripts"));
         server.createContext("/styles", new ServeStaticHandler("text/css", "Assets/static/styles"));
         server.createContext("/images", new ServeStaticHandler("image/apng", "Assets/static/images"));
+        server.createContext("/sounds", new ServeStaticHandler("audio/mpeg", "Assets/static/sounds"));
         server.createContext("/pages", new ServeStaticHandler("text/html", "Assets/static/HTML"));
         server.createContext("/login", new LoginHandler());
         server.setExecutor(null);

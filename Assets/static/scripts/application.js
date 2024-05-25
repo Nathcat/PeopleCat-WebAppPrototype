@@ -117,3 +117,15 @@ function toggle_theme() {
         console.log("Oops");
     }
 }
+
+var VISIBLE = true;
+
+function pageFocus() {
+    document.getElementById("icon").href = "/images?path=favicon.png";
+    VISIBLE = true;
+}
+
+window.addEventListener("focus", pageFocus);
+window.addEventListener("pageshow", pageFocus);
+window.addEventListener("blur", () => VISIBLE = false);
+window.addEventListener("pagehide", () => VISIBLE = false);
