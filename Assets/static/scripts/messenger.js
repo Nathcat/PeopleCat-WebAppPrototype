@@ -90,12 +90,22 @@ function push_message(messages, i) {
 
 function send_message() {
     let msg_entry = document.getElementById("message_entry");
-    let content = msg_entry.value.replace(/[^\x00-\x7F]/g, "??");
+
+    let content = [...msg_entry.value];//.replace(/[^\x00-\x7F]/g, "??");
     msg_entry.value = "";
 
     if (content == "") return;
 
-    content = content.replace("<", "&#60").replace(">", "&#62");
+    let i2 = content.length;
+    for (let i = 0; i < i2; i++) {
+        if (content[i].codePointAt(0) >= 256) {
+            content.splice(i, 1, "&#" + content[i].codePointAt(0) + ";");
+            i2 = content.length;
+        }
+    }
+
+    content = content.join("");
+    content = content.replace("<", "&lt;").replace(">", "&gt;");
 
     app.sock.onmessage = (e) => {
         let response = JSON.parse(e.data);
