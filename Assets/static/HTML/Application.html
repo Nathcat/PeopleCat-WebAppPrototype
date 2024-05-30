@@ -16,7 +16,15 @@
 
     <script>
       const app = new Application();
-      app.load_page();
+      app.load_page(() => {
+        document.getElementById("login_username_entry").onkeydown = (e) => {
+          if (e.key == "Enter") attempt_login();
+        };
+                
+        document.getElementById("login_password_entry").onkeydown = (e) => {
+          if (e.key == "Enter") attempt_login();
+        };
+      });
     </script>
   </body>
 </html>
