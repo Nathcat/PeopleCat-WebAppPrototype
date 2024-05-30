@@ -2,6 +2,7 @@ class Page {
     static PAGE_LOGIN = 0;
     static PAGE_MAIN = 1;
     static PAGE_CONNECT_ERR = 2;
+    static PAGE_CREATE_USER = 3;
 
     constructor(state) {
         this.state = state;
@@ -15,10 +16,12 @@ class Page {
         }
         else if (this.state == Page.PAGE_MAIN) {
             url = "/pages?path=Main-page.html";
-            setTimeout(setup_messenger, 1000);
         }
-        else if (this.state = Page.PAGE_CONNECT_ERR) {
+        else if (this.state == Page.PAGE_CONNECT_ERR) {
             url = "/pages?path=Connect-error.html";
+        }
+        else if (this.state == Page.PAGE_CREATE_USER) {
+            url = "/pages?path=Create-New-User-page.html";
         }
 
         return await fetch(url);
@@ -38,7 +41,7 @@ class Application {
     static PACKET_TYPE_JOIN_CHAT = 9;
 
     constructor() {
-        this.sock = new WebSocket("ws://peoplecat.nathcat.net:1234");
+        this.sock = new WebSocket("ws://localhost:1234");
         this.page = new Page(Page.PAGE_LOGIN);
         this.data = {};
         this.data.known_users = [];
@@ -60,7 +63,7 @@ class Application {
         }
     }
 
-    async load_page() {
+    async load_page(on_finish) {
         let html_content = await this.page.get_page_content();
         let content = await html_content.text();
         content = [...content];
@@ -86,6 +89,7 @@ class Application {
         }
 
         document.getElementById("page-content").innerHTML = content.join("");
+        if (on_finish != undefined) on_finish();
     }
 
     get_user(userID) {
@@ -103,6 +107,17 @@ class Application {
         return null;
     }
 }
+
+function sha256(string) {
+    const utf8 = new TextEncoder().encode(string);
+    return crypto.subtle.digest('SHA-256', utf8).then((hashBuffer) => {
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray
+        .map((bytes) => bytes.toString(16).padStart(2, '0'))
+        .join('');
+      return hashHex;
+    });
+  }
 
 var THEME = 0;
 function toggle_theme() {
