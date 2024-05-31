@@ -26,4 +26,4 @@ replay_pid*
 
 # Program specifics
 Assets/Server_Config.json
-Keys
+keys.jks
