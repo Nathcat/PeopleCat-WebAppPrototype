@@ -43,9 +43,9 @@ public class Server {
      */
     public static SSLContext getSSLContext() throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException, KeyManagementException, UnrecoverableKeyException {
         KeyStore keyStore = KeyStore.getInstance("JKS");
-        keyStore.load(new FileInputStream("keys.jks"), "People_Cat".toCharArray());
+        keyStore.load(new FileInputStream("nathcat.net.keystore"), "changeit".toCharArray());
         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        keyManagerFactory.init(keyStore, "People_Cat".toCharArray());
+        keyManagerFactory.init(keyStore, "changeit".toCharArray());
         SSLContext context = SSLContext.getInstance("TLS");
         context.init(keyManagerFactory.getKeyManagers(), null, new SecureRandom());
         return context;
