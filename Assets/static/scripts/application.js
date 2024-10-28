@@ -41,7 +41,7 @@ class Application {
     static PACKET_TYPE_JOIN_CHAT = 9;
 
     constructor() {
-        this.sock = new WebSocket("wss://localhost:1234");
+        this.sock = new WebSocket("wss://nathcat.net:1234");
         this.page = new Page(Page.PAGE_LOGIN);
         this.data = {};
         this.data.known_users = [];
