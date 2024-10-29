@@ -183,6 +183,6 @@ function setup_messenger() {
         "type": Application.PACKET_TYPE_JOIN_CHAT,
         "isFinal": true,
         "ChatID": 1,
-        "JoinCode": "abcdefg"
+        "JoinCode": "0f1a3167-9"
     }));
 }
