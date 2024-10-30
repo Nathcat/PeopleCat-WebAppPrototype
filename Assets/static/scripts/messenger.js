@@ -215,7 +215,7 @@ function setup_messenger() {
 function get_online_users() {
     let prev_callback = app.sock.onmessage;
     app.sock.onmessage = (e) => {
-        let d = JSON.parse(e);
+        let d = JSON.parse(e.data);
         if (d.type != Application.PACKET_TYPE_GET_ACTIVE_USER_COUNT && prev_callback != undefined) prev_callback(e);
         else {
             document.getElementById("online-count").innerText = "Users online: " + d["users-online"];
