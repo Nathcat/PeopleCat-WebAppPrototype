@@ -39,6 +39,7 @@ class Application {
     static PACKET_TYPE_SEND_MESSAGE = 7;
     static PACKET_TYPE_NOTIFICATION_MESSAGE = 8;
     static PACKET_TYPE_JOIN_CHAT = 9;
+    static PACKET_TYPE_GET_ACTIVE_USER_COUNT = 11;
 
     constructor() {
         this.sock = new WebSocket("wss://nathcat.net:1234");
@@ -101,6 +102,26 @@ class Application {
         }
 
         return null;
+    }
+
+    get_online_users() {
+        let prev_callback = sock.onmessage;
+        this.sock.onmessage = (e) => {
+            let d = JSON.parse(e);
+            if (d.type != PACKET_TYPE_GET_ACTIVE_USER_COUNT && prev_callback != undefined) prev_callback(e);
+            else {
+                document.getElementById("online-count").innerText = "Users online: " + d["users-online"];
+            }
+
+            this.sock.onmessage = prev_callback;
+        }
+
+        this.sock.send(JSON.stringify({
+            "type": PACKET_TYPE_GET_ACTIVE_USER_COUNT,
+            "isFinal": true
+        }));
+
+        setTimeout(this.get_online_users, 5000);
     }
 }
 

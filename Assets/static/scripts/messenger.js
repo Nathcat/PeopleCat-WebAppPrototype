@@ -176,6 +176,7 @@ function load_messages() {
 
         if (response.isFinal) {
             push_message(messages, 0);
+            app.get_online_users();
         }
     }
 
