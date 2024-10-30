@@ -30,7 +30,7 @@ __n = notification;
 
 function message_to_html(message, displayName) {
     let str = "<div class=\"row\" style=\"justify-content: ";
-    if (message.SenderID == app.data.user.UserID) {
+    if (message.SenderID == app.data.user.id) {
         str += "right;\">";
     }
     else {
@@ -38,7 +38,7 @@ function message_to_html(message, displayName) {
     }
     
     str += "<div class=\"message-"
-    if (message.SenderID == app.data.user.UserID) {
+    if (message.SenderID == app.data.user.id) {
         str += "to\">";
     }
     else {
@@ -82,7 +82,7 @@ function push_message(messages, i) {
         }));
     }
     else {
-        container.innerHTML = container.innerHTML + message_to_html(message, user.DisplayName);
+        container.innerHTML = container.innerHTML + message_to_html(message, user.fullName);
         push_message(messages, ++i);
         container.scrollTop = container.scrollHeight;
     }
