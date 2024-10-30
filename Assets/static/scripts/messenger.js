@@ -211,3 +211,23 @@ function setup_messenger() {
         "JoinCode": "0f1a3167-9"
     }));
 }
+
+function get_online_users() {
+    let prev_callback = app.sock.onmessage;
+    app.sock.onmessage = (e) => {
+        let d = JSON.parse(e);
+        if (d.type != Application.PACKET_TYPE_GET_ACTIVE_USER_COUNT && prev_callback != undefined) prev_callback(e);
+        else {
+            document.getElementById("online-count").innerText = "Users online: " + d["users-online"];
+        }
+
+        app.sock.onmessage = prev_callback;
+    }
+
+    app.sock.send(JSON.stringify({
+        "type": Application.PACKET_TYPE_GET_ACTIVE_USER_COUNT,
+        "isFinal": true
+    }));
+
+    setTimeout(get_online_users, 5000);
+}
