@@ -71,6 +71,9 @@ async function create_new_user() {
 }
 
 function switch_to_new_user_page() {
+    window.location = "https://data.nathcat.net/sso/?newUser";
+    return;
+    // Creating new users is now delegated solely to AuthCat
     app.page = new Page(Page.PAGE_CREATE_USER); app.load_page(() => {
         document.getElementById('create_user_username_entry').onkeydown = (e) => {
             if (e.key == 'Enter') create_new_user();
