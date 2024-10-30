@@ -39,6 +39,7 @@ class Application {
     static PACKET_TYPE_SEND_MESSAGE = 7;
     static PACKET_TYPE_NOTIFICATION_MESSAGE = 8;
     static PACKET_TYPE_JOIN_CHAT = 9;
+    static PACKET_TYPE_GET_ACTIVE_USER_COUNT = 11;
 
     constructor() {
         this.sock = new WebSocket("wss://nathcat.net:1234");
