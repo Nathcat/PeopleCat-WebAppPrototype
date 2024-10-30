@@ -252,6 +252,6 @@ function request_notifications() {
     }
 
     Notification.requestPermission().then((permission) => {
-        documents.getElementById("notif-permission-button").style.display = permission === "granted" ? "none" : "block";
+        document.getElementById("notif-permission-button").style.display = permission === "granted" ? "none" : "block";
     });
 }
