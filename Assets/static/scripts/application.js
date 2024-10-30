@@ -97,7 +97,7 @@ class Application {
             console.log("Got reference: " + reference);
             let value = this.data[reference[0]];
             console.log(value);
-            for (let ii = 1; ii < value.length; ii++) {
+            for (let ii = 1; ii < reference.length; ii++) {
                 if (value === undefined) break;
                 value = value[reference[ii]];
                 console.log(value);
