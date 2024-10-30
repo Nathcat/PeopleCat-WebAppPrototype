@@ -91,10 +91,10 @@ class Application {
     get_user(userID) {
         if (this.data.user == undefined) return null;
 
-        if (this.data.user.UserID == userID) return this.data.user;
+        if (this.data.user.id == userID) return this.data.user;
         else {
             for (let i = 0; i < this.data.known_users.length; i++) {
-                if (this.data.known_users[i].UserID == userID) {
+                if (this.data.known_users[i].id == userID) {
                     return this.data.known_users[i];
                 }
             }

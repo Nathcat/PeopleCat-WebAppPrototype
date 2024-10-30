@@ -62,6 +62,7 @@ function push_message(messages, i) {
 
     let user = app.get_user(message.SenderID);
     if (user == null) {
+        /*
         app.sock.onmessage = (e) => {
             let response = JSON.parse(e.data);
             if (response.type == Application.PACKET_TYPE_NOTIFICATION_MESSAGE) {
@@ -79,7 +80,30 @@ function push_message(messages, i) {
             "type": Application.PACKET_TYPE_GET_USER,
             "isFinal": true,
             "ID": message.SenderID
-        }));
+        }));*/
+        // Request the user through AuthCat
+        fetch("https://data.nathcat.net/sso/user-search.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "id": message.SenderID
+            })
+        }).then((r) => r.json()).then((r) => {
+            let u;
+            if (r.state == "success") {
+                u = r.results[message.SenderID];
+            }
+            else {
+                u = {"id": message.SenderID, "fullName": "USER NOT FOUND", "username": "USERNOTFOUND", "pfpPath": "default.png"}
+            }
+
+            app.data.known_users.push(u);
+            container.innerHTML = container.innerHTML + message_to_html(message, u.fullName);
+            push_message(messages, ++i);
+            container.scrollTop = container.scrollHeight;
+        });
     }
     else {
         container.innerHTML = container.innerHTML + message_to_html(message, user.fullName);
