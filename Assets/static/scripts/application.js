@@ -105,7 +105,7 @@ class Application {
     }
 
     get_online_users() {
-        let prev_callback = sock.onmessage;
+        let prev_callback = this.sock.onmessage;
         this.sock.onmessage = (e) => {
             let d = JSON.parse(e);
             if (d.type != PACKET_TYPE_GET_ACTIVE_USER_COUNT && prev_callback != undefined) prev_callback(e);
