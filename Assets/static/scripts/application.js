@@ -117,7 +117,7 @@ class Application {
         }
 
         this.sock.send(JSON.stringify({
-            "type": PACKET_TYPE_GET_ACTIVE_USER_COUNT,
+            "type": Application.PACKET_TYPE_GET_ACTIVE_USER_COUNT,
             "isFinal": true
         }));
 
