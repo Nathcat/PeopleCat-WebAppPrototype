@@ -90,16 +90,17 @@ class Application {
         }*/
 
         content = content.split("$");
-        console.log(content);
         for (let i = 1; i < content.length; i += 2) {
             if (i == content.length - 1) { break; }
 
             let reference = content[i].split(".");
             console.log("Got reference: " + reference);
             let value = this.data[reference[0]];
+            console.log(value);
             for (let ii = 1; ii < value.length; ii++) {
                 if (value === undefined) break;
                 value = value[reference[ii]];
+                console.log(value);
             }
 
             content[i] = value;
