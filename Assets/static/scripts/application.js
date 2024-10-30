@@ -94,7 +94,7 @@ class Application {
             if (i == content.length - 1) { break; }
 
             let reference = content[i].split(".");
-            let value = this.data[reference[0]]
+            let value = this.data[reference[0]];
             for (let ii = 1; ii < value.length; ii++) {
                 if (value === undefined) break;
                 value = value[reference[ii]];
