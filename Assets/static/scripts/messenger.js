@@ -70,7 +70,7 @@ function push_message(messages, i) {
             }
 
             app.data.known_users.push(response);
-            container.innerHTML = container.innerHTML + message_to_html(message, response.DisplayName);
+            container.innerHTML = container.innerHTML + message_to_html(message, response.fullName);
             push_message(messages, ++i);
             container.scrollTop = container.scrollHeight;
         }
