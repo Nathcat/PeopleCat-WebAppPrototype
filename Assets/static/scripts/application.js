@@ -66,7 +66,8 @@ class Application {
     async load_page(on_finish) {
         let html_content = await this.page.get_page_content();
         let content = await html_content.text();
-        content = [...content];
+
+        /*content = [...content];
 
         let isInTemplate = false;
         let templateStart = 0;
@@ -86,6 +87,20 @@ class Application {
                 
                 content.splice(templateStart, i - templateStart + 1, item);
             }
+        }*/
+
+        content = content.split("$");
+        for (let i = 1; i < content.length; i += 2) {
+            if (i == content.length - 1) { break; }
+
+            let reference = content[i].split(".");
+            let value = this.data[reference[0]]
+            for (let ii = 1; ii < value.length; ii++) {
+                if (value === undefined) break;
+                value = value[reference[ii]];
+            }
+
+            content[i] = value;
         }
 
         document.getElementById("page-content").innerHTML = content.join("");
