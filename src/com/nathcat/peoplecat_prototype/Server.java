@@ -96,7 +96,7 @@ public class Server {
         server.createContext("/sounds", new ServeStaticHandler("audio/mpeg", "Assets/static/sounds"));
         server.createContext("/pages", new ServeStaticHandler("text/html", "Assets/static/HTML"));
         server.createContext("/login", new LoginHandler());
-        server.setExecutor(null);
+        server.setExecutor(Executors.newCachedThreadPool());
 
         System.out.println("Ready to accept HTTP connections on port " + config.get("port"));
         server.start();
