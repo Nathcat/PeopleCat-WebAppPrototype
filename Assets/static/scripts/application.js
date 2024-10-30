@@ -57,7 +57,7 @@ class Application {
         }
 
         this.sock.onerror = (e) => {
-            console.log("An error occured and the socket failed to connect!");
+            console.log("An error occurred and the socket failed to connect!");
             this.page = new Page(Page.PAGE_CONNECT_ERR);
             this.load_page();
         }
@@ -66,28 +66,6 @@ class Application {
     async load_page(on_finish) {
         let html_content = await this.page.get_page_content();
         let content = await html_content.text();
-
-        /*content = [...content];
-
-        let isInTemplate = false;
-        let templateStart = 0;
-        for (let i = 0; i < content.length; i++) {
-            if (content[i] == "$" && !isInTemplate) {
-                isInTemplate = true;
-                templateStart = i;
-            }
-            else if (content[i]  == "$" && isInTemplate) {
-                isInTemplate = false;
-                let template = content.join("").substring(templateStart + 1, i).split(".");
-                let item = app.data;
-                for (let x = 0; x < template.length; x++) {
-                    if (item == undefined) break;
-                    item = item[template[x]];
-                }
-                
-                content.splice(templateStart, i - templateStart + 1, item);
-            }
-        }*/
 
         content = content.split("$");
         for (let i = 1; i < content.length; i += 2) {
