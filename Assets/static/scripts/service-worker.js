@@ -4,9 +4,14 @@ const addResourcesToCache = async(r) => {
 };
 
 var sock;
-var notifications = [];
 
 self.addEventListener("install", (e) => {
+    console.log("Worker installed");
+    skipWaiting();
+});
+
+self.addEventListener("activate", (e) => {
+    console.log("Worker activated");
     sock = new WebSocket("wss://nathcat.net:1234");
     sock.onopen = (e) => {
         console.log("Notification socket open! Waiting for auth data.");
@@ -32,12 +37,10 @@ self.addEventListener("message", (e) => {
                 console.log("Notification socket authenticated!");
             }
             else if (d.type == 8) {
-                const notif = new Notification("New message", {
+                ServiceWorkerRegistration.showNotification("New message", {
                     body: "You have a new message",
                     icon: "https://nathcat.net:8080/images?path=favicon.png"
                 });
-
-                notifications.push(notif);
             }
         };
 
