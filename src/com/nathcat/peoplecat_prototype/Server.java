@@ -1,18 +1,22 @@
 package com.nathcat.peoplecat_prototype;
 
-import com.sun.net.httpserver.Headers;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
+import com.sun.net.httpserver.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.SSLParameters;
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.security.*;
+import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
 
 public class Server {
     public static String phpExecPath;
@@ -31,6 +35,20 @@ public class Server {
         }
 
         return (JSONObject) new JSONParser().parse(sb.toString());
+    }
+
+    /**
+     * Get the SSL Context for the HTTPS server
+     * @return SSL Context
+     */
+    public static SSLContext getSSLContext() throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException, KeyManagementException, UnrecoverableKeyException {
+        KeyStore keyStore = KeyStore.getInstance("JKS");
+        keyStore.load(new FileInputStream("nathcat.net.keystore"), "changeit".toCharArray());
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        keyManagerFactory.init(keyStore, "changeit".toCharArray());
+        SSLContext context = SSLContext.getInstance("TLS");
+        context.init(keyManagerFactory.getKeyManagers(), null, new SecureRandom());
+        return context;
     }
 
     public static void main(String[] args) throws Exception {
@@ -53,7 +71,24 @@ public class Server {
             System.exit(-3);
         }
 
-        HttpServer server = HttpServer.create(new InetSocketAddress(Math.toIntExact((long) config.get("port"))), 0);
+        HttpsServer server = HttpsServer.create(new InetSocketAddress(Math.toIntExact((long) config.get("port"))), 0);
+        SSLContext sslContext = getSSLContext();
+        server.setHttpsConfigurator(new HttpsConfigurator(sslContext) {
+            public void configure(HttpsParameters params) {
+                try {
+                    SSLContext context = getSSLContext();
+                    SSLEngine engine = context.createSSLEngine();
+                    params.setNeedClientAuth(false);
+                    params.setCipherSuites(engine.getEnabledCipherSuites());
+                    params.setProtocols(engine.getEnabledProtocols());
+                    SSLParameters p = context.getSupportedSSLParameters();
+                    params.setSSLParameters(p);
+                } catch (Exception e) {
+                    System.err.println("Failed to create HTTPS port.");
+                }
+            }
+        });
+
         server.createContext("/", new WelcomePageHandler());
         server.createContext("/script", new ServeStaticHandler("text/javascript", "Assets/static/scripts"));
         server.createContext("/styles", new ServeStaticHandler("text/css", "Assets/static/styles"));
@@ -61,7 +96,7 @@ public class Server {
         server.createContext("/sounds", new ServeStaticHandler("audio/mpeg", "Assets/static/sounds"));
         server.createContext("/pages", new ServeStaticHandler("text/html", "Assets/static/HTML"));
         server.createContext("/login", new LoginHandler());
-        server.setExecutor(null);
+        server.setExecutor(Executors.newCachedThreadPool());
 
         System.out.println("Ready to accept HTTP connections on port " + config.get("port"));
         server.start();

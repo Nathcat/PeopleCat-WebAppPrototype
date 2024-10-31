@@ -9,6 +9,19 @@ function get_new_message() {
 
         else if (response.type == Application.PACKET_TYPE_GET_MESSAGE_QUEUE && response.isFinal) {
             push_message([response], 0);
+            
+            if (!VISIBLE) {
+                const notif = new Notification("New message", {
+                    body: "You have a new message",
+                    icon: "https://nathcat.net:8080/images?path=favicon.png"
+                });
+
+                document.addEventListener("visibilitychange", () => {
+                    if (document.visibilityState === "visible") {
+                        notif.close();
+                    }
+                });
+            }
         }
     }
 
@@ -30,7 +43,7 @@ __n = notification;
 
 function message_to_html(message, displayName) {
     let str = "<div class=\"row\" style=\"justify-content: ";
-    if (message.SenderID == app.data.user.UserID) {
+    if (message.SenderID == app.data.user.id) {
         str += "right;\">";
     }
     else {
@@ -38,7 +51,7 @@ function message_to_html(message, displayName) {
     }
     
     str += "<div class=\"message-"
-    if (message.SenderID == app.data.user.UserID) {
+    if (message.SenderID == app.data.user.id) {
         str += "to\">";
     }
     else {
@@ -62,6 +75,7 @@ function push_message(messages, i) {
 
     let user = app.get_user(message.SenderID);
     if (user == null) {
+        /*
         app.sock.onmessage = (e) => {
             let response = JSON.parse(e.data);
             if (response.type == Application.PACKET_TYPE_NOTIFICATION_MESSAGE) {
@@ -70,7 +84,7 @@ function push_message(messages, i) {
             }
 
             app.data.known_users.push(response);
-            container.innerHTML = container.innerHTML + message_to_html(message, response.DisplayName);
+            container.innerHTML = container.innerHTML + message_to_html(message, response.fullName);
             push_message(messages, ++i);
             container.scrollTop = container.scrollHeight;
         }
@@ -79,10 +93,33 @@ function push_message(messages, i) {
             "type": Application.PACKET_TYPE_GET_USER,
             "isFinal": true,
             "ID": message.SenderID
-        }));
+        }));*/
+        // Request the user through AuthCat
+        fetch("https://data.nathcat.net/sso/user-search.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "id": message.SenderID
+            })
+        }).then((r) => r.json()).then((r) => {
+            let u;
+            if (r.state == "success") {
+                u = r.results[message.SenderID];
+            }
+            else {
+                u = {"id": message.SenderID, "fullName": "USER NOT FOUND", "username": "USERNOTFOUND", "pfpPath": "default.png"}
+            }
+
+            app.data.known_users.push(u);
+            container.innerHTML = container.innerHTML + message_to_html(message, u.fullName);
+            push_message(messages, ++i);
+            container.scrollTop = container.scrollHeight;
+        });
     }
     else {
-        container.innerHTML = container.innerHTML + message_to_html(message, user.DisplayName);
+        container.innerHTML = container.innerHTML + message_to_html(message, user.fullName);
         push_message(messages, ++i);
         container.scrollTop = container.scrollHeight;
     }
@@ -152,6 +189,7 @@ function load_messages() {
 
         if (response.isFinal) {
             push_message(messages, 0);
+            get_online_users();
         }
     }
 
@@ -183,6 +221,37 @@ function setup_messenger() {
         "type": Application.PACKET_TYPE_JOIN_CHAT,
         "isFinal": true,
         "ChatID": 1,
-        "JoinCode": "abcdefg"
+        "JoinCode": "0f1a3167-9"
     }));
+}
+
+function get_online_users() {
+    let prev_callback = app.sock.onmessage;
+    app.sock.onmessage = (e) => {
+        let d = JSON.parse(e.data);
+        if (d.type != Application.PACKET_TYPE_GET_ACTIVE_USER_COUNT && prev_callback != undefined) prev_callback(e);
+        else {
+            document.getElementById("online-count").innerText = "Users online: " + d["users-online"];
+        }
+
+        app.sock.onmessage = prev_callback;
+    }
+
+    app.sock.send(JSON.stringify({
+        "type": Application.PACKET_TYPE_GET_ACTIVE_USER_COUNT,
+        "isFinal": true
+    }));
+
+    setTimeout(get_online_users, 5000);
+}
+
+function request_notifications() {
+    if (!("Notification" in window)) {
+        alert("Your browser does not support notifications!");
+        return;
+    }
+
+    Notification.requestPermission().then((permission) => {
+        document.getElementById("notif-permission-button").style.display = permission === "granted" ? "none" : "block";
+    });
 }
