@@ -151,3 +151,26 @@ window.addEventListener("focus", pageFocus);
 window.addEventListener("pageshow", pageFocus);
 window.addEventListener("blur", () => VISIBLE = false);
 window.addEventListener("pagehide", () => VISIBLE = false);
+
+const registerServiceWorker = async() => {
+    if ("serviceWorker" in navigator) {
+        try {
+            const registration = await navigator.serviceWorker.register("/scripts?path=service-worker.js", {
+                scope: "/"
+            });
+
+            if (registration.installing) {
+                console.log("Installing worker");
+            }
+            else if (registration.waiting) {
+                console.log("Worker installed");
+            }
+            else if (registration.active) {
+                console.log("Worker active");
+            }
+        }
+        catch (error) {
+            console.error(`Registration failed with ${error}`);
+        }
+    }
+};
