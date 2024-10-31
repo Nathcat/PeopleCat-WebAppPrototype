@@ -47,21 +47,9 @@ class Application {
         this.data = {};
         this.data.known_users = [];
 
-        this.sock.onopen = (e) => {
-            console.log("Socket is open!");
-            console.log(e);
-        };
-
-        this.sock.onclose = (e) => {
-            console.log("Socket is closed!");
-            console.log(e);
-        }
-
-        this.sock.onerror = (e) => {
-            console.log("An error occurred and the socket failed to connect!");
-            this.page = new Page(Page.PAGE_CONNECT_ERR);
-            this.load_page();
-        }
+        this.sock.onopen = this.sock_onopen;
+        this.sock.onclose = this.sock_onclose;
+        this.sock.onerror = this.sock_onerror;
     }
 
     async load_page(on_finish) {
@@ -102,6 +90,28 @@ class Application {
         }
 
         return null;
+    }
+
+    sock_onopen(e) {
+        console.log("Socket is open!");
+        console.log(e);
+    }
+
+    sock_onclose(e) {
+        console.log("Socket is closed!");
+        console.log(e);
+        console.log("Trying to reconnect");
+        this.sock = new WebSocket("wss://nathcat.net:1234");
+        
+        this.sock.onopen = this.sock_onopen;
+        this.sock.onclose = this.sock_onclose;
+        this.sock.onerror = this.sock_onerror;
+    }
+
+    sock_onerror(e) {
+        console.log("An error occurred and the socket failed to connect!");
+        this.page = new Page(Page.PAGE_CONNECT_ERR);
+        this.load_page();
     }
 }
 
