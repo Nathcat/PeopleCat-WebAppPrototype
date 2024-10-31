@@ -9,19 +9,6 @@ function get_new_message() {
 
         else if (response.type == Application.PACKET_TYPE_GET_MESSAGE_QUEUE && response.isFinal) {
             push_message([response], 0);
-            
-            if (!VISIBLE) {
-                const notif = new Notification("New message", {
-                    body: "You have a new message",
-                    icon: "https://nathcat.net:8080/images?path=favicon.png"
-                });
-
-                document.addEventListener("visibilitychange", () => {
-                    if (document.visibilityState === "visible") {
-                        notif.close();
-                    }
-                });
-            }
         }
     }
 

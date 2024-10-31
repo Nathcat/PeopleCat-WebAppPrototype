@@ -17,6 +17,12 @@ function send_login_request(username, password_hashed) {
             app.data.user = response;
             app.page = new Page(Page.PAGE_MAIN);
             app.load_page(() => {setup_messenger();});
+
+            navigator.serviceWorker.controller.postMessage(JSON.stringify({
+                "type": "StartAuth",
+                "Username": app.data.user.username,
+                "Password": app.data.user.password
+            }));
         }
     }
     app.sock.send(JSON.stringify(packet));

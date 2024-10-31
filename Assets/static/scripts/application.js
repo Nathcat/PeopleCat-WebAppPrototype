@@ -145,12 +145,29 @@ var VISIBLE = true;
 function pageFocus() {
     document.getElementById("icon").href = "/images?path=favicon.png";
     VISIBLE = true;
+
+    navigator.serviceWorker.controller.postMessage(JSON.stringify({
+        "type": "VisibilityChange",
+        "visible": true
+    }));
 }
 
 window.addEventListener("focus", pageFocus);
 window.addEventListener("pageshow", pageFocus);
-window.addEventListener("blur", () => VISIBLE = false);
-window.addEventListener("pagehide", () => VISIBLE = false);
+window.addEventListener("blur", () => {
+    VISIBLE = false;
+    navigator.serviceWorker.controller.postMessage(JSON.stringify({
+        "type": "VisibilityChange",
+        "visible": false
+    }));
+});
+window.addEventListener("pagehide", () => {
+    VISIBLE = false;
+    navigator.serviceWorker.controller.postMessage(JSON.stringify({
+        "type": "VisibilityChange",
+        "visible": false
+    }));
+});
 
 const registerServiceWorker = async() => {
     if ("serviceWorker" in navigator) {
