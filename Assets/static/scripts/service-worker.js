@@ -52,10 +52,10 @@ self.addEventListener("message", (e) => {
         }));
     }
     else if (d.type === "VisibilityChange") {
-        if (d.visible === true) {
-            for (n in notifications) {
-                n.close();
-            }
-        }
+        //if (d.visible === true) {
+        //    for (n in notifications) {
+        //        n.close();
+        //    }
+        //}
     }
 });
