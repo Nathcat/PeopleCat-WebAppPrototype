@@ -2,7 +2,7 @@ var __n = (d) => {};
 
 function get_new_message() {
     let f = async (e) => {
-        let response = new Packet({"buffer": await e.data.stream().getReader().read().value});
+        let response = new Packet({"buffer": new Uint8Array(await e.data.arrayBuffer())});
 
         if (response.type == Application.PACKET_TYPE_NOTIFICATION_MESSAGE) {
             __n(response);
@@ -148,7 +148,7 @@ function send_message() {
     content = content.replace("<", "&lt;").replace(">", "&gt;");
 
     let f = async (e) => {
-        let response = new Packet({"buffer": await e.data.stream().getReader().read().value});
+        let response = new Packet({"buffer": new Uint8Array(await e.data.arrayBuffer())});
 
         if (response.type == Application.PACKET_TYPE_NOTIFICATION_MESSAGE) {
             notification(response.getData());
@@ -182,7 +182,7 @@ function load_messages() {
 
     let messages = [];
     let f = async (e) => {
-        let response = new Packet({"buffer": await e.data.stream().getReader().read().value});
+        let response = new Packet({"buffer": new Uint8Array(await e.data.arrayBuffer())});
 
         if (response.type == Application.PACKET_TYPE_NOTIFICATION_MESSAGE) {
             notification(response.getData());
@@ -215,7 +215,7 @@ function load_messages() {
 
 function setup_messenger() {
     let f = async (e) => {
-        let data = new Packet({"buffer": await e.data.stream().getReader().read().value});
+        let data = new Packet({"buffer": new Uint8Array(await e.data.arrayBuffer())});
 
         if (data.type == Application.PACKET_TYPE_NOTIFICATION_MESSAGE) {
             notification(data.getData());
@@ -244,7 +244,7 @@ function setup_messenger() {
 function get_online_users() {
     let prev_callback = app.sock.onmessage;
     let f = async (e) => {
-        let d = new Packet({"buffer": await e.data.stream().getReader().read().value});
+        let d = new Packet({"buffer": new Uint8Array(await e.data.arrayBuffer())});
 
         if (d.type != Application.PACKET_TYPE_GET_ACTIVE_USER_COUNT && prev_callback != undefined) prev_callback(e);
         else {
