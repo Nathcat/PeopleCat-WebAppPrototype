@@ -10,7 +10,7 @@ function send_login_request(username, password_hashed) {
 
     let f = async (e) => {
         let response = new Packet({
-            "buffer": await e.data.bytes()
+            "buffer": await e.data.stream().getReader().read().value
         });
 
         if (response.type == Application.PACKET_TYPE_ERROR) {
