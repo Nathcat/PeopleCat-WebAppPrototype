@@ -29,7 +29,7 @@ class Page {
 }
 
 class Application {
-    static SOCKET_URL = "ws://localhost:1234";
+    static SOCKET_URL = "wss://nathcat.net:1234";
     static PACKET_TYPE_ERROR = 0;
     static PACKET_TYPE_PING = 1;
     static PACKET_TYPE_AUTHENTICATE = 2;
