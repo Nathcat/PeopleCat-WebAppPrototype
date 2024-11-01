@@ -16,6 +16,7 @@ class Packet {
     static TYPE_NOTIFICATION_MESSAGE = 8;
     static TYPE_JOIN_CHAT = 9;
     static TYPE_CHANGE_PFP_PATH = 10;
+    static TYPE_GET_ACTIVE_USER_COUNT = 11;
 
     /**
      * Read a packet from the given data

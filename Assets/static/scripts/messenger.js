@@ -68,8 +68,6 @@ function message_to_html(message, displayName) {
 function push_message(messages, i) {
     if (i == messages.length) return;
 
-    console.log(messages);
-
     if (!VISIBLE) {
         document.getElementById("icon").href = "/images?path=favicon_notification.png";
         new Audio("/sounds?path=notification.mp3").play();
