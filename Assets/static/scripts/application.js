@@ -29,6 +29,7 @@ class Page {
 }
 
 class Application {
+    static SOCKET_URL = "wss://nathcat.net:1234";
     static PACKET_TYPE_ERROR = 0;
     static PACKET_TYPE_PING = 1;
     static PACKET_TYPE_AUTHENTICATE = 2;
@@ -42,7 +43,7 @@ class Application {
     static PACKET_TYPE_GET_ACTIVE_USER_COUNT = 11;
 
     constructor() {
-        this.sock = new WebSocket("wss://nathcat.net:1234");
+        this.sock = new WebSocket(Application.SOCKET_URL);
         this.page = new Page(Page.PAGE_LOGIN);
         this.data = {};
         this.data.known_users = [];
@@ -101,7 +102,7 @@ class Application {
         console.log("Socket is closed!");
         console.log(e);
         console.log("Trying to reconnect");
-        this.sock = new WebSocket("wss://nathcat.net:1234");
+        this.sock = new WebSocket(Application.SOCKET_URL);
         
         this.sock.onopen = this.sock_onopen;
         this.sock.onclose = this.sock_onclose;
