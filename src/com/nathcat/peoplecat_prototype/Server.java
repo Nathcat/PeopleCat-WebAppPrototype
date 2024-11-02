@@ -13,6 +13,7 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.security.*;
 import java.security.cert.CertificateException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -20,6 +21,7 @@ import java.util.concurrent.Executors;
 
 public class Server {
     public static String phpExecPath;
+    private static boolean usingSSL = true;
 
     /**
      * Get the server's configuration file located at Assets/Server_Config.json
@@ -52,6 +54,10 @@ public class Server {
     }
 
     public static void main(String[] args) throws Exception {
+        if (Arrays.stream(args).anyMatch("no-ssl"::equals)) {
+            usingSSL = false;
+        }
+
         JSONObject config = null;
         try {
             config = getConfigFile();
@@ -71,23 +77,29 @@ public class Server {
             System.exit(-3);
         }
 
-        HttpsServer server = HttpsServer.create(new InetSocketAddress(Math.toIntExact((long) config.get("port"))), 0);
-        SSLContext sslContext = getSSLContext();
-        server.setHttpsConfigurator(new HttpsConfigurator(sslContext) {
-            public void configure(HttpsParameters params) {
-                try {
-                    SSLContext context = getSSLContext();
-                    SSLEngine engine = context.createSSLEngine();
-                    params.setNeedClientAuth(false);
-                    params.setCipherSuites(engine.getEnabledCipherSuites());
-                    params.setProtocols(engine.getEnabledProtocols());
-                    SSLParameters p = context.getSupportedSSLParameters();
-                    params.setSSLParameters(p);
-                } catch (Exception e) {
-                    System.err.println("Failed to create HTTPS port.");
+        HttpServer server;
+        if (usingSSL) {
+            server = HttpsServer.create(new InetSocketAddress(Math.toIntExact((long) config.get("port"))), 0);
+            SSLContext sslContext = getSSLContext();
+            ((HttpsServer) server).setHttpsConfigurator(new HttpsConfigurator(sslContext) {
+                public void configure(HttpsParameters params) {
+                    try {
+                        SSLContext context = getSSLContext();
+                        SSLEngine engine = context.createSSLEngine();
+                        params.setNeedClientAuth(false);
+                        params.setCipherSuites(engine.getEnabledCipherSuites());
+                        params.setProtocols(engine.getEnabledProtocols());
+                        SSLParameters p = context.getSupportedSSLParameters();
+                        params.setSSLParameters(p);
+                    } catch (Exception e) {
+                        System.err.println("Failed to create HTTPS port.");
+                    }
                 }
-            }
-        });
+            });
+        }
+        else {
+            server = HttpServer.create(new InetSocketAddress(Math.toIntExact((long) config.get("port"))), 0);
+        }
 
         server.createContext("/", new WelcomePageHandler());
         server.createContext("/script", new ServeStaticHandler("text/javascript", "Assets/static/scripts"));
@@ -98,7 +110,7 @@ public class Server {
         server.createContext("/login", new LoginHandler());
         server.setExecutor(Executors.newCachedThreadPool());
 
-        System.out.println("Ready to accept HTTP connections on port " + config.get("port"));
+        System.out.println("Ready to accept HTTP" + (usingSSL ? "S" : "") + " connections on port " + config.get("port"));
         server.start();
     }
 

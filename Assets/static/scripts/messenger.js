@@ -1,14 +1,15 @@
 var __n = (d) => {};
 
 function get_new_message() {
-    app.sock.onmessage = (e) => {
-        let response = JSON.parse(e.data);
+    let f = async (e) => {
+        let response = new Packet({"buffer": new Uint8Array(await e.data.arrayBuffer())});
+
         if (response.type == Application.PACKET_TYPE_NOTIFICATION_MESSAGE) {
-            __n(response);
+            __n(response.getData());
         }
 
         else if (response.type == Application.PACKET_TYPE_GET_MESSAGE_QUEUE && response.isFinal) {
-            push_message([response], 0);
+            push_message([response.getData()], 0);
             
             if (!VISIBLE) {
                 const notif = new Notification("New message", {
@@ -23,13 +24,15 @@ function get_new_message() {
                 });
             }
         }
-    }
+    };
 
-    app.sock.send(JSON.stringify({
+    app.sock.onmessage = f;
+
+    app.sock.send(new Packet({
         "type": Application.PACKET_TYPE_GET_MESSAGE_QUEUE,
         "isFinal": true,
-        "ChatID": 1
-    }));
+        "object": { "ChatID": 1 }
+    }).getBytes());
 }
 
 function notification(data) {
@@ -144,10 +147,11 @@ function send_message() {
     content = content.join("");
     content = content.replace("<", "&lt;").replace(">", "&gt;");
 
-    app.sock.onmessage = (e) => {
-        let response = JSON.parse(e.data);
+    let f = async (e) => {
+        let response = new Packet({"buffer": new Uint8Array(await e.data.arrayBuffer())});
+
         if (response.type == Application.PACKET_TYPE_NOTIFICATION_MESSAGE) {
-            notification(response);
+            notification(response.getData());
             return;
         }
         else if (response.type == Application.PACKET_TYPE_PING) {
@@ -156,13 +160,17 @@ function send_message() {
         }
     }
 
-    app.sock.send(JSON.stringify({
+    app.sock.onmessage = f;
+
+    app.sock.send(new Packet({
         "type": Application.PACKET_TYPE_SEND_MESSAGE,
         "isFinal": true,
-        "ChatID": 1,
-        "Content": content,
-        "TimeSent": new Date().getTime()
-    }));
+        "object": {
+            "ChatID": 1,
+            "Content": content,
+            "TimeSent": new Date().getTime()
+        }
+    }).getBytes());
 }
 
 function load_messages() {
@@ -173,10 +181,11 @@ function load_messages() {
     };
 
     let messages = [];
-    app.sock.onmessage = (e) => {
-        let response = JSON.parse(e.data);
+    let f = async (e) => {
+        let response = new Packet({"buffer": new Uint8Array(await e.data.arrayBuffer())});
+
         if (response.type == Application.PACKET_TYPE_NOTIFICATION_MESSAGE) {
-            notification(response);
+            notification(response.getData());
             return;
         }
         
@@ -184,7 +193,7 @@ function load_messages() {
             return;
         }
         else {
-            messages.push(response);
+            messages.push(response.getData());
         }
 
         if (response.isFinal) {
@@ -193,54 +202,64 @@ function load_messages() {
         }
     }
 
-    let request = JSON.stringify({
+    app.sock.onmessage = f;
+
+    let request = new Packet({
         "type": Application.PACKET_TYPE_GET_MESSAGE_QUEUE,
         "isFinal": true,
-        "ChatID": 1
+        "object": {"ChatID": 1}
     });
 
-    app.sock.send(request);
+    app.sock.send(request.getBytes());
 }
 
 function setup_messenger() {
-    app.sock.onmessage = (e) => {
-        let data = JSON.parse(e.data);
+    let f = async (e) => {
+        let data = new Packet({"buffer": new Uint8Array(await e.data.arrayBuffer())});
+
         if (data.type == Application.PACKET_TYPE_NOTIFICATION_MESSAGE) {
-            notification(data);
+            notification(data.getData());
             return;
         }
 
         else if (data.type == Application.PACKET_TYPE_JOIN_CHAT || data.type == Application.PACKET_TYPE_ERROR) {
-            console.log(data);
+            console.log(data.getData());
             setTimeout(load_messages, 1000);
             return;
         }
-    }
+    };
 
-    app.sock.send(JSON.stringify({
+    app.sock.onmessage = f;
+
+    app.sock.send(new Packet({
         "type": Application.PACKET_TYPE_JOIN_CHAT,
         "isFinal": true,
-        "ChatID": 1,
-        "JoinCode": "0f1a3167-9"
-    }));
+        "object": {
+            "ChatID": 1,
+            "JoinCode": "0f1a3167-9"
+        }
+    }).getBytes());
 }
 
 function get_online_users() {
     let prev_callback = app.sock.onmessage;
-    app.sock.onmessage = (e) => {
-        let d = JSON.parse(e.data);
+    let f = async (e) => {
+        let d = new Packet({"buffer": new Uint8Array(await e.data.arrayBuffer())});
+
         if (d.type != Application.PACKET_TYPE_GET_ACTIVE_USER_COUNT && prev_callback != undefined) prev_callback(e);
         else {
-            document.getElementById("online-count").innerText = "Users online: " + d["users-online"];
+            document.getElementById("online-count").innerText = "Users online: " + d.getData()["users-online"];
         }
 
         app.sock.onmessage = prev_callback;
     }
 
-    app.sock.send(JSON.stringify({
+    app.sock.onmessage = f;
+
+    app.sock.send(new Packet({
         "type": Application.PACKET_TYPE_GET_ACTIVE_USER_COUNT,
         "isFinal": true
-    }));
+    }).getBytes());
 
     setTimeout(get_online_users, 5000);
 }
