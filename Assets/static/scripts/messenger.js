@@ -5,7 +5,7 @@ function get_new_message() {
         let response = new Packet({"buffer": new Uint8Array(await e.data.arrayBuffer())});
 
         if (response.type == Application.PACKET_TYPE_NOTIFICATION_MESSAGE) {
-            __n(response);
+            __n(response.getData());
         }
 
         else if (response.type == Application.PACKET_TYPE_GET_MESSAGE_QUEUE && response.isFinal) {
