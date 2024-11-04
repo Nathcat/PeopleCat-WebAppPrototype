@@ -30,9 +30,7 @@
 
 			fetch("https://data.nathcat.net/sso/get-session.php", {
 				method: "GET",
-				headers: {
-					"Cookie": document.cookie
-				}
+				credentials: "same-origin"
 			})
 			.then((r) => r.json()).then((r) => {
 				console.log(r);
