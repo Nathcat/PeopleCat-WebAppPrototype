@@ -26,7 +26,8 @@ function send_login_request(username, password_hashed) {
 
     app.sock.onmessage = f;
 
-    app.sock.send(new Packet(packet).getBytes());
+    if (app.sock.readyState === WebSocket.CONNECTING) app.sock.onopen = (e) => app.sock.send(new Packet(packet).getBytes());
+    else app.sock.send(new Packet(packet).getBytes());
 }
 
 async function attempt_login() {
