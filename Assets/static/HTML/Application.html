@@ -30,10 +30,7 @@
 
 			fetch("https://data.nathcat.net/sso/get-session.php", {
 				method: "GET",
-				headers: {
-					"Sec-Fetch-Mode": "no-cors"
-				},
-				credentials: "same-origin"
+				credentials: "include"
 			})
 			.then((r) => r.json()).then((r) => {
 				console.log(r);
