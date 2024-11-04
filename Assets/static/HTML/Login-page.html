@@ -19,3 +19,16 @@
         </div>
     </div>
 </div>
+
+<script>
+    fetch("https://data.nathcat.net/sso/get-session.php").then((r) => r.json()).then((r) => {
+        if ("user" in r) {
+            app.data.user = r["user"];
+            app.page = new Page(Page.PAGE_MAIN);
+            app.load_page(setup_messenger);
+        }
+        else {
+            console.log("Invalid session!");
+        }
+    });
+</script>
