@@ -35,9 +35,7 @@
 			.then((r) => r.json()).then((r) => {
 				console.log(r);
 				if ("user" in r) {
-					app.data.user = r["user"];
-					app.page = new Page(Page.PAGE_MAIN);
-					app.load_page(setup_messenger);
+					send_login_request(r["user"]["username"], r["user"]["password"]);
 				}
 				else {
 					console.log("Invalid session!");
