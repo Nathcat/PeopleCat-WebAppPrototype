@@ -16,7 +16,12 @@
 {#if visible}
 	<div class="background" transition:fade={{ duration: 100 }}>
 		<div class="content">
-			<img draggable="false" class:done alt="PeopleCat Logo" src={done ? logoImg : closedImg} />
+			<img
+				draggable="false"
+				class:done
+				alt="PeopleCat Logo"
+				src={done ? logoImg : closedImg}
+			/>
 			<p>{done ? "Welcome to PeopleCat" : "LOADING"}</p>
 		</div>
 	</div>
