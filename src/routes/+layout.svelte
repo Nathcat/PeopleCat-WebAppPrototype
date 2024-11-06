@@ -1,6 +1,14 @@
 <script lang="ts">
+	import Freeze from "./Freeze.svelte";
+	import { onMount } from "svelte";
+
+	let { data, children } = $props();
+
 	import "greset";
-	import "$lib/style.css";
+	import "$lib/style.scss";
+
+	onMount(() => data.application.connect());
 </script>
 
-<slot />
+<Freeze />
+{@render children()}
