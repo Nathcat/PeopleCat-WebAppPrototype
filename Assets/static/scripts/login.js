@@ -1,10 +1,11 @@
-function send_login_request(username, password_hashed) {
+function send_login_request(username, password, cookie) {
     let packet = {
         "type": 2, // TYPE_AUTHENTICATE
         "isFinal": true,
         "object": {
             "username": username,
-            "password": password_hashed
+            "password": password,
+            "cookie-auth": cookie
         }
     };
 
@@ -14,7 +15,7 @@ function send_login_request(username, password_hashed) {
         });
 
         if (response.type == Application.PACKET_TYPE_ERROR) {
-            document.getElementById("login-err-msg").innerHTML = "<div class=\"error-card\"><h2>Login failed</h2><p>Incorrect username or password.</p></div>"
+            if (!cookie) document.getElementById("login-err-msg").innerHTML = "<div class=\"error-card\"><h2>Login failed</h2><p>Incorrect username or password.</p></div>"
             return;
         }
         else {
@@ -39,7 +40,7 @@ async function attempt_login() {
         return;
     }
 
-    send_login_request(username, await sha256(password));
+    send_login_request(username, password);
 }
 
 function switch_to_new_user_page() {

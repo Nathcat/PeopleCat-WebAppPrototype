@@ -20,27 +20,8 @@
 	<script>
 		const app = new Application();
 		app.load_page(() => {
-			document.getElementById("login_username_entry").onkeydown = (e) => {
-				if (e.key == "Enter") attempt_login();
-			};
-
-			document.getElementById("login_password_entry").onkeydown = (e) => {
-				if (e.key == "Enter") attempt_login();
-			};
-
-			fetch("https://data.nathcat.net/sso/get-session.php", {
-				method: "GET",
-				credentials: "include"
-			})
-			.then((r) => r.json()).then((r) => {
-				console.log(r);
-				if ("user" in r) {
-					send_login_request(r["user"]["username"], r["user"]["password"]);
-				}
-				else {
-					console.log("Invalid session!");
-				}
-			});
+			const cookie = document.cookie.split(";").find(c => c.startsWith("AuthCat-SSO")).split("=")[1]
+			send_login_request(undefined, undefined, cookie)
 		});
 	</script>
 </body>
