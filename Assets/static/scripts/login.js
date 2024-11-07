@@ -15,7 +15,7 @@ function send_login_request(username, password, cookie) {
         });
 
         if (response.type == Application.PACKET_TYPE_ERROR) {
-            document.getElementById("login-err-msg").innerHTML = "<div class=\"error-card\"><h2>Login failed</h2><p>Incorrect username or password.</p></div>"
+            if (!cookie) document.getElementById("login-err-msg").innerHTML = "<div class=\"error-card\"><h2>Login failed</h2><p>Incorrect username or password.</p></div>"
             return;
         }
         else {
