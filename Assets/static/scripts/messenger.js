@@ -173,6 +173,23 @@ function send_message() {
     }).getBytes());
 }
 
+function sort_messages(messages) {
+    let empty_pass = false;
+    while (!empty_pass) {
+        empty_pass = true;
+        for (let i = 0; i < messages.length - 1; i++) {
+            if (messages[i].TimeSent > messages[i+1].TimeSent) {
+                let tmp = messages[i];
+                messages[i] = messages[i+1];
+                messages[i+1] = tmp;
+                empty_pass = false;
+            }
+        }
+    }
+
+    return messages;
+}
+
 function load_messages() {
     document.getElementById("message_entry").onkeydown = (e) => {
         if (e.key == "Enter") {
@@ -181,6 +198,11 @@ function load_messages() {
     };
 
     let messages = [];
+    let messageCount;
+    let wait_sequence_finished = async () => {
+        while (messages.length != messageCount) { if (messages.length >= messageCount) break; };
+    };
+
     let f = async (e) => {
         let response = new Packet({"buffer": new Uint8Array(await e.data.arrayBuffer())});
 
@@ -193,11 +215,18 @@ function load_messages() {
             return;
         }
         else {
-            messages.push(response.getData());
+            if ("message-count" in response.getData()) {
+                messageCount = response.getData()["message-count"];
+                console.log("Got message count of " + messageCount);
+            }
+            else {
+                messages.push(response.getData());
+            }
         }
 
         if (response.isFinal) {
-            push_message(messages, 0);
+            await wait_sequence_finished();
+            push_message(sort_messages(messages), 0);
             get_online_users();
         }
     }
