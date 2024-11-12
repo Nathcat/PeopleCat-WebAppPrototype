@@ -25,6 +25,18 @@
 				cookie = cookie.split("=")[1];
 				send_login_request(undefined, undefined, cookie);
 			}
+
+			document.getElementById("login_username_entry").addEventListener("keypress", (e) => {
+				if (e.key == "Enter") {
+					send_login_request(document.getElementById("login_username_entry").value, document.getElementById("login_password_entry").value, undefined);
+				}
+			});
+
+			document.getElementById("login_password_entry").addEventListener("keypress", (e) => {
+				if (e.key == "Enter") {
+					send_login_request(document.getElementById("login_username_entry").value, document.getElementById("login_password_entry").value, undefined);
+				}
+			});
 		});
 	</script>
 </body>
