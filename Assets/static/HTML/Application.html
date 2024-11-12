@@ -20,8 +20,11 @@
 	<script>
 		const app = new Application();
 		app.load_page(() => {
-			const cookie = document.cookie.split(";").find(c => c.startsWith("AuthCat-SSO")).split("=")[1]
-			send_login_request(undefined, undefined, cookie)
+			const cookie = document.cookie.split(";").find(c => c.startsWith("AuthCat-SSO"));  // Cookie will be undefined if AuthCat-SSO doesn't exist
+			if (cookie != undefined) {
+				cookie = cookie.split("=")[1];
+				send_login_request(undefined, undefined, cookie);
+			}
 		});
 	</script>
 </body>
