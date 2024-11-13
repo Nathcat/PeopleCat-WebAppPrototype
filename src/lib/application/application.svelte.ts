@@ -9,7 +9,7 @@ export class Application {
 
 		this.socket = new WebSocket(env.PUBLIC_BACKEND_URL!);
 		this.socket.addEventListener("open", () => (this.ready = true));
-		this.socket.addEventListener("error", () => {
+		this.socket.addEventListener("error", (e) => {
 			this.ready = false;
 			this.socket = null;
 			this.connect();
