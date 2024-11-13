@@ -28,7 +28,7 @@ export class Application {
 	}
 
 	public async send(packet: OutgoingPacket) {
-		if (!this.ready) throw Error("Attempted to send on closed connection");
+		if (!this.ready) throw Error("Attempted to send on unready connection");
 		return this.socket?.send(encode(packet));
 	}
 }

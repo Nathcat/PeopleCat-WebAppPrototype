@@ -25,6 +25,9 @@
 			<p>{done ? "Welcome to PeopleCat" : "LOADING"}</p>
 		</div>
 	</div>
+	<!-- svelte-ignore a11y_missing_attribute -->
+	<!-- Included so that the logo will already be downloaded when connection is established -->
+	<img src={logoImg} style="display: none;" />
 {/if}
 
 <style lang="scss">
