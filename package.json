@@ -15,6 +15,8 @@
 		"@sveltejs/adapter-auto": "^3.3.1",
 		"@sveltejs/kit": "^2.7.7",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
+		"@types/bytebuffer": "^5.0.49",
+		"bytebuffer": "^5.0.1",
 		"greset": "^2.0.0",
 		"prettier": "^3.3.3",
 		"prettier-plugin-svelte": "^3.2.7",
