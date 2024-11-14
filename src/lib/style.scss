@@ -42,3 +42,16 @@ input[type="password"] {
 	background: none;
 	padding: 5px;
 }
+
+button {
+	transition: color 125ms ease-in-out;
+	color: var(--primary-2);
+	width: fit-content;
+	background: none;
+	border: none;
+
+	&:hover {
+		color: var(--primary-1);
+		text-decoration: underline;
+	}
+}

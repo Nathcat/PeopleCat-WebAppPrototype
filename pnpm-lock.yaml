@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 devDependencies:
+  '@felte/validator-zod':
+    specifier: ^1.0.18
+    version: 1.0.18(zod@3.23.8)
   '@sveltejs/adapter-auto':
     specifier: ^3.3.1
     version: 3.3.1(@sveltejs/kit@2.7.7)
@@ -20,6 +23,12 @@ devDependencies:
   bytebuffer:
     specifier: ^5.0.1
     version: 5.0.1
+  cookie:
+    specifier: ^1.0.1
+    version: 1.0.1
+  felte:
+    specifier: ^1.3.0
+    version: 1.3.0(svelte@5.1.11)
   greset:
     specifier: ^2.0.0
     version: 2.0.0
@@ -44,6 +53,9 @@ devDependencies:
   vite:
     specifier: ^5.4.10
     version: 5.4.10(sass@1.80.6)
+  zod:
+    specifier: ^3.23.8
+    version: 3.23.8
 
 packages:
 
@@ -261,6 +273,28 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@felte/common@1.1.9:
+    resolution: {integrity: sha512-d9e9M5FWc7AyaX/fb2I78AvwIAAA6S8ncKoTd3vYdPGQfgryl18oMU+ScM1WgFnbOBSoItdt61oaZAuRqfE4AA==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dev: true
+
+  /@felte/core@1.4.4:
+    resolution: {integrity: sha512-qXEofmfc0tKvd1MOP9T1ixoI4+u0ZcUtC7JpBfb2A/lr/mhc8HrkvVWGatrGBnNovTc4lgIKWOySVVFswa4BYg==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      '@felte/common': 1.1.9
+    dev: true
+
+  /@felte/validator-zod@1.0.18(zod@3.23.8):
+    resolution: {integrity: sha512-nLhy3qhCrL14iMxIHXtIH0MckZr/dmpqRd/KcqQ6HJoT2tjvv8gPpgOGJdOR15Wfzd25n/UUr3tyX7ydgXA5xQ==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    peerDependencies:
+      zod: ^3.2.0
+    dependencies:
+      '@felte/common': 1.1.9
+      zod: 3.23.8
+    dev: true
 
   /@jridgewell/gen-mapping@0.3.5:
     resolution: {integrity: sha512-IzL8ZoEDIBRWEzlCcRhOaCupYyN5gdIK+Q6fbFdPDg6HqX6jpkItn7DFIpW9LQzXG6Df9sA7+OKnq0qlz/GaQg==}
@@ -730,6 +764,11 @@ packages:
     engines: {node: '>= 0.6'}
     dev: true
 
+  /cookie@1.0.1:
+    resolution: {integrity: sha512-Xd8lFX4LM9QEEwxQpF9J9NTUh8pmdJO0cyRJhFiDoLTk2eH8FXlRv2IFGYVadZpqI3j8fhNrSdKCeYPxiAhLXw==}
+    engines: {node: '>=18'}
+    dev: true
+
   /debug@4.3.7:
     resolution: {integrity: sha512-Er2nc/H7RrMXZBFCEim6TCmMk02Z8vLC2Rbi1KEBggpo0fS6l0S1nnapwmIi3yW/+GOJap1Krg4w0Hg80oCqgQ==}
     engines: {node: '>=6.0'}
@@ -807,6 +846,16 @@ packages:
     peerDependenciesMeta:
       picomatch:
         optional: true
+    dev: true
+
+  /felte@1.3.0(svelte@5.1.11):
+    resolution: {integrity: sha512-J09vuOC2Hw/d+ajhT4ueVEcSU0af+tlnfwF9QWVTuOWQf286pSGS48cFYhjmS7K7hUNMRUIwXwCnHWpyasadmA==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    peerDependencies:
+      svelte: ^3.31.0 || ^4.0.0 || ^5.0.0
+    dependencies:
+      '@felte/core': 1.4.4
+      svelte: 5.1.11
     dev: true
 
   /fill-range@7.1.1:
@@ -1163,4 +1212,8 @@ packages:
 
   /zimmerframe@1.1.2:
     resolution: {integrity: sha512-rAbqEGa8ovJy4pyBxZM70hg4pE6gDgaQ0Sl9M3enG3I0d6H4XSAM3GeNGLKnsBpuijUow064sf7ww1nutC5/3w==}
+    dev: true
+
+  /zod@3.23.8:
+    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
     dev: true
