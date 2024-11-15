@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { createForm, type FelteSubmitError } from "felte";
 	import { validator } from "@felte/validator-zod";
-	import { createForm } from "felte";
 	import { z } from "zod";
 
 	const schema = z.object({
@@ -10,18 +10,15 @@
 
 	const { form, errors } = createForm<z.infer<typeof schema>>({
 		extend: validator({ schema }),
-		onSubmit: (values) => {
-			console.log(values);
-		},
+		// @ts-ignore
+		onError: (e: FelteSubmitError) =>
+			e.response.json().then((j) => console.log(j.error.message)),
 	});
 </script>
 
 <div class="container">
-	<div class="section">
-		<h1>Welcome to PeopleCat!</h1>
-		<p>This is a recreation of the PeopleCat webapp prototype made in Svelte!</p>
-	</div>
-	<form class="section login" use:form>
+	<h1>AuthCat Login</h1>
+	<form class="section login" method="POST" use:form>
 		<input name="username" type="text" placeholder="Enter your Username" />
 		<input name="password" type="password" placeholder="Enter your Password" />
 		<button type="submit">Log In</button>
