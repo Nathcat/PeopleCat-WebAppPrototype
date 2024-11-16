@@ -9,7 +9,7 @@ export enum PacketType {
 }
 
 /** Base payload all packets extend */
-export interface Packet<T extends PacketType = any, P = any> {
+export interface Packet<T extends PacketType = PacketType, P = unknown> {
 	type: T;
 	payload: P;
 }

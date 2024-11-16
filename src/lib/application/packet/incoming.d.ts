@@ -1,4 +1,4 @@
-import type { Packe, PacketType } from ".";
+import type { Packet, PacketType } from ".";
 
 export type IncomingPacket =
 	| Packet<

@@ -5,13 +5,14 @@
 	--primary-1: #e04d01;
 	--primary-2: #ff7700;
 
-	--text: white;
+	--text-1: white;
+	--text-2: #65637a;
 }
 
 body {
 	background-color: var(--dark-1);
 	font-family: "Montserrat", sans-serif;
-	color: var(--text);
+	color: var(--text-1);
 }
 
 .section {
@@ -19,6 +20,12 @@ body {
 	border-radius: 20px;
 	width: fit-content;
 	padding: 20px;
+}
+
+.code {
+	background-color: #1f1d2a;
+	border-radius: 3px;
+	padding: 3px;
 }
 
 p {
@@ -38,7 +45,7 @@ input[type="text"],
 input[type="password"] {
 	border: 2px solid var(--primary-1);
 	border-radius: 10px;
-	color: var(--text);
+	color: var(--text-1);
 	background: none;
 	padding: 5px;
 }

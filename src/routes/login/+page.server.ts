@@ -20,7 +20,7 @@ export const actions = {
 			.map((c) => cookie.parse(c)["AuthCat-SSO"])
 			.find((c) => c !== undefined);
 
-		if (session) cookies.set("AuthCat-SSO", session, { path: "/" });
+		if (session) cookies.set("AuthCat-SSO", session, { path: "/", httpOnly: false });
 		else error(500, "Could not find AuthCat session token");
 		return session;
 	},

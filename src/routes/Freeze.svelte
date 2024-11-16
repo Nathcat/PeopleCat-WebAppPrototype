@@ -4,11 +4,11 @@
 	import { fade } from "svelte/transition";
 	import { page } from "$app/stores";
 
-	let done = $derived($page.data.application.ready);
+	let loaded = $derived($page.data.application.loaded);
 	let visible = $state(true);
 
 	$effect(() => {
-		if (done) setTimeout(() => (visible = false), 1000);
+		if (loaded) setTimeout(() => (visible = false), 1000);
 		visible = true;
 	});
 </script>
@@ -18,11 +18,11 @@
 		<div class="content">
 			<img
 				draggable="false"
-				class:done
+				class:loaded
 				alt="PeopleCat Logo"
-				src={done ? logoImg : closedImg}
+				src={loaded ? logoImg : closedImg}
 			/>
-			<p>{done ? "Welcome to PeopleCat" : "LOADING"}</p>
+			<p>{loaded ? "Welcome to PeopleCat" : "LOADING"}</p>
 		</div>
 	</div>
 	<!-- svelte-ignore a11y_missing_attribute -->
@@ -57,7 +57,7 @@
 			image-rendering: pixelated;
 			height: 100px;
 
-			&.done {
+			&.loaded {
 				animation-iteration-count: 1;
 				animation-duration: 0.5s;
 				animation-name: finish;
