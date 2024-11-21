@@ -108,7 +108,7 @@ function push_message(messages, i) {
             })
         }).then((r) => r.json()).then((r) => {
             let u;
-            if (r.state == "success") {
+            if (r.status == "success") {
                 u = r.results[message.SenderID];
             }
             else {
