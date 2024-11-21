@@ -1,3 +1,4 @@
+import { ApplicationCache } from "./cache.svelte";
 import { env } from "$env/dynamic/public";
 import { goto } from "$app/navigation";
 import { page } from "$app/stores";
@@ -14,6 +15,7 @@ import {
 
 export class Application {
 	private socket: WebSocket | null = null;
+	public cache = new ApplicationCache();
 	private ready: boolean = false;
 	public loaded = $state(false);
 
@@ -31,6 +33,7 @@ export class Application {
 
 		this.socket = new WebSocket(env.PUBLIC_BACKEND_URL!);
 		this.socket.addEventListener("message", (m) => this.recieve(m));
+
 		this.socket.addEventListener("open", async () => {
 			this.ready = true;
 			await this.authenticate();
@@ -53,9 +56,25 @@ export class Application {
 	/** Recieve and handle packet from the PeopleCat backend */
 	private async recieve(message: MessageEvent<Blob>) {
 		const buffer = await message.data.arrayBuffer();
-		const packet = decode(buffer);
+		const packet = decode(buffer) as IncomingPacket;
 
-		this.waiting[packet.type].forEach(({ resolve }) => resolve(packet));
+		switch (packet.type) {
+			case PacketType.ERROR:
+				console.error(packet.payload);
+				break;
+			case PacketType.TYPE_GET_MESSAGE_QUEUE:
+				if ("message-count" in packet.payload) break;
+
+				this.cache.add_message(packet.payload.ChatID, {
+					author: packet.payload.SenderID,
+					content: packet.payload.Content,
+					time: packet.payload.TimeSent,
+				});
+
+				break;
+		}
+
+		this.waiting[packet.type]?.forEach(({ resolve }) => resolve(packet));
 		this.waiting[packet.type] = [];
 	}
 
@@ -85,7 +104,7 @@ export class Application {
 		if (url.host.endsWith(env.PUBLIC_AUTHCAT_DOMAIN)) {
 			const l = `${env.PUBLIC_AUTHCAT_URL}?return-page=${encodeURIComponent(url.href)}`;
 			window.location.assign(l);
-		} else goto("/login");
+		} else await goto("/login");
 	}
 
 	/**

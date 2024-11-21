@@ -22,4 +22,16 @@ export type IncomingPacket =
 				/** The path to the current user's profile picture from `https://data.nathcat.net/pfps` */
 				pfp_path: string;
 			}
+	  >
+	| Packet<
+			PacketType.TYPE_GET_MESSAGE_QUEUE,
+			| {
+					"message-count": number;
+			  }
+			| {
+					ChatID: number;
+					Content: string;
+					SenderID: number;
+					TimeSent: number;
+			  }
 	  >;

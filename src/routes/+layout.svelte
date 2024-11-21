@@ -11,4 +11,8 @@
 </script>
 
 <Freeze />
-{@render children()}
+
+<!-- Only render page when loading is complete -->
+{#if data.application.loaded}
+	{@render children()}
+{/if}

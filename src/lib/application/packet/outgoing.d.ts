@@ -14,4 +14,10 @@ export type OutgoingPacket =
 				/** An authenticated AuthCat session cookie */
 				"cookie-auth": string;
 			}
+	  >
+	| Packet<
+			PacketType.TYPE_GET_MESSAGE_QUEUE,
+			{
+				ChatID: number;
+			}
 	  >;
