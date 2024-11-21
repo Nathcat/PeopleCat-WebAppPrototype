@@ -1,21 +1,17 @@
-import { env } from "$env/dynamic/public";
+import { ac_fetch } from "$lib/application/authcat.js";
 import { error } from "@sveltejs/kit";
 import * as cookie from "cookie";
 
 export const actions = {
-	default: async ({ request, fetch, cookies }) => {
+	default: async ({ request, cookies }) => {
 		const body = await request.formData();
 
-		const r = await fetch(`${env.PUBLIC_AUTHCAT_URL}/try-login.php`, {
+		const { response } = await ac_fetch("sso/try-login.php", {
 			method: "POST",
 			body,
-		});
+		}).catch((e) => error(500, `${e}`));
 
-		if (!r.ok) error(500, "AuthCat response was not ok");
-		const data = await r.json().catch(() => error(500, "Could not parse AuthCat response"));
-		if (data.status == "fail") error(500, data.message);
-
-		const session = r.headers
+		const session = response.headers
 			.getSetCookie()
 			.map((c) => cookie.parse(c)["AuthCat-SSO"])
 			.find((c) => c !== undefined);

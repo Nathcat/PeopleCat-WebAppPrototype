@@ -1,4 +1,4 @@
-import { ApplicationCache } from "./cache.svelte";
+import { ApplicationCache, type User } from "./cache.svelte";
 import { env } from "$env/dynamic/public";
 import { goto } from "$app/navigation";
 import { page } from "$app/stores";
@@ -19,10 +19,12 @@ import {
  * Contains shared applciation data and functions.
  */
 export class Application {
-	private socket: WebSocket | null = null;
 	public cache = new ApplicationCache();
-	private ready: boolean = false;
+	public user: null | User = null;
 	public loaded = $state(false);
+
+	private socket: WebSocket | null = null;
+	private ready: boolean = false;
 
 	/** A map of all currently pending wait operations */
 	private waiting = Object.values(PacketType)
@@ -54,6 +56,7 @@ export class Application {
 			this.loaded = false;
 			this.socket = null;
 			this.ready = false;
+			this.user = null;
 			this.connect();
 		});
 	}
@@ -70,7 +73,7 @@ export class Application {
 			case PacketType.TYPE_GET_MESSAGE_QUEUE:
 				if ("message-count" in packet.payload) break;
 
-				this.cache.add_message(packet.payload.ChatID, {
+				this.cache.push_message(packet.payload.ChatID, {
 					author: packet.payload.SenderID,
 					content: packet.payload.Content,
 					time: packet.payload.TimeSent,
@@ -100,6 +103,7 @@ export class Application {
 			]);
 
 			if (response.type == PacketType.AUTHENTICATE) {
+				this.user = response.payload;
 				return;
 			}
 		}

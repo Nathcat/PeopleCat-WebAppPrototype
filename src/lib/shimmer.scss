@@ -1,0 +1,14 @@
+@mixin shimmer($width: 100px) {
+	background: linear-gradient(100deg, var(--dark-2) 20%, #3a346c 50%, var(--dark-2) 80%);
+	animation: shimmer-#{$width} linear 1s infinite;
+	background-size: $width 100%;
+
+	@keyframes shimmer-#{$width} {
+		0% {
+			background-position: 0 0;
+		}
+		100% {
+			background-position: $width 0;
+		}
+	}
+}
