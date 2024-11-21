@@ -13,6 +13,11 @@ import {
 	encode,
 } from "./packet";
 
+/**
+ * Represents an instance of the application.
+ *
+ * Contains shared applciation data and functions.
+ */
 export class Application {
 	private socket: WebSocket | null = null;
 	public cache = new ApplicationCache();
