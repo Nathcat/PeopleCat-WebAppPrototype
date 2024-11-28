@@ -1,5 +1,5 @@
+import type { Message, User } from "../cache.svelte";
 import type { Packet, PacketType } from ".";
-import type { User } from "../cache.svelte";
 
 export type IncomingPacket =
 	| Packet<
@@ -11,14 +11,20 @@ export type IncomingPacket =
 	  >
 	| Packet<PacketType.AUTHENTICATE, User>
 	| Packet<
-			PacketType.TYPE_GET_MESSAGE_QUEUE,
+			PacketType.GET_MESSAGE_QUEUE,
 			| {
 					"message-count": number;
 			  }
-			| {
+			| ({
 					ChatID: number;
-					Content: string;
-					SenderID: number;
-					TimeSent: number;
-			  }
+			  } & Message)
+	  >
+	| Packet<
+			PacketType.NOTIFICATION_MESSAGE,
+			{
+				title: string;
+				message: string;
+				ChatID: number;
+				Message: Message;
+			}
 	  >;

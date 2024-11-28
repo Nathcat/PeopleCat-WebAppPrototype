@@ -70,15 +70,14 @@ export class Application {
 			case PacketType.ERROR:
 				console.error(packet.payload);
 				break;
-			case PacketType.TYPE_GET_MESSAGE_QUEUE:
+			case PacketType.GET_MESSAGE_QUEUE:
 				if ("message-count" in packet.payload) break;
 
-				this.cache.push_message(packet.payload.ChatID, {
-					time: new Date(packet.payload.TimeSent),
-					author: packet.payload.SenderID,
-					content: packet.payload.Content,
-				});
+				this.cache.push_message(packet.payload.ChatID, packet.payload);
 
+				break;
+			case PacketType.NOTIFICATION_MESSAGE:
+				this.cache.push_message(packet.payload.ChatID, packet.payload.Message);
 				break;
 		}
 

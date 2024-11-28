@@ -6,7 +6,8 @@ import ByteBuffer from "bytebuffer";
 export enum PacketType {
 	ERROR = 0,
 	AUTHENTICATE = 2,
-	TYPE_GET_MESSAGE_QUEUE = 6,
+	GET_MESSAGE_QUEUE = 6,
+	NOTIFICATION_MESSAGE = 8,
 }
 
 /** Base payload all packets extend */

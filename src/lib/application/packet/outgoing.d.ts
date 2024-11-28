@@ -16,7 +16,7 @@ export type OutgoingPacket =
 			}
 	  >
 	| Packet<
-			PacketType.TYPE_GET_MESSAGE_QUEUE,
+			PacketType.GET_MESSAGE_QUEUE,
 			{
 				ChatID: number;
 			}

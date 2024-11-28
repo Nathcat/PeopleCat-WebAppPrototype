@@ -11,7 +11,7 @@
 		// Request messages from the server if none
 		if (messages) return;
 		data.application.send({
-			type: PacketType.TYPE_GET_MESSAGE_QUEUE,
+			type: PacketType.GET_MESSAGE_QUEUE,
 			payload: { ChatID: data.chat },
 		});
 	});

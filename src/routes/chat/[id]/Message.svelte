@@ -7,14 +7,14 @@
 	let { message }: { message: Message } = $props();
 </script>
 
-<div class="container" class:self={message.author == $page.data.application.user!.id}>
-	<div style="grid-area: pfp"><ProfilePicture id={message.author} /></div>
+<div class="container" class:self={message.SenderID == $page.data.application.user!.id}>
+	<div style="grid-area: pfp"><ProfilePicture id={message.SenderID} /></div>
 	<div style="grid-area: details">
-		<Username id={message.author} />
-		<span class="time">{message.time.toLocaleString("gb-EN")}</span>
+		<Username id={message.SenderID} />
+		<span class="time">{new Date(message.TimeSent).toLocaleString("gb-EN")}</span>
 	</div>
 	<div class="msg">
-		{message.content}
+		{message.Content}
 	</div>
 </div>
 
