@@ -3,7 +3,7 @@
 	import { page } from "$app/stores";
 
 	let { id, size = 50 }: { id: number; size?: number } = $props();
-	let author = $state($page.data.application.cache.get_user(id));
+	let author = $state($page.data.application.cache.fetch_user(id));
 </script>
 
 {#await author}

@@ -37,7 +37,20 @@ export class ApplicationCache {
 		this.messages[chat].push(message);
 	}
 
-	public get_user(id: number) {
+	/**
+	 * Add a user to the user cache
+	 * @param user The {@link User} object
+	 */
+	public push_user(user: User) {
+		this.users[user.id] = new Promise((r) => r(user));
+	}
+
+	/**
+	 * Fetch a {@link User} object from AuthCat by their user ID
+	 * @param id The ID of the user to fetch
+	 * @returns A promise that resolves to a {@link User}
+	 */
+	public fetch_user(id: number) {
 		if (!(id in this.users))
 			// Create a promise that resolves when the user has been fetched
 			this.users[id] = new Promise((r) => fetch_user(id).then((u) => r(u)));

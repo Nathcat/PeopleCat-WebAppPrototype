@@ -103,6 +103,7 @@ export class Application {
 			]);
 
 			if (response.type == PacketType.AUTHENTICATE) {
+				this.cache.push_user(response.payload);
 				this.user = response.payload;
 				return;
 			}
