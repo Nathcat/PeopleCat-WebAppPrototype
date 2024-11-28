@@ -14,11 +14,14 @@
 		<ProfilePicture path={author.pfpPath} />
 	{/await}
 	<div class="list">
-		{#await author}
-			<div class="loading username"></div>
-		{:then author}
-			<div class="username">{author.fullName}</div>
-		{/await}
+		<div>
+			{#await author}
+				<span class="loading username"></span>
+			{:then author}
+				<span class="username">{author.fullName}</span>
+			{/await}
+			<span class="time">{message.time.toLocaleString("gb-EN")}</span>
+		</div>
 		<div class="bubble">
 			{message.content}
 		</div>
@@ -43,11 +46,18 @@
 		height: 19px;
 	}
 
+	.time {
+		color: var(--text-2);
+		font-size: small;
+		margin-left: 5px;
+	}
+
 	.bubble {
 		text-overflow: ellipsis;
 		border-radius: 25px;
 		width: fit-content;
 		overflow: hidden;
+		max-width: 100%;
 	}
 
 	.container:not(.self) .bubble {

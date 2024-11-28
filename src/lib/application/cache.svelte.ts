@@ -6,7 +6,7 @@ export interface Message {
 	/** The user ID of this message's author */
 	author: number;
 	/** The unix timestamp this message was sent at */
-	time: number;
+	time: Date;
 }
 
 export interface User {

@@ -74,9 +74,9 @@ export class Application {
 				if ("message-count" in packet.payload) break;
 
 				this.cache.push_message(packet.payload.ChatID, {
+					time: new Date(packet.payload.TimeSent),
 					author: packet.payload.SenderID,
 					content: packet.payload.Content,
-					time: packet.payload.TimeSent,
 				});
 
 				break;
