@@ -8,7 +8,8 @@
 	let { chat, clientHeight = $bindable() }: { chat: number; clientHeight?: number } = $props();
 	let value: string = $state("");
 
-	async function onsubmit() {
+	async function onsubmit(e: SubmitEvent) {
+		e.preventDefault();
 		if (value.length < 1) return;
 
 		const message: Message = {
