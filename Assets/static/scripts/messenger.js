@@ -108,13 +108,11 @@ function push_message(messages, i) {
             })
         }).then((r) => r.json()).then((r) => {
             let u;
-<<<<<<< HEAD
             if (r.state == "success") {
                 u = r.results[message.senderId];
-=======
+            }
             if (r.status == "success") {
-                u = r.results[message.SenderID];
->>>>>>> bc49f8774ed51a1b5028fae0d3143ca1cd30e131
+                u = r.results[message.senderId];
             }
             else {
                 u = {"id": message.senderId, "fullName": "USER NOT FOUND", "username": "USERNOTFOUND", "pfpPath": "default.png"};
