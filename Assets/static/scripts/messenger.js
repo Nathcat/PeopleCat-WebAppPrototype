@@ -46,7 +46,7 @@ __n = notification;
 
 function message_to_html(message, displayName) {
     let str = "<div class=\"row\" style=\"justify-content: ";
-    if (message.SenderID == app.data.user.id) {
+    if (message.senderId == app.data.user.id) {
         str += "right;\">";
     }
     else {
@@ -54,14 +54,14 @@ function message_to_html(message, displayName) {
     }
     
     str += "<div class=\"message-"
-    if (message.SenderID == app.data.user.id) {
+    if (message.senderId == app.data.user.id) {
         str += "to\">";
     }
     else {
         str += "from\">"
     }
 
-    str += "<h3>" + displayName + "</h3><p>" + message.Content + "</p></div></div>";
+    str += "<h3>" + displayName + "</h3><p>" + message.content + "</p></div></div>";
     return str;
 }
 
