@@ -1,4 +1,4 @@
-import { ac_fetch } from "$lib/application/authcat.js";
+import { acFetch } from "$lib/application/authcat.js";
 import { error } from "@sveltejs/kit";
 import * as cookie from "cookie";
 
@@ -6,7 +6,7 @@ export const actions = {
 	default: async ({ request, cookies }) => {
 		const body = await request.formData();
 
-		const { response } = await ac_fetch("sso/try-login.php", {
+		const { response } = await acFetch("sso/try-login.php", {
 			method: "POST",
 			body,
 		}).catch((e) => error(500, `${e}`));

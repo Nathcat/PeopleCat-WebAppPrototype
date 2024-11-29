@@ -1,4 +1,4 @@
-import { fetch_user } from "./authcat";
+import { fetchUser } from "./authcat";
 
 export interface Message {
 	/** The chat id this message belongs to */
@@ -33,7 +33,7 @@ export class ApplicationCache {
 	 * Add a message to the message cache
 	 * @param message The {@link Message} object
 	 */
-	public push_message(message: Message) {
+	public pushMessage(message: Message) {
 		// todo: sort messages
 		if (!(message.chatId in this.messages)) this.messages[message.chatId] = [];
 		this.messages[message.chatId].push(message);
@@ -43,19 +43,21 @@ export class ApplicationCache {
 	 * Add a user to the user cache
 	 * @param user The {@link User} object
 	 */
-	public push_user(user: User) {
+	public pushUser(user: User) {
 		this.users[user.id] = new Promise((r) => r(user));
 	}
 
 	/**
-	 * Fetch a {@link User} object from AuthCat by their user ID
+	 * Get a {@link User} object by their user ID
+	 *
+	 * If cache miss, data is fetched from AuthCat
 	 * @param id The ID of the user to fetch
 	 * @returns A promise that resolves to a {@link User}
 	 */
-	public fetch_user(id: number) {
+	public getUser(id: number) {
 		if (!(id in this.users))
 			// Create a promise that resolves when the user has been fetched
-			this.users[id] = new Promise((r) => fetch_user(id).then((u) => r(u)));
+			this.users[id] = new Promise((r) => fetchUser(id).then((u) => r(u)));
 		return this.users[id];
 	}
 }

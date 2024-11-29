@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { env } from "$env/dynamic/public";
 	import { page } from "$app/stores";
 
 	let { id }: { id: number } = $props();
-	let author = $state($page.data.application.cache.fetch_user(id));
+	let author = $state($page.data.application.cache.getUser(id));
 </script>
 
 {#await author}

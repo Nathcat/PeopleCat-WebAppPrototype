@@ -73,11 +73,11 @@ export class Application {
 			case PacketType.GET_MESSAGE_QUEUE:
 				if ("message-count" in packet.payload) break;
 
-				this.cache.push_message(packet.payload);
+				this.cache.pushMessage(packet.payload);
 
 				break;
 			case PacketType.NOTIFICATION_MESSAGE:
-				this.cache.push_message(packet.payload.message);
+				this.cache.pushMessage(packet.payload.message);
 				break;
 		}
 
@@ -97,12 +97,12 @@ export class Application {
 		if (session) {
 			await this.send({ type: PacketType.AUTHENTICATE, payload: { cookieAuth: session } });
 			const response = await Promise.any([
-				this.wait_for(PacketType.AUTHENTICATE),
-				this.wait_for(PacketType.ERROR),
+				this.waitFor(PacketType.AUTHENTICATE),
+				this.waitFor(PacketType.ERROR),
 			]);
 
 			if (response.type == PacketType.AUTHENTICATE) {
-				this.cache.push_user(response.payload);
+				this.cache.pushUser(response.payload);
 				this.user = response.payload;
 				return;
 			}
@@ -121,7 +121,7 @@ export class Application {
 	 * @param type The type of packet to wait for
 	 * @returns A promise for the specified packet type
 	 */
-	public wait_for<T extends PacketType>(type: T): Promise<Extract<IncomingPacket, Packet<T>>> {
+	public waitFor<T extends PacketType>(type: T): Promise<Extract<IncomingPacket, Packet<T>>> {
 		// @ts-ignore
 		return new Promise<Packet>((resolve, reject) => {
 			this.waiting[type].push({ resolve, reject });

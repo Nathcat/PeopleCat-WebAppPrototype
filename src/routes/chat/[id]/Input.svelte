@@ -19,7 +19,7 @@
 		};
 
 		await $page.data.application.send({ type: PacketType.SEND_MESSAGE, payload: message });
-		$page.data.application.cache.push_message(message);
+		$page.data.application.cache.pushMessage(message);
 
 		value = "";
 	}
