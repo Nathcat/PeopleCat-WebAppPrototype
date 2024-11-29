@@ -7,25 +7,39 @@
 	let { data } = $props();
 
 	let messages = $derived(data.application.cache.messages[data.chat]);
-	let clientHeight = $state(0);
+	let sticky = $state(true);
+	let margin = $state(0);
 
 	onMount(() => {
+		const observer = new ResizeObserver(() => {
+			if (sticky) window.scrollTo(0, document.documentElement.scrollHeight);
+		});
+
+		observer.observe(document.documentElement);
+
 		// Request messages from the server if none
 		if (messages) return;
 		data.application.send({
 			type: PacketType.GET_MESSAGE_QUEUE,
 			payload: { ChatID: data.chat },
 		});
+
+		return () => observer.disconnect();
 	});
+
+	const onscroll = () =>
+		(sticky = window.scrollY + window.innerHeight == document.documentElement.scrollHeight);
 </script>
 
-<div class="message-container" style:margin-bottom="{clientHeight}px">
+<svelte:window {onscroll} />
+
+<div class="message-container" style:margin-bottom="{margin}px">
 	{#each messages as message}
 		<Message {message} />
 	{/each}
 </div>
 
-<Input chat={data.chat} bind:clientHeight />
+<Input chat={data.chat} bind:clientHeight={margin} />
 
 <style lang="scss">
 	.message-container {
