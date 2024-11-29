@@ -3,26 +3,23 @@
 	import { PacketType } from "$lib/application/packet";
 	import { page } from "$app/stores";
 	import { Fa } from "svelte-fa";
+	import type { Message } from "$lib/application/cache.svelte";
 
 	let { chat, clientHeight = $bindable() }: { chat: number; clientHeight?: number } = $props();
 	let value: string = $state("");
 
-	async function onsubmit(e: SubmitEvent) {
-		const TimeSent = new Date().getTime();
-		e.preventDefault();
-
+	async function onsubmit() {
 		if (value.length < 1) return;
 
-		await $page.data.application.send({
-			type: PacketType.SEND_MESSAGE,
-			payload: { Content: value, ChatID: chat, TimeSent },
-		});
+		const message: Message = {
+			content: value,
+			chatId: chat,
+			timeSent: new Date().getTime(),
+			senderId: $page.data.application.user!.id,
+		};
 
-		$page.data.application.cache.push_message(chat, {
-			SenderID: $page.data.application.user!.id,
-			Content: value,
-			TimeSent,
-		});
+		await $page.data.application.send({ type: PacketType.SEND_MESSAGE, payload: message });
+		$page.data.application.cache.push_message(message);
 
 		value = "";
 	}

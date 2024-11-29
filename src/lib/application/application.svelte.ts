@@ -73,11 +73,11 @@ export class Application {
 			case PacketType.GET_MESSAGE_QUEUE:
 				if ("message-count" in packet.payload) break;
 
-				this.cache.push_message(packet.payload.ChatID, packet.payload);
+				this.cache.push_message(packet.payload);
 
 				break;
 			case PacketType.NOTIFICATION_MESSAGE:
-				this.cache.push_message(packet.payload.ChatID, packet.payload.Message);
+				this.cache.push_message(packet.payload.message);
 				break;
 		}
 
@@ -95,7 +95,7 @@ export class Application {
 	public async authenticate() {
 		const session = cookie.parse(document.cookie)["AuthCat-SSO"];
 		if (session) {
-			await this.send({ type: PacketType.AUTHENTICATE, payload: { "cookie-auth": session } });
+			await this.send({ type: PacketType.AUTHENTICATE, payload: { cookieAuth: session } });
 			const response = await Promise.any([
 				this.wait_for(PacketType.AUTHENTICATE),
 				this.wait_for(PacketType.ERROR),

@@ -15,16 +15,12 @@ export type IncomingPacket =
 			| {
 					"message-count": number;
 			  }
-			| ({
-					ChatID: number;
-			  } & Message)
+			| Message
 	  >
 	| Packet<
 			PacketType.NOTIFICATION_MESSAGE,
 			{
-				title: string;
-				message: string;
-				ChatID: number;
-				Message: Message;
+				chatId: number;
+				message: Message;
 			}
 	  >;

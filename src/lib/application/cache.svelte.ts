@@ -1,12 +1,14 @@
 import { fetch_user } from "./authcat";
 
 export interface Message {
+	/** The chat id this message belongs to */
+	chatId: number;
 	/** The text content of this message */
-	Content: string;
+	content: string;
 	/** The user ID of this message's author */
-	SenderID: number;
+	senderId: number;
 	/** The unix timestamp this message was sent at */
-	TimeSent: number;
+	timeSent: number;
 }
 
 export interface User {
@@ -29,13 +31,12 @@ export class ApplicationCache {
 
 	/**
 	 * Add a message to the message cache
-	 * @param chat The ID of the chat this message belongs to
 	 * @param message The {@link Message} object
 	 */
-	public push_message(chat: number, message: Message) {
+	public push_message(message: Message) {
 		// todo: sort messages
-		if (!(chat in this.messages)) this.messages[chat] = [];
-		this.messages[chat].push(message);
+		if (!(message.chatId in this.messages)) this.messages[message.chatId] = [];
+		this.messages[message.chatId].push(message);
 	}
 
 	/**

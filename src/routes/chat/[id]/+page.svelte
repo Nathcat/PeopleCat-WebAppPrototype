@@ -21,7 +21,7 @@
 		if (messages) return;
 		data.application.send({
 			type: PacketType.GET_MESSAGE_QUEUE,
-			payload: { ChatID: data.chat },
+			payload: { chatId: data.chat },
 		});
 
 		return () => observer.disconnect();
