@@ -37,7 +37,7 @@ function get_new_message() {
 
 function notification(data) {
     console.log(data);
-    if (data.ChatID == 1) {
+    if (data.chatId == 1) {
         get_new_message();
     }
 }
