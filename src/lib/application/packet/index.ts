@@ -7,6 +7,7 @@ export enum PacketType {
 	ERROR = 0,
 	AUTHENTICATE = 2,
 	GET_MESSAGE_QUEUE = 6,
+	SEND_MESSAGE = 7,
 	NOTIFICATION_MESSAGE = 8,
 }
 

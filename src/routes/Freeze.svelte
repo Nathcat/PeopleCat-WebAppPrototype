@@ -38,6 +38,7 @@
 		position: fixed;
 		display: flex;
 		height: 100%;
+		z-index: 100;
 		width: 100%;
 	}
 

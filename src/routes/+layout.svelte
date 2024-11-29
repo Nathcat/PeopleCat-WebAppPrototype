@@ -14,5 +14,14 @@
 
 <!-- Only render page when loading is complete -->
 {#if data.application.loaded}
-	{@render children()}
+	<main>
+		{@render children()}
+	</main>
 {/if}
+
+<style lang="scss">
+	main {
+		flex-direction: column;
+		display: flex;
+	}
+</style>

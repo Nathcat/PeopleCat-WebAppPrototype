@@ -20,4 +20,12 @@ export type OutgoingPacket =
 			{
 				ChatID: number;
 			}
+	  >
+	| Packet<
+			PacketType.SEND_MESSAGE,
+			{
+				ChatID: number;
+				Content: string;
+				TimeSent: number;
+			}
 	  >;

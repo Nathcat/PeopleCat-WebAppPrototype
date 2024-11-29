@@ -2,8 +2,8 @@
 	import { createForm, type FelteSubmitError } from "felte";
 	import { validator } from "@felte/validator-zod";
 	import { env } from "$env/dynamic/public";
-	import { z } from "zod";
 	import { goto } from "$app/navigation";
+	import { z } from "zod";
 
 	let { data } = $props();
 
