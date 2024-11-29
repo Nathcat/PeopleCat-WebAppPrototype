@@ -31,7 +31,7 @@ function get_new_message() {
     app.sock.send(new Packet({
         "type": Application.PACKET_TYPE_GET_MESSAGE_QUEUE,
         "isFinal": true,
-        "object": { "ChatID": 1 }
+        "object": { "chatId": 1 }
     }).getBytes());
 }
 
@@ -76,7 +76,7 @@ function push_message(messages, i) {
     let message = messages[i];
     let container = document.getElementById("message-container");
 
-    let user = app.get_user(message.SenderID);
+    let user = app.get_user(message.senderId);
     if (user == null) {
         /*
         app.sock.onmessage = (e) => {
@@ -104,15 +104,15 @@ function push_message(messages, i) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                "id": message.SenderID
+                "id": message.senderId
             })
         }).then((r) => r.json()).then((r) => {
             let u;
             if (r.state == "success") {
-                u = r.results[message.SenderID];
+                u = r.results[message.senderId];
             }
             else {
-                u = {"id": message.SenderID, "fullName": "USER NOT FOUND", "username": "USERNOTFOUND", "pfpPath": "default.png"}
+                u = {"id": message.senderId, "fullName": "USER NOT FOUND", "username": "USERNOTFOUND", "pfpPath": "default.png"};
             }
 
             app.data.known_users.push(u);
@@ -166,9 +166,9 @@ function send_message() {
         "type": Application.PACKET_TYPE_SEND_MESSAGE,
         "isFinal": true,
         "object": {
-            "ChatID": 1,
-            "Content": content,
-            "TimeSent": new Date().getTime()
+            "chatId": 1,
+            "content": content,
+            "timeSent": new Date().getTime()
         }
     }).getBytes());
 }
@@ -178,7 +178,7 @@ function sort_messages(messages) {
     while (!empty_pass) {
         empty_pass = true;
         for (let i = 0; i < messages.length - 1; i++) {
-            if (messages[i].TimeSent > messages[i+1].TimeSent) {
+            if (messages[i].timeSent > messages[i+1].timeSent) {
                 let tmp = messages[i];
                 messages[i] = messages[i+1];
                 messages[i+1] = tmp;
@@ -215,8 +215,8 @@ function load_messages() {
             return;
         }
         else {
-            if ("message-count" in response.getData()) {
-                messageCount = response.getData()["message-count"];
+            if ("messageCount" in response.getData()) {
+                messageCount = response.getData()["messageCount"];
                 console.log("Got message count of " + messageCount);
             }
             else {
@@ -236,7 +236,7 @@ function load_messages() {
     let request = new Packet({
         "type": Application.PACKET_TYPE_GET_MESSAGE_QUEUE,
         "isFinal": true,
-        "object": {"ChatID": 1}
+        "object": {"chatId": 1}
     });
 
     app.sock.send(request.getBytes());
@@ -264,8 +264,8 @@ function setup_messenger() {
         "type": Application.PACKET_TYPE_JOIN_CHAT,
         "isFinal": true,
         "object": {
-            "ChatID": 1,
-            "JoinCode": "0f1a3167-9"
+            "chatId": 1,
+            "joinCode": "0f1a3167-9"
         }
     }).getBytes());
 }
@@ -277,7 +277,7 @@ function get_online_users() {
 
         if (d.type != Application.PACKET_TYPE_GET_ACTIVE_USER_COUNT && prev_callback != undefined) prev_callback(e);
         else {
-            document.getElementById("online-count").innerText = "Users online: " + d.getData()["users-online"];
+            document.getElementById("online-count").innerText = "Users online: " + d.getData()["usersOnline"];
         }
 
         app.sock.onmessage = prev_callback;

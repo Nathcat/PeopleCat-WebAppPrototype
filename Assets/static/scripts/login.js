@@ -5,7 +5,7 @@ function send_login_request(username, password, cookie) {
         "object": {
             "username": username,
             "password": password,
-            "cookie-auth": cookie
+            "cookieAuth": cookie
         }
     };
 
