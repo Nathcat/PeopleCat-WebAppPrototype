@@ -31,7 +31,7 @@
 		gap: 5px 10px;
 
 		&:not(.self) .msg {
-			background-color: var(--dark-2);
+			background-color: var(--dark-3);
 			padding: 10px 50px 10px 10px;
 			border-top-left-radius: 1px;
 			color: var(--text-3);
@@ -64,7 +64,7 @@
 			background-color: var(--primary-2);
 			border-top-right-radius: 1px;
 			padding: 10px 10px 10px 50px;
-			color: var(--dark-1);
+			color: var(--dark-2);
 		}
 	}
 </style>

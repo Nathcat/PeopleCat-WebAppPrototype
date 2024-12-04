@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Toaster from "$lib/components/toast/Toaster.svelte";
 	import Freeze from "./Freeze.svelte";
 	import { onMount } from "svelte";
 
@@ -10,6 +11,7 @@
 	onMount(() => data.application.connect());
 </script>
 
+<Toaster />
 <Freeze />
 
 <!-- Only render page when loading is complete -->

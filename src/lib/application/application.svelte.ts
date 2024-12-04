@@ -1,3 +1,4 @@
+import { addToast } from "$lib/components/toast/Toaster.svelte";
 import { ApplicationCache, type User } from "./cache.svelte";
 import { env } from "$env/dynamic/public";
 import { goto } from "$app/navigation";
@@ -69,10 +70,14 @@ export class Application {
 		switch (packet.type) {
 			case PacketType.ERROR:
 				console.error(packet.payload);
+				addToast({
+					type: "error",
+					title: packet.payload.name,
+					description: packet.payload.msg,
+				});
 				break;
 			case PacketType.GET_MESSAGE_QUEUE:
 				if ("message-count" in packet.payload) break;
-
 				this.cache.pushMessage(packet.payload);
 
 				break;

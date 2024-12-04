@@ -32,7 +32,7 @@
 
 <style lang="scss">
 	.background {
-		background-color: var(--dark-1);
+		background-color: var(--dark-2);
 		justify-content: center;
 		align-items: center;
 		position: fixed;

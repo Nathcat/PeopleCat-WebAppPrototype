@@ -4,6 +4,7 @@
 	import { env } from "$env/dynamic/public";
 	import { goto } from "$app/navigation";
 	import { z } from "zod";
+	import { addToast } from "$lib/components/toast/Toaster.svelte";
 
 	let { data } = $props();
 
@@ -14,10 +15,12 @@
 
 	const { form, errors } = createForm<z.infer<typeof schema>>({
 		extend: validator({ schema }),
+		onSuccess: () => data.application.authenticate().then(() => goto("/")),
 		// @ts-ignore
 		onError: (e: FelteSubmitError) =>
-			e.response.json().then((j) => console.log(j.error.message)),
-		onSuccess: () => data.application.authenticate().then(() => goto("/")),
+			e.response.json().then((j) => {
+				addToast({ type: "error", title: "Login Failed", description: j.error.message });
+			}),
 	});
 </script>
 

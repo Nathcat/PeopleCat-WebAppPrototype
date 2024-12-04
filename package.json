@@ -14,6 +14,8 @@
 	"devDependencies": {
 		"@felte/validator-zod": "^1.0.18",
 		"@fortawesome/free-solid-svg-icons": "^6.7.1",
+		"@melt-ui/pp": "^0.3.2",
+		"@melt-ui/svelte": "^0.86.2",
 		"@sveltejs/adapter-auto": "^3.3.1",
 		"@sveltejs/kit": "^2.7.7",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",

@@ -37,7 +37,7 @@
 
 <style lang="scss">
 	.input-container {
-		background-color: var(--dark-1);
+		background-color: var(--dark-2);
 		border-top: 1px solid var(--text-2);
 		padding: 10px;
 		position: fixed;
@@ -50,7 +50,7 @@
 		outline: 2px solid transparent;
 		border-radius: 10px;
 
-		background-color: var(--dark-2);
+		background-color: var(--dark-3);
 		display: flex;
 
 		&:has(input:focus-within) {
