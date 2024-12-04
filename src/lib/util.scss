@@ -1,5 +1,10 @@
 @mixin shimmer($width: 100px) {
-	background: linear-gradient(100deg, var(--dark-3) 20%, #3a346c 50%, var(--dark-3) 80%);
+	background: linear-gradient(
+		100deg,
+		var(--theme-shimmer-dark) 20%,
+		var(--theme-shimmer-light) 50%,
+		var(--theme-shimmer-dark) 80%
+	);
 	animation: shimmer-#{$width} linear 1s infinite;
 	background-size: $width 100%;
 

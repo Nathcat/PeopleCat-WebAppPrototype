@@ -31,7 +31,7 @@
 	out:fly={{ duration: 250, x: "100%" }}
 	in:fly={{ duration: 250, x: "100%" }}
 >
-	<h4>
+	<h4 style="color: var(--theme-toast-{toast.data.type})">
 		<Fa {icon} />
 		<span use:melt={$title(toast.id)}>{toast.data.title}</span>
 		<button class="close" use:melt={$close(toast.id)} aria-label="close notification">
@@ -44,7 +44,7 @@
 <style lang="scss">
 	.toast {
 		box-shadow: 2px 2px 5px #00000080;
-		background-color: var(--dark-1);
+		background-color: var(--theme-toast-background);
 		border-radius: 5px;
 		overflow: hidden;
 		min-width: 300px;
@@ -58,7 +58,7 @@
 	}
 
 	.close {
-		color: var(--text-1);
+		color: var(--theme-default-text);
 		margin-left: 10px;
 		font-size: 18px;
 		float: right;

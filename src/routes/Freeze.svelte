@@ -32,7 +32,8 @@
 
 <style lang="scss">
 	.background {
-		background-color: var(--dark-2);
+		background-color: var(--theme-connecting-background);
+		color: var(--theme-connecting-text);
 		justify-content: center;
 		align-items: center;
 		position: fixed;
