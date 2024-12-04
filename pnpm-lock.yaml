@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@felte/common':
+        specifier: ^1.1.9
+        version: 1.1.9
       '@felte/validator-zod':
         specifier: ^1.0.18
         version: 1.0.18(zod@3.23.8)

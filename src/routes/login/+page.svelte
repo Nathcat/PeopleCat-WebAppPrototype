@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { addToast } from "$lib/components/toast/Toaster.svelte";
 	import { createForm, type FelteSubmitError } from "felte";
 	import { validator } from "@felte/validator-zod";
 	import { env } from "$env/dynamic/public";
 	import { goto } from "$app/navigation";
 	import { z } from "zod";
-	import { addToast } from "$lib/components/toast/Toaster.svelte";
+	import { felteLoader } from "../Loading.svelte";
 
 	let { data } = $props();
 
@@ -14,7 +15,7 @@
 	});
 
 	const { form, errors } = createForm<z.infer<typeof schema>>({
-		extend: validator({ schema }),
+		extend: [validator({ schema }), felteLoader],
 		onSuccess: () => data.application.authenticate().then(() => goto("/")),
 		// @ts-ignore
 		onError: (e: FelteSubmitError) =>

@@ -12,6 +12,7 @@
 		"lint": "prettier --check ."
 	},
 	"devDependencies": {
+		"@felte/common": "^1.1.9",
 		"@felte/validator-zod": "^1.0.18",
 		"@fortawesome/free-solid-svg-icons": "^6.7.1",
 		"@melt-ui/pp": "^0.3.2",

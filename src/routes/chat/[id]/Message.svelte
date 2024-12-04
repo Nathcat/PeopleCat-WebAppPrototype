@@ -1,6 +1,6 @@
 <script lang="ts">
-	import ProfilePicture from "$lib/components/ProfilePicture.svelte";
-	import Username from "$lib/components/Username.svelte";
+	import ProfilePicture from "$lib/components/profile/ProfilePicture.svelte";
+	import Username from "$lib/components/profile/Username.svelte";
 	import type { Message } from "$lib/application/cache.svelte";
 	import { page } from "$app/stores";
 
