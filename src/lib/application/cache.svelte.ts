@@ -1,3 +1,4 @@
+import globalImg from "$lib/assets/global.png";
 import { fetchUser } from "./authcat";
 
 export interface Message {
@@ -22,12 +23,21 @@ export interface User {
 	pfpPath: string;
 }
 
+export interface Chat {
+	id: number;
+	name: string;
+	icon: string;
+}
+
 /**
  * Helper class for caching data recieved from the PeopleCat server
  */
 export class ApplicationCache {
 	public messages: Record<number, Message[]> = $state({});
 	private users: Record<number, Promise<User>> = {};
+	public chats: Record<number, Chat> = $state({
+		0: { id: 1, name: "Global Chat", icon: globalImg },
+	});
 
 	/**
 	 * Add a message to the message cache

@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+	import type { Message } from "$lib/application/cache.svelte";
 	import { PacketType } from "$lib/application/packet";
 	import { page } from "$app/stores";
 	import { Fa } from "svelte-fa";
-	import type { Message } from "$lib/application/cache.svelte";
 
 	let { chat, clientHeight = $bindable() }: { chat: number; clientHeight?: number } = $props();
 	let value: string = $state("");
+	let clientWidth = $state();
 
 	async function onsubmit(e: SubmitEvent) {
 		e.preventDefault();
@@ -26,22 +27,23 @@
 	}
 </script>
 
-<div class="input-container" bind:clientHeight>
-	<form class="input-box" {onsubmit}>
-		<input type="text" name="content" autocomplete="off" bind:value />
-		<button type="submit">
-			<Fa icon={faArrowRight} />
-		</button>
-	</form>
+<div style="width: 100%" bind:clientWidth>
+	<div class="input-container" style="width: {clientWidth}px" bind:clientHeight>
+		<form class="input-box" {onsubmit}>
+			<input type="text" name="content" autocomplete="off" bind:value />
+			<button type="submit">
+				<Fa icon={faArrowRight} />
+			</button>
+		</form>
+	</div>
 </div>
 
 <style lang="scss">
 	.input-container {
 		background-color: var(--theme-send-section-background);
 		border-top: 1px solid var(--theme-send-section-border);
-		padding: 10px;
 		position: fixed;
-		width: 100%;
+		padding: 10px;
 		bottom: 0px;
 	}
 
