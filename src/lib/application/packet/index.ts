@@ -5,6 +5,7 @@ import ByteBuffer from "bytebuffer";
 /** Map of `PacketType` to packet type ID, used when sending. */
 export enum PacketType {
 	ERROR = 0,
+	PING = 1,
 	AUTHENTICATE = 2,
 	GET_MESSAGE_QUEUE = 6,
 	SEND_MESSAGE = 7,
@@ -38,6 +39,7 @@ export function encode(packet: Packet): Uint8Array {
 export function decode(buffer: Parameters<typeof ByteBuffer.wrap>[0]): Packet {
 	const bb = ByteBuffer.wrap(buffer);
 	const type: PacketType = bb.readUint32();
+	if (type == PacketType.PING) return { type: PacketType.PING, payload: null };
 	const final = Boolean(bb.readUint8());
 	const payload = JSON.parse(bb.readIString());
 	return { type, payload };
