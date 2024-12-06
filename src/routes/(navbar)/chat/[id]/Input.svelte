@@ -60,6 +60,7 @@
 		}
 
 		input {
+			background: none;
 			outline: none;
 			padding: 10px;
 			border: none;

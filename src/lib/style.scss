@@ -13,7 +13,7 @@
 	--theme-default-text: var(--text-1);
 
 	--theme-body: var(--dark-2);
-	--theme-section: var(--dark-3);
+	--theme-island: var(--dark-3);
 	--theme-main-heading: var(--primary-2);
 	--theme-heading: var(--text-1);
 	--theme-input-border: var(--primary-1);
@@ -52,8 +52,8 @@ body {
 	color: var(--theme-default-text);
 }
 
-.section {
-	background-color: var(--theme-section);
+.island {
+	background-color: var(--theme-island);
 	border-radius: 20px;
 	width: fit-content;
 	padding: 20px;
@@ -85,8 +85,8 @@ input[type="text"],
 input[type="password"] {
 	border: 2px solid var(--theme-input-border);
 	color: var(--theme-default-text);
+	background: transparent;
 	border-radius: 10px;
-	background: none;
 	padding: 5px;
 }
 

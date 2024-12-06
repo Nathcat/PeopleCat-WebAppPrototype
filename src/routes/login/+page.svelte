@@ -38,7 +38,7 @@
 			subdomain
 		</p>
 	</div>
-	<form class="section login" method="POST" use:form>
+	<form class="island login" method="POST" use:form>
 		<input name="username" type="text" placeholder="Enter your Username" />
 		<input name="password" type="password" placeholder="Enter your Password" />
 		<button type="submit">Log In</button>

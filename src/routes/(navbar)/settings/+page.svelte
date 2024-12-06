@@ -3,10 +3,10 @@
 </script>
 
 <div class="container">
-	<div class="section">
+	<div class="island">
 		<GeneralSettings />
 	</div>
-	<div class="section">
+	<div class="island">
 		<h3>Appearance Settings</h3>
 	</div>
 </div>
@@ -19,7 +19,7 @@
 		gap: 10px;
 	}
 
-	.section {
+	.island {
 		width: 100%;
 	}
 </style>
