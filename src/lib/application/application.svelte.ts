@@ -113,9 +113,10 @@ export class Application {
 		}
 
 		// Log in
-		if (isCORS()) await goto("/login");
+		const search = `return-page=${encodeURIComponent(window.location.href)}`;
+		if (isCORS()) await goto(`/login?${search}`);
 		else {
-			const l = `${env.PUBLIC_AUTHCAT_URL}?return-page=${encodeURIComponent(window.location.href)}`;
+			const l = `${env.PUBLIC_AUTHCAT_URL}?${search}`;
 			window.location.assign(l);
 		}
 	}

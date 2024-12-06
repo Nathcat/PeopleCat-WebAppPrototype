@@ -2,10 +2,11 @@
 	import { addToast } from "$lib/components/toast/Toaster.svelte";
 	import { createForm, type FelteSubmitError } from "felte";
 	import { validator } from "@felte/validator-zod";
+	import { felteLoader } from "../Loading.svelte";
 	import { env } from "$env/dynamic/public";
 	import { goto } from "$app/navigation";
 	import { z } from "zod";
-	import { felteLoader } from "../Loading.svelte";
+	import { page } from "$app/stores";
 
 	let { data } = $props();
 
@@ -14,9 +15,12 @@
 		password: z.string().min(1),
 	});
 
-	const { form, errors } = createForm<z.infer<typeof schema>>({
+	const { form } = createForm<z.infer<typeof schema>>({
 		extend: [validator({ schema }), felteLoader],
-		onSuccess: () => data.application.authenticate().then(() => goto("/")),
+		onSuccess: () =>
+			data.application
+				.authenticate()
+				.then(() => goto($page.url.searchParams.get("return-page") ?? "/")),
 		// @ts-ignore
 		onError: (e: FelteSubmitError) =>
 			e.response.json().then((j) => {
