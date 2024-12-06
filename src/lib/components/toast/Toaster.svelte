@@ -18,6 +18,12 @@
 
 	export const addToast = (data: ToastData) => helpers.addToast({ data });
 	export const removeToast = helpers.removeToast;
+	export const catchToast = (e: any) =>
+		addToast({
+			type: "error",
+			title: "Error",
+			description: e instanceof Error ? e.message : "An unknown error occurred",
+		});
 </script>
 
 <div class="container">

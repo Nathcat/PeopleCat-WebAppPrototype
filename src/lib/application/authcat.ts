@@ -1,5 +1,47 @@
-import { env } from "$env/dynamic/public";
+import * as cookie from "cookie";
 import type { User } from "./cache.svelte";
+import { env } from "$env/dynamic/public";
+
+/**
+ * Checks if the current url is on a different origin than AuthCat
+ * @returns `true` if the current url is CORS
+ */
+export const isCORS = () => !window.location.host.endsWith(env.PUBLIC_AUTHCAT_DOMAIN);
+
+/**
+ * Gets the AuthCat session cookie from the current browser
+ * @returns The `AuthCat-SSO` cookie.
+ */
+export const getCookie = () => cookie.parse(document.cookie)["AuthCat-SSO"];
+
+/**
+ * Make a request to AuthCat
+ * @param endpoint The AuthCat endpoint to request
+ * @param init {@link RequestInit} to include
+ * @returns The {@link Response} object
+ */
+export async function acFetch(endpoint: string, init?: RequestInit) {
+	const response = await fetch(new URL(endpoint, env.PUBLIC_AUTHCAT_URL), init);
+	if (!response.ok) throw new Error("AuthCat response was not ok");
+	return response;
+}
+
+/**
+ * Make a request to AuthCat and parse the response
+ * @param endpoint The AuthCat endpoint to request
+ * @param init {@link RequestInit} to include
+ * @returns The parsed JSON and {@link Response} object.
+ */
+export async function acFetchJSON(endpoint: string, init?: RequestInit) {
+	const response = await acFetch(endpoint, init);
+
+	const data = await response.json().catch(() => {
+		throw new Error("Could not parse AuthCat response");
+	});
+
+	if (data.status == "fail") throw new Error(data.message);
+	return { data, response };
+}
 
 /**
  * Fetch User data from AuthCat
@@ -9,7 +51,7 @@ import type { User } from "./cache.svelte";
 export async function fetchUser(id: number) {
 	const body = JSON.stringify({ id });
 
-	const { data } = await acFetch("sso/user-search.php", {
+	const { data } = await acFetchJSON("sso/user-search.php", {
 		headers: { "Content-Type": "application/json" },
 		method: "POST",
 		body,
@@ -18,20 +60,6 @@ export async function fetchUser(id: number) {
 	return data.results[id] as User;
 }
 
-/**
- * Make a request to AuthCat
- * @param endpoint The authcat endpoint to reqyes
- * @param init {@link RequestInit} to include
- * @returns The JSON response and request object
- */
-export async function acFetch(endpoint: string, init?: RequestInit) {
-	const response = await fetch(new URL(endpoint, env.PUBLIC_AUTHCAT_URL), init);
-
-	if (!response.ok) throw new Error("AuthCat response was not ok");
-	const data = await response.json().catch(() => {
-		throw new Error("Could not parse AuthCat response");
-	});
-
-	if (data.status == "fail") throw new Error(data.message);
-	return { data, response };
+export async function logout(cookie: string) {
+	await acFetch("sso/logout.php", { headers: { Cookie: `AuthCat-SSO=${cookie}` } });
 }

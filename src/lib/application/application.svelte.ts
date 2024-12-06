@@ -2,9 +2,6 @@ import { addToast } from "$lib/components/toast/Toaster.svelte";
 import { ApplicationCache, type User } from "./cache.svelte";
 import { env } from "$env/dynamic/public";
 import { goto } from "$app/navigation";
-import { page } from "$app/stores";
-import { get } from "svelte/store";
-import * as cookie from "cookie";
 import {
 	type IncomingPacket,
 	type OutgoingPacket,
@@ -13,6 +10,7 @@ import {
 	decode,
 	encode,
 } from "./packet";
+import { getCookie, isCORS } from "./authcat";
 
 /**
  * Represents an instance of the application.
@@ -98,7 +96,8 @@ export class Application {
 
 	/** Authenticate with the PeopleCat backend or prompt the user to Login */
 	public async authenticate() {
-		const session = cookie.parse(document.cookie)["AuthCat-SSO"];
+		const session = getCookie();
+
 		if (session) {
 			await this.send({ type: PacketType.AUTHENTICATE, payload: { cookieAuth: session } });
 			const response = await Promise.any([
@@ -114,11 +113,11 @@ export class Application {
 		}
 
 		// Log in
-		const url = get(page).url;
-		if (url.host.endsWith(env.PUBLIC_AUTHCAT_DOMAIN)) {
-			const l = `${env.PUBLIC_AUTHCAT_URL}?return-page=${encodeURIComponent(url.href)}`;
+		if (isCORS()) await goto("/login");
+		else {
+			const l = `${env.PUBLIC_AUTHCAT_URL}?return-page=${encodeURIComponent(window.location.href)}`;
 			window.location.assign(l);
-		} else await goto("/login");
+		}
 	}
 
 	/**

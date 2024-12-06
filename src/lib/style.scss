@@ -14,12 +14,14 @@
 
 	--theme-body: var(--dark-2);
 	--theme-section: var(--dark-3);
-	--theme-heading: var(--primary-2);
+	--theme-main-heading: var(--primary-2);
+	--theme-heading: var(--text-1);
 	--theme-input-border: var(--primary-1);
 	--theme-button-text: var(--primary-2);
 	--theme-button-text-hover: var(--primary-1);
 	--theme-shimmer-dark: var(--dark-3);
 	--theme-shimmer-light: #3a346c;
+	--theme-hr: var(--text-2);
 
 	--theme-connecting-background: var(--dark-2);
 	--theme-connecting-text: var(--theme-default-text);
@@ -67,7 +69,10 @@ p {
 	margin: 16px 0;
 }
 
-h1,
+h1 {
+	color: var(--theme-main-heading);
+}
+
 h2,
 h3,
 h4,
@@ -85,12 +90,14 @@ input[type="password"] {
 	padding: 5px;
 }
 
+a,
 button {
 	transition: color 125ms ease-in-out;
 	color: var(--theme-button-text);
 	width: fit-content;
 	background: none;
 	border: none;
+	padding: 0;
 
 	&:hover {
 		color: var(--theme-button-text-hover);
@@ -98,6 +105,6 @@ button {
 	}
 }
 
-a {
-	color: var(--theme-default-text);
+hr {
+	color: var(--theme-hr);
 }

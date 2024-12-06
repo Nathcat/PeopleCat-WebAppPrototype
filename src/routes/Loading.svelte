@@ -1,4 +1,5 @@
 <script lang="ts" module>
+	import { fade } from "svelte/transition";
 	import { createDialog, melt } from "@melt-ui/svelte";
 	import type { Extender } from "@felte/common";
 
@@ -7,13 +8,20 @@
 	export function loadUntil(task: Promise<any>) {
 		tasks.push(task);
 		if (tasks.length == 1) next();
+		return task;
 	}
 
 	const next = () =>
-		tasks[0]?.then(() => {
-			tasks.pop();
-			next();
-		});
+		tasks[0]
+			?.then(() => {
+				tasks.pop();
+				next();
+			})
+			.catch((e) => {
+				console.error(e);
+				tasks.pop();
+				next();
+			});
 
 	export const felteLoader: Extender<any> = ({ isSubmitting }) => {
 		let resolve: () => void;
@@ -43,7 +51,7 @@
 </script>
 
 {#if $open}
-	<div class="background" use:melt={$content}>
+	<div class="background" use:melt={$content} transition:fade>
 		<span class="loader"></span>
 	</div>
 {/if}

@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { faCog } from "@fortawesome/free-solid-svg-icons";
 	import { page } from "$app/stores";
+	import Fa from "svelte-fa";
 
 	let { clientWidth = $bindable(0) } = $props();
 </script>
@@ -11,6 +13,15 @@
 			<span>{chat.name}</span>
 		</a>
 	{/each}
+
+	<a
+		href="/settings"
+		style="margin-top: auto;"
+		class:selected={$page.url.pathname == "/settings"}
+	>
+		<Fa icon={faCog} style="font-size: 23px;" />
+		<span>Settings</span>
+	</a>
 </div>
 
 <style lang="scss">
@@ -30,25 +41,38 @@
 
 		a {
 			transition: background-color 150ms;
-			padding: 5px 20px 5px 10px;
+			color: var(--theme-default-text);
+			padding: 5px 20px 5px 5px;
 			text-overflow: ellipsis;
+			text-decoration: none;
 			align-items: center;
 			border-radius: 5px;
 			overflow: hidden;
 			display: flex;
-			gap: 10px;
+			width: 100%;
 
 			&:hover,
 			&.selected {
 				background-color: var(--theme-navbar-hover);
 			}
+
+			span {
+				margin-left: 10px;
+			}
+		}
+
+		a::before {
+			content: "";
+			background-color: var(--theme-navbar-selected);
+			transition: all 150ms;
+			border-radius: 5px;
+			margin-right: 0px;
+			height: 100%;
+			width: 0px;
 		}
 
 		a.selected::before {
-			content: "";
-			background-color: var(--theme-navbar-selected);
-			border-radius: 5px;
-			height: 100%;
+			margin-right: 10px;
 			width: 3px;
 		}
 	}
