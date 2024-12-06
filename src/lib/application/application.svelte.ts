@@ -114,8 +114,9 @@ export class Application {
 
 		// Log in
 		const search = `return-page=${encodeURIComponent(window.location.href)}`;
-		if (isCORS()) await goto(`/login?${search}`);
-		else {
+		if (isCORS()) {
+			if (!window.location.pathname.endsWith("login")) await goto(`/login?${search}`);
+		} else {
 			const l = `${env.PUBLIC_AUTHCAT_URL}?${search}`;
 			window.location.assign(l);
 		}

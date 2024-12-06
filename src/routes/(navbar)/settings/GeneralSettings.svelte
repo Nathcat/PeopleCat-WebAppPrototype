@@ -2,19 +2,19 @@
 	import { faCog, faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
 	import { isCORS, logout as acLogout, getCookie } from "$lib/application/authcat";
 	import ProfilePicture from "$lib/components/profile/ProfilePicture.svelte";
+	import { catchToast } from "$lib/components/toast/Toaster.svelte";
 	import { loadUntil } from "../../Loading.svelte";
 	import { env } from "$env/dynamic/public";
 	import { action } from "$lib/util";
 	import { page } from "$app/stores";
 	import Fa from "svelte-fa";
-	import { catchToast } from "$lib/components/toast/Toaster.svelte";
 
 	function logout() {
 		loadUntil(
 			(isCORS() ? action("logout") : acLogout(getCookie()!)).then(() =>
 				$page.data.application.authenticate(),
 			),
-		).catch(catchToast);
+		).catch(catchToast("Logout failed"));
 	}
 </script>
 
