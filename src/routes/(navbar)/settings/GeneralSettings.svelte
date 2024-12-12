@@ -2,7 +2,7 @@
 	import { isCORS, logout as acLogout, getCookie } from "$lib/application/authcat";
 	import ProfilePicture from "$lib/components/profile/ProfilePicture.svelte";
 	import { catchToast } from "$lib/components/toast/Toaster.svelte";
-	import Select from "$lib/components/Select.svelte";
+	import Dropdown from "$lib/components/Dropdown.svelte";
 	import { loadUntil } from "../../Loading.svelte";
 	import { env } from "$env/dynamic/public";
 	import { action } from "$lib/util";
@@ -51,7 +51,7 @@
 <div class="section">
 	<h5>Notification Settings</h5>
 	<div style="width: 25%;">
-		<Select
+		<Dropdown
 			options={[
 				{ value: "none", label: "Disabled", icon: faBan },
 				{ value: "browser", label: "Browser", icon: faWindowMaximize },
