@@ -1,14 +1,21 @@
 <script lang="ts">
-	import { faCog, faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
 	import { isCORS, logout as acLogout, getCookie } from "$lib/application/authcat";
 	import ProfilePicture from "$lib/components/profile/ProfilePicture.svelte";
 	import { catchToast } from "$lib/components/toast/Toaster.svelte";
+	import Select from "$lib/components/Select.svelte";
 	import { loadUntil } from "../../Loading.svelte";
 	import { env } from "$env/dynamic/public";
 	import { action } from "$lib/util";
 	import { page } from "$app/stores";
 	import Fa from "svelte-fa";
-	import Select from "$lib/components/Select.svelte";
+	import {
+		faBan,
+		faBell,
+		faCog,
+		faRightFromBracket,
+		faUser,
+		faWindowMaximize,
+	} from "@fortawesome/free-solid-svg-icons";
 
 	function logout() {
 		loadUntil(
@@ -43,7 +50,15 @@
 </div>
 <div class="section">
 	<h5>Notification Settings</h5>
-	<Select options={[{ label: "None" }, { label: "Browser" }]} />
+	<div style="width: 25%;">
+		<Select
+			options={[
+				{ value: "none", label: "Disabled", icon: faBan },
+				{ value: "browser", label: "Browser", icon: faWindowMaximize },
+				{ value: "push", label: "Push", icon: faBell },
+			]}
+		/>
+	</div>
 </div>
 
 <style lang="scss">
