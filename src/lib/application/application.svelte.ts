@@ -1,5 +1,7 @@
 import { addToast } from "$lib/components/toast/Toaster.svelte";
 import { ApplicationCache, type User } from "./cache.svelte";
+import { ApplicationSettings } from "./settings.svelte";
+import { getCookie, isCORS } from "./authcat";
 import { env } from "$env/dynamic/public";
 import { goto } from "$app/navigation";
 import {
@@ -10,7 +12,6 @@ import {
 	decode,
 	encode,
 } from "./packet";
-import { getCookie, isCORS } from "./authcat";
 
 /**
  * Represents an instance of the application.
@@ -18,7 +19,9 @@ import { getCookie, isCORS } from "./authcat";
  * Contains shared applciation data and functions.
  */
 export class Application {
+	public settings = new ApplicationSettings();
 	public cache = new ApplicationCache();
+
 	public user: null | User = null;
 	public loaded = $state(false);
 
@@ -29,9 +32,9 @@ export class Application {
 	private waiting = Object.values(PacketType)
 		.filter((k) => typeof k == "number")
 		.reduce((p, c) => ({ ...p, [c]: [] }), {}) as Record<
-		PacketType,
-		{ resolve: (value: Packet) => void; reject: (reason: any) => void }[]
-	>;
+			PacketType,
+			{ resolve: (value: Packet) => void; reject: (reason: any) => void }[]
+		>;
 
 	/** Connect and authenticate with the PeopleCat backend */
 	public connect() {
@@ -134,3 +137,5 @@ export class Application {
 		});
 	}
 }
+
+export let application = new Application();

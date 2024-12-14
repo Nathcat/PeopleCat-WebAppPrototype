@@ -1,14 +1,13 @@
 <script lang="ts">
+	import { application } from "$lib/application/application.svelte";
 	import { addToast } from "$lib/components/toast/Toaster.svelte";
 	import { createForm, type FelteSubmitError } from "felte";
 	import { validator } from "@felte/validator-zod";
 	import { felteLoader } from "../Loading.svelte";
 	import { env } from "$env/dynamic/public";
 	import { goto } from "$app/navigation";
-	import { z } from "zod";
 	import { page } from "$app/stores";
-
-	let { data } = $props();
+	import { z } from "zod";
 
 	const schema = z.object({
 		username: z.string().min(1).max(32),
@@ -18,7 +17,7 @@
 	const { form } = createForm<z.infer<typeof schema>>({
 		extend: [validator({ schema }), felteLoader],
 		onSuccess: () =>
-			data.application
+			application
 				.authenticate()
 				.then(() => goto($page.url.searchParams.get("return-page") ?? "/")),
 		// @ts-ignore

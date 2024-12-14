@@ -2,11 +2,11 @@
 	import { isCORS, logout as acLogout, getCookie } from "$lib/application/authcat";
 	import ProfilePicture from "$lib/components/profile/ProfilePicture.svelte";
 	import { catchToast } from "$lib/components/toast/Toaster.svelte";
+	import { application } from "$lib/application/application.svelte";
 	import Dropdown from "$lib/components/Dropdown.svelte";
 	import { loadUntil } from "../../Loading.svelte";
 	import { env } from "$env/dynamic/public";
 	import { action } from "$lib/util";
-	import { page } from "$app/stores";
 	import Fa from "svelte-fa";
 	import {
 		faBan,
@@ -20,7 +20,7 @@
 	function logout() {
 		loadUntil(
 			(isCORS() ? action("logout") : acLogout(getCookie()!)).then(() =>
-				$page.data.application.authenticate(),
+				application.authenticate(),
 			),
 		).catch(catchToast("Logout failed"));
 	}
@@ -31,11 +31,11 @@
 <div class="section">
 	<h5>AuthCat Account</h5>
 	<div style="display: flex; gap: 10px">
-		<ProfilePicture id={$page.data.application.user!.id} size={55} />
+		<ProfilePicture id={application.user!.id} size={55} />
 		<div style="display: flex; flex-direction: column">
 			<span>
 				<Fa icon={faUser} />
-				{$page.data.application.user!.username}
+				{application.user!.username}
 			</span>
 			<a href={env.PUBLIC_AUTHCAT_SETTINGS} target="_blank">
 				<Fa icon={faCog} />
@@ -52,11 +52,12 @@
 	<h5>Notification Settings</h5>
 	<div style="width: 25%;">
 		<Dropdown
-			options={[
-				{ value: "none", label: "Disabled", icon: faBan },
-				{ value: "browser", label: "Browser", icon: faWindowMaximize },
-				{ value: "push", label: "Push", icon: faBell },
-			]}
+			bind:value={application.settings.notification}
+			options={{
+				none: { label: "Disabled", icon: faBan },
+				browser: { label: "Browser", icon: faWindowMaximize },
+				push: { label: "Push", icon: faBell },
+			}}
 		/>
 	</div>
 </div>

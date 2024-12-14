@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { application } from "$lib/application/application.svelte";
 	import { PacketType } from "$lib/application/packet";
 	import Message from "./Message.svelte";
 	import Input from "./Input.svelte";
@@ -6,7 +7,7 @@
 
 	let { data } = $props();
 
-	let messages = $derived(data.application.cache.messages[data.chat]);
+	let messages = $derived(application.cache.messages[data.chat]);
 	let sticky = $state(true);
 	let margin = $state(0);
 
@@ -19,7 +20,7 @@
 
 		// Request messages from the server if none
 		if (messages) return;
-		data.application.send({
+		application.send({
 			type: PacketType.GET_MESSAGE_QUEUE,
 			payload: { chatId: data.chat },
 		});

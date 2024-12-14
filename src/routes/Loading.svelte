@@ -1,7 +1,7 @@
 <script lang="ts" module>
-	import { fade } from "svelte/transition";
 	import { createDialog, melt } from "@melt-ui/svelte";
 	import type { Extender } from "@felte/common";
+	import { fade } from "svelte/transition";
 
 	let tasks = $state<Promise<any>[]>([]);
 

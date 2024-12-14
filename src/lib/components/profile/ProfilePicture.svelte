@@ -1,9 +1,9 @@
 <script lang="ts">
+	import { application } from "$lib/application/application.svelte";
 	import { env } from "$env/dynamic/public";
-	import { page } from "$app/stores";
 
 	let { id, size = 50 }: { id: number; size?: number } = $props();
-	let author = $state($page.data.application.cache.getUser(id));
+	let author = $state(application.cache.getUser(id));
 </script>
 
 {#await author}

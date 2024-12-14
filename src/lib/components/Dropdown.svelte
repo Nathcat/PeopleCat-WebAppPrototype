@@ -1,31 +1,30 @@
 <script lang="ts" module>
 	import { faChevronDown, type IconDefinition } from "@fortawesome/free-solid-svg-icons";
-	import { melt, createSelect } from "@melt-ui/svelte";
+	import { melt, createSelect, createSync } from "@melt-ui/svelte";
 	import { fade } from "svelte/transition";
 
 	export interface SelectOption {
 		icon?: IconDefinition;
 		onclick?: () => void;
 		label: string;
-		value: any;
 	}
 </script>
 
 <script lang="ts">
 	import Fa from "svelte-fa";
+	import { untrack } from "svelte";
 
 	let { options, placeholder, value = $bindable() }: Props = $props();
 	interface Props {
-		options: SelectOption[];
+		options: Record<any, SelectOption>;
 		placeholder?: string;
-		value?: string;
+		value?: any;
 	}
 
 	const {
 		elements: { trigger, menu, option },
 		states: { open, selected },
-		helpers: { isSelected },
-	} = createSelect<SelectOption>({
+	} = createSelect<any>({
 		forceVisible: true,
 		positioning: {
 			placement: "bottom",
@@ -33,35 +32,44 @@
 			sameWidth: true,
 		},
 	});
+
+	$effect(() => {
+		const v = value;
+		untrack(() => ($selected = { value: v }));
+	});
+
+	$effect(() => {
+		const v = $selected?.value;
+		untrack(() => {
+			const onclick = options[v]?.onclick;
+			if (onclick) {
+				$selected = undefined;
+				onclick();
+			} else if (value !== v) value = v;
+		});
+	});
+
+	let current = $derived(value && options[value]);
 </script>
 
 <button class="trigger" use:melt={$trigger}>
 	<span>
-		{#if $selected?.value.icon}
-			<Fa icon={$selected.value.icon} />
+		{#if current?.icon}
+			<Fa icon={current.icon} />
 		{/if}
-		{$selected?.value.label || (placeholder ?? "Select an option")}
+		{current?.label || (placeholder ?? "Select an option")}
 	</span>
 	<span class="chevron"><Fa icon={faChevronDown} /></span>
 </button>
 {#if $open}
 	<div class="menu" use:melt={$menu} transition:fade={{ duration: 50 }}>
-		{#each options as o}
-			{#if o.onclick}
-				<button onclick={o.onclick} class="option">
-					{#if o.icon}
-						<Fa icon={o.icon} />
-					{/if}
-					{o.label}
-				</button>
-			{:else}
-				<button use:melt={$option({ value: o })} class="option">
-					{#if o.icon}
-						<Fa icon={o.icon} />
-					{/if}
-					{o.label}
-				</button>
-			{/if}
+		{#each Object.entries(options) as [k, o]}
+			<button use:melt={$option({ value: k })} class="option">
+				{#if o.icon}
+					<Fa icon={o.icon} />
+				{/if}
+				{o.label}
+			</button>
 		{/each}
 	</div>
 {/if}
@@ -102,8 +110,7 @@
 		padding: 8px;
 		width: 100%;
 
-		&:hover,
-		&:focus-within {
+		&[data-highlighted] {
 			background-color: var(--theme-dropdown-hover-background);
 			color: var(--theme-dropdown-hover-text);
 		}

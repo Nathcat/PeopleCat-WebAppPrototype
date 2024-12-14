@@ -1,10 +1,10 @@
 <script lang="ts">
+	import { application } from "$lib/application/application.svelte";
 	import closedImg from "$lib/assets/logo-closed.png";
 	import logoImg from "$lib/assets/logo.png";
 	import { fade } from "svelte/transition";
-	import { page } from "$app/stores";
 
-	let loaded = $derived($page.data.application.loaded);
+	let loaded = $derived(application.loaded);
 	let visible = $state(true);
 
 	$effect(() => {
