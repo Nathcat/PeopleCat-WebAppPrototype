@@ -1,13 +1,13 @@
 <script lang="ts">
 	import ProfilePicture from "$lib/components/profile/ProfilePicture.svelte";
+	import { application } from "$lib/application/application.svelte";
 	import Username from "$lib/components/profile/Username.svelte";
 	import type { Message } from "$lib/application/cache.svelte";
-	import { page } from "$app/stores";
 
 	let { message }: { message: Message } = $props();
 </script>
 
-<div class="container" class:self={message.senderId == $page.data.application.user!.id}>
+<div class="container" class:self={message.senderId == application.user!.id}>
 	<div style="grid-area: pfp"><ProfilePicture id={message.senderId} /></div>
 	<div style="grid-area: details">
 		<Username id={message.senderId} />
