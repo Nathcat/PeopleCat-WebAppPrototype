@@ -36,7 +36,7 @@ export class ApplicationCache {
 	public messages: Record<number, Message[]> = $state({});
 	private users: Record<number, Promise<User>> = {};
 	public chats: Record<number, Chat> = $state({
-		0: { id: 1, name: "Global Chat", icon: globalImg },
+		1: { id: 1, name: "Global Chat", icon: globalImg },
 	});
 
 	/**

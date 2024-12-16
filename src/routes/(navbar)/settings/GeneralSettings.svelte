@@ -7,15 +7,19 @@
 	import { loadUntil } from "../../Loading.svelte";
 	import { env } from "$env/dynamic/public";
 	import { action } from "$lib/util";
+	import { onMount } from "svelte";
 	import Fa from "svelte-fa";
 	import {
 		faBan,
 		faBell,
+		faCircleXmark,
 		faCog,
 		faRightFromBracket,
 		faUser,
 		faWindowMaximize,
 	} from "@fortawesome/free-solid-svg-icons";
+
+	let notificationPermission = $state(Notification.permission);
 
 	function logout() {
 		loadUntil(
@@ -24,6 +28,17 @@
 			),
 		).catch(catchToast("Logout failed"));
 	}
+
+	onMount(() => {
+		let unsubscribe: (() => void) | undefined;
+		const update = () => (notificationPermission = Notification.permission);
+		navigator.permissions.query({ name: "notifications" }).then((perm) => {
+			unsubscribe = () => perm.removeEventListener("change", update);
+			perm.addEventListener("change", update);
+		});
+
+		return () => (unsubscribe ? unsubscribe() : 0);
+	});
 </script>
 
 <h3>General Settings</h3>
@@ -55,11 +70,25 @@
 			bind:value={application.settings.notification}
 			options={{
 				none: { label: "Disabled", icon: faBan },
-				browser: { label: "Browser", icon: faWindowMaximize },
+				browser: {
+					label: "Browser",
+					icon: faWindowMaximize,
+					onclick() {
+						Notification.requestPermission();
+					},
+				},
 				push: { label: "Push", icon: faBell },
 			}}
 		/>
 	</div>
+	{#if application.settings.notification == "browser"}
+		<p>Notifications will be displayed while this tab is open.</p>
+		{#if notificationPermission != "granted"}
+			<p class="error"><Fa icon={faCircleXmark} /> Permission not granted</p>
+		{/if}
+	{:else if application.settings.notification == "push"}
+		<p>Not implemented yet.</p>
+	{/if}
 </div>
 
 <style lang="scss">
@@ -73,5 +102,9 @@
 
 	h5 {
 		margin-bottom: 5px;
+	}
+
+	p {
+		margin: 10px 0 0 0;
 	}
 </style>

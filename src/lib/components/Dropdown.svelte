@@ -1,11 +1,11 @@
 <script lang="ts" module>
 	import { faChevronDown, type IconDefinition } from "@fortawesome/free-solid-svg-icons";
-	import { melt, createSelect, createSync } from "@melt-ui/svelte";
+	import { melt, createSelect } from "@melt-ui/svelte";
 	import { fade } from "svelte/transition";
 
 	export interface SelectOption {
+		onclick?: () => string | void;
 		icon?: IconDefinition;
-		onclick?: () => void;
 		label: string;
 	}
 </script>
@@ -16,15 +16,15 @@
 
 	let { options, placeholder, value = $bindable() }: Props = $props();
 	interface Props {
-		options: Record<any, SelectOption>;
+		options: Record<string, SelectOption>;
+		value: string | undefined;
 		placeholder?: string;
-		value?: any;
 	}
 
 	const {
 		elements: { trigger, menu, option },
 		states: { open, selected },
-	} = createSelect<any>({
+	} = createSelect<string>({
 		forceVisible: true,
 		positioning: {
 			placement: "bottom",
@@ -35,21 +35,22 @@
 
 	$effect(() => {
 		const v = value;
-		untrack(() => ($selected = { value: v }));
+		untrack(() => ($selected = v === undefined ? undefined : { value: v }));
 	});
 
 	$effect(() => {
-		const v = $selected?.value;
+		let v = $selected?.value;
 		untrack(() => {
-			const onclick = options[v]?.onclick;
-			if (onclick) {
-				$selected = undefined;
-				onclick();
-			} else if (value !== v) value = v;
+			if (v !== undefined) {
+				const onclick = options[v.substring(1)]?.onclick;
+				if (onclick) v = onclick() ?? v.substring(1);
+			}
+
+			if (value !== v) value = v;
 		});
 	});
 
-	let current = $derived(value && options[value]);
+	let current = $derived(value ? options[value] : undefined);
 </script>
 
 <button class="trigger" use:melt={$trigger}>
@@ -64,7 +65,7 @@
 {#if $open}
 	<div class="menu" use:melt={$menu} transition:fade={{ duration: 50 }}>
 		{#each Object.entries(options) as [k, o]}
-			<button use:melt={$option({ value: k })} class="option">
+			<button use:melt={$option({ value: `${o.onclick ? "_" : ""}${k}` })} class="option">
 				{#if o.icon}
 					<Fa icon={o.icon} />
 				{/if}

@@ -26,6 +26,7 @@
 	--theme-dropdown-text: var(--theme-default-text);
 	--theme-dropdown-hover-background: var(--primary-2);
 	--theme-dropdown-hover-text: var(--theme-default-text);
+	--theme-error-color: #f55454;
 
 	--theme-connecting-background: var(--dark-2);
 	--theme-connecting-text: var(--theme-default-text);
@@ -33,7 +34,7 @@
 	--theme-loading-color: var(--text-1);
 	--theme-loading-accent: var(--primary-2);
 	--theme-toast-background: var(--dark-1);
-	--theme-toast-error: #f55454;
+	--theme-toast-error: var(--theme-error-color);
 	--theme-toast-info: #4193f1;
 	--theme-toast-ok: #41f391;
 
@@ -67,6 +68,10 @@ body {
 	background-color: #1f1d2a;
 	border-radius: 3px;
 	padding: 3px;
+}
+
+.error {
+	color: var(--theme-error-color);
 }
 
 p {

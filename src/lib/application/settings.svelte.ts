@@ -5,7 +5,7 @@ function load(key: string, initial: any) {
 }
 
 export class ApplicationSettings {
-    notification = $state("none");
+    notification = $state<"none" | "browser" | "push">("none");
 
     public persist() {
         this.notification = load("settings.notification", this.notification);
