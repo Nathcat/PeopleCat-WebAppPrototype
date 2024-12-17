@@ -159,7 +159,7 @@ function send_message() {
         }
         else if (response.type == Application.PACKET_TYPE_PING) {
             console.log("Message sent");
-            get_new_message();
+            //get_new_message();
         }
     }
 
