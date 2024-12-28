@@ -1,6 +1,6 @@
 import { addToast } from "$lib/components/toast/Toaster.svelte";
 import { ApplicationCache, type Message, type User } from "./cache.svelte";
-import notificationSfx from "$lib/assets/notification.mp3"
+import notificationSfx from "$lib/assets/notification.mp3";
 import { ApplicationSettings } from "./settings.svelte";
 import { getCookie, isCORS } from "./authcat";
 import { env } from "$env/dynamic/public";
@@ -84,8 +84,11 @@ export class Application {
 				break;
 			case PacketType.NOTIFICATION_MESSAGE:
 				this.cache.pushMessage(packet.payload.message);
-				if (this.user?.id !== packet.payload.message.senderId && this.settings.notification == "browser")
-					this.createNotification(packet.payload.message)
+				if (
+					this.user?.id !== packet.payload.message.senderId &&
+					this.settings.notification == "browser"
+				)
+					this.createNotification(packet.payload.message);
 				break;
 		}
 
@@ -102,7 +105,7 @@ export class Application {
 			icon: `${env.PUBLIC_AUTHCAT_URL}pfps/${author.pfpPath}`,
 			body: message.content,
 			silent: true,
-		})
+		});
 	}
 
 	/** Send a packet to the PeopleCat backend */
