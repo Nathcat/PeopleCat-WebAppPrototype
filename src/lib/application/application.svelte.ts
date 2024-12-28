@@ -84,7 +84,7 @@ export class Application {
 				break;
 			case PacketType.NOTIFICATION_MESSAGE:
 				this.cache.pushMessage(packet.payload.message);
-				if (this.settings.notification == "browser")
+				if (this.user?.id !== packet.payload.message.senderId && this.settings.notification == "browser")
 					this.createNotification(packet.payload.message)
 				break;
 		}

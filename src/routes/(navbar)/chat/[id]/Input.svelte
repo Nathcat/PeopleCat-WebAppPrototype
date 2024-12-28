@@ -21,7 +21,6 @@
 		};
 
 		await application.send({ type: PacketType.SEND_MESSAGE, payload: message });
-		application.cache.pushMessage(message);
 
 		value = "";
 	}
