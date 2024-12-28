@@ -4,10 +4,10 @@
 	import { page } from "$app/stores";
 	import Fa from "svelte-fa";
 
-	let { clientWidth = $bindable(0) } = $props();
+	let { clientWidth = $bindable(0), mobile = false } = $props();
 </script>
 
-<div class="container" bind:clientWidth>
+<div class="container" class:mobile bind:clientWidth>
 	{#each Object.values(application.cache.chats) as chat}
 		<a href="/chat/{chat.id}" class:selected={$page.url.pathname == `/chat/${chat.id}`}>
 			<div class="icon" style="background-image: url({chat.icon})"></div>
@@ -27,18 +27,22 @@
 
 <style lang="scss">
 	.container {
-		border-right: 1px solid var(--theme-navbar-border);
+		background-color: var(--theme-navbar-background);
 		flex-direction: column;
 		min-width: 200px;
-		position: fixed;
 		display: flex;
 		height: 100vh;
 		padding: 5px;
-		width: 15vw;
 		z-index: 2;
 		gap: 5px;
 		left: 0;
 		top: 0;
+
+		&:not(.mobile) {
+			border-right: 1px solid var(--theme-navbar-border);
+			position: fixed;
+			width: 15vw;
+		}
 
 		a {
 			transition: background-color 150ms;

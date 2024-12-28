@@ -19,6 +19,23 @@
 </div>
 
 <style lang="scss">
+	@use "$lib/util" as util;
+
+	.msg {
+		grid-area: msg;
+
+		text-overflow: ellipsis;
+		border-radius: 25px;
+		width: fit-content;
+		overflow: hidden;
+		min-width: 100px;
+		max-width: 100%;
+
+		@include util.media("<tablet") {
+			padding: 10px !important;
+		}
+	}
+
 	.container {
 		display: grid;
 		grid-template-columns: repeat(2, auto);
@@ -38,21 +55,6 @@
 		}
 	}
 
-	.msg {
-		grid-area: msg;
-
-		text-overflow: ellipsis;
-		border-radius: 25px;
-		width: fit-content;
-		overflow: hidden;
-		max-width: 100%;
-	}
-
-	.time {
-		color: var(--text-2);
-		font-size: 11px;
-	}
-
 	.container.self {
 		justify-content: end;
 		justify-items: end;
@@ -65,6 +67,12 @@
 			color: var(--theme-message-self-text);
 			border-top-right-radius: 1px;
 			padding: 10px 10px 10px 50px;
+			text-align: end;
 		}
+	}
+
+	.time {
+		color: var(--text-2);
+		font-size: 11px;
 	}
 </style>

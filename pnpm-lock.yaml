@@ -47,6 +47,9 @@ importers:
       greset:
         specifier: ^2.0.0
         version: 2.0.0
+      include-media:
+        specifier: ^2.0.0
+        version: 2.0.0
       prettier:
         specifier: ^3.3.3
         version: 3.3.3
@@ -624,6 +627,9 @@ packages:
 
   import-meta-resolve@4.1.0:
     resolution: {integrity: sha512-I6fiaX09Xivtk+THaMfAwnA3MVA5Big1WHF1Dfx9hFuvNIWpXnorlkzhcQf6ehrqQiiZECRt1poOAkPmer3ruw==}
+
+  include-media@2.0.0:
+    resolution: {integrity: sha512-LSJcffPYIZ/Kln0rIi5UhqQbZxElDCMYA4dPC5MI1rkwwjptgEiOicHnzB0MMhMNJver0+4zULb4MKlgDyapZg==}
 
   is-extglob@2.1.1:
     resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==}
@@ -1259,6 +1265,8 @@ snapshots:
   immutable@4.3.7: {}
 
   import-meta-resolve@4.1.0: {}
+
+  include-media@2.0.0: {}
 
   is-extglob@2.1.1:
     optional: true

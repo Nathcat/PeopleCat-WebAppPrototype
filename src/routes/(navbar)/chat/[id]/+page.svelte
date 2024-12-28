@@ -15,8 +15,14 @@
 		const observer = new ResizeObserver(() => {
 			if (sticky) window.scrollTo(0, document.documentElement.scrollHeight);
 		});
-
 		observer.observe(document.documentElement);
+
+		const scroll = () => {
+			sticky = window.scrollY + window.innerHeight == document.documentElement.scrollHeight;
+			console.log("scroll");
+		};
+		// todo: improve this as I still don't know exactly whats causing it (maybe message fetching)
+		setTimeout(() => window.addEventListener("scroll", scroll), 100);
 
 		// Request messages from the server if none
 		if (messages) return;
@@ -25,14 +31,12 @@
 			payload: { chatId: data.chat },
 		});
 
-		return () => observer.disconnect();
+		return () => {
+			window.removeEventListener("scroll", scroll);
+			observer.disconnect();
+		};
 	});
-
-	const onscroll = () =>
-		(sticky = window.scrollY + window.innerHeight == document.documentElement.scrollHeight);
 </script>
-
-<svelte:window {onscroll} />
 
 <div class="message-container" style:margin-bottom="{margin}px">
 	{#each messages as message}
