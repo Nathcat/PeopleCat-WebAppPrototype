@@ -19,7 +19,6 @@
 
 		const scroll = () => {
 			sticky = window.scrollY + window.innerHeight == document.documentElement.scrollHeight;
-			console.log("scroll");
 		};
 		// todo: improve this as I still don't know exactly whats causing it (maybe message fetching)
 		setTimeout(() => window.addEventListener("scroll", scroll), 100);
