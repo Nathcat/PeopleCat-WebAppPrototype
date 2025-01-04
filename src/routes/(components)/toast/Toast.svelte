@@ -1,7 +1,8 @@
 <script lang="ts">
+	import { removeToast, type ToastData, type ToastType } from "./Toaster.svelte";
 	import { melt, type Toast, type ToastsElements } from "@melt-ui/svelte";
-	import type { ToastData, ToastType } from "./Toaster.svelte";
 	import { fly } from "svelte/transition";
+	import { onMount } from "svelte";
 	import Fa from "svelte-fa";
 	import {
 		faCircleCheck,
@@ -23,13 +24,42 @@
 	} & ToastsElements<ToastData>;
 
 	let icon = $derived(ICONS[toast.data.type]);
+
+	let dragging = false;
+	let x = $state(0);
+	let offset = 0;
+
+	function ontouchmove(e: TouchEvent) {
+		for (const touch of e.targetTouches) x = offset - touch.clientX;
+		dragging = true;
+	}
+
+	function ontouchend() {
+		if (x < -100) removeToast(toast.id);
+		dragging = false;
+	}
+
+	onMount(() => {
+		let request: number;
+
+		(function pull() {
+			request = requestAnimationFrame(pull);
+			if (!dragging) x -= x / 4;
+		})();
+
+		return () => cancelAnimationFrame(request);
+	});
 </script>
 
 <div
-	class="toast"
-	use:melt={$content(toast.id)}
+	ontouchstart={(e) => (offset = e.targetTouches[0].clientX + x)}
 	out:fly={{ duration: 250, x: "100%" }}
 	in:fly={{ duration: 250, x: "100%" }}
+	use:melt={$content(toast.id)}
+	style:right="{x}px"
+	{ontouchmove}
+	class="toast"
+	{ontouchend}
 >
 	<h4 style="color: var(--theme-toast-{toast.data.type})">
 		<Fa {icon} />
@@ -46,6 +76,7 @@
 		box-shadow: 2px 2px 5px #00000080;
 		background-color: var(--theme-toast-background);
 		border-radius: 5px;
+		position: relative;
 		overflow: hidden;
 		min-width: 300px;
 		margin-top: 5px;

@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { application } from "$lib/application/application.svelte";
-	import { addToast } from "$lib/components/toast/Toaster.svelte";
+	import { addToast } from "../(components)/toast/Toaster.svelte";
+	import { felteLoader } from "../(components)/Loading.svelte";
 	import { createForm, type FelteSubmitError } from "felte";
 	import { validator } from "@felte/validator-zod";
-	import { felteLoader } from "../Loading.svelte";
 	import { env } from "$env/dynamic/public";
 	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";

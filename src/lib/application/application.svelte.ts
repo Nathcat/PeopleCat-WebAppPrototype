@@ -1,5 +1,5 @@
-import { addToast } from "$lib/components/toast/Toaster.svelte";
 import { ApplicationCache, type Message, type User } from "./cache.svelte";
+import { addToast } from "../../routes/(components)/toast/Toaster.svelte";
 import notificationSfx from "$lib/assets/notification.mp3";
 import { ApplicationSettings } from "./settings.svelte";
 import { getCookie, isCORS } from "./authcat";

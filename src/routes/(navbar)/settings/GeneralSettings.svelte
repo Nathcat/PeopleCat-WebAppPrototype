@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { isCORS, logout as acLogout, getCookie } from "$lib/application/authcat";
 	import ProfilePicture from "$lib/components/profile/ProfilePicture.svelte";
-	import { catchToast } from "$lib/components/toast/Toaster.svelte";
+	import { catchToast } from "../../(components)/toast/Toaster.svelte";
 	import { application } from "$lib/application/application.svelte";
+	import { loadUntil } from "../../(components)/Loading.svelte";
 	import Dropdown from "$lib/components/Dropdown.svelte";
-	import { loadUntil } from "../../Loading.svelte";
 	import { env } from "$env/dynamic/public";
 	import { action } from "$lib/util";
 	import { onMount } from "svelte";
