@@ -59,11 +59,17 @@
 
 	p.reason {
 		color: var(--text-2);
+		text-align: center;
+	}
+
+	input {
+		width: 100%;
 	}
 
 	.login {
 		flex-direction: column;
 		align-items: center;
+		min-width: 250px;
 		display: flex;
 		gap: 5px;
 
