@@ -33,9 +33,9 @@ export class Application {
 	private waiting = Object.values(PacketType)
 		.filter((k) => typeof k == "number")
 		.reduce((p, c) => ({ ...p, [c]: [] }), {}) as Record<
-			PacketType,
-			{ resolve: (value: Packet) => void; reject: (reason: any) => void }[]
-		>;
+		PacketType,
+		{ resolve: (value: Packet) => void; reject: (reason: any) => void }[]
+	>;
 
 	/** Connect and authenticate with the PeopleCat backend */
 	public connect() {
@@ -105,6 +105,9 @@ export class Application {
 			icon: `${env.PUBLIC_AUTHCAT_URL}pfps/${author.pfpPath}`,
 			body: message.content,
 			silent: true,
+		}).addEventListener("click", () => {
+			goto(`/chat/${message.chatId}`);
+			window.focus();
 		});
 	}
 
