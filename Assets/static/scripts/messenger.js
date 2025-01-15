@@ -267,8 +267,7 @@ function setup_messenger() {
         "type": Application.PACKET_TYPE_JOIN_CHAT,
         "isFinal": true,
         "object": {
-            "chatId": 1,
-            "joinCode": "0f1a3167-9"
+            "chatId": 1
         }
     }).getBytes());
 }
