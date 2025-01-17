@@ -42,8 +42,8 @@
 	onMount(() => {
 		let request: number;
 
-		(function pull() {
-			request = requestAnimationFrame(pull);
+		(function spring() {
+			request = requestAnimationFrame(spring);
 			if (!dragging) x -= x / 4;
 		})();
 

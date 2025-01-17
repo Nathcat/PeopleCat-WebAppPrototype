@@ -9,10 +9,14 @@
 
 	import "greset";
 	import "$lib/style.scss";
+	import { dev } from "$app/environment";
 
 	onMount(() => {
 		application.settings.persist();
 		application.connect();
+
+		// @ts-ignore
+		if (dev) window.application = application;
 	});
 </script>
 

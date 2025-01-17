@@ -1,44 +1,34 @@
 <script lang="ts">
-	import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+	import MobileWrapper from "./MobileWrapper.svelte";
 	import Navbar from "./Navbar.svelte";
-	import Fa from "svelte-fa";
-
-	let { children, data } = $props();
+	let { children } = $props();
 
 	let margin = $state(0);
 	let innerWidth = $state(0);
 	let mobile = $derived(innerWidth < 768);
-	let root = $derived(data.path.length == 0);
 </script>
 
 <svelte:window bind:innerWidth />
 
-{#if root || !mobile}
-	<Navbar bind:clientWidth={margin} {mobile} />
+{#if mobile}
+	<MobileWrapper />
 {:else}
-	<div class="backbar" bind:clientHeight={margin}>
-		<a class="back" href="/">
-			<Fa icon={faArrowLeft} />
-		</a>
-	</div>
+	<nav bind:clientWidth={margin}>
+		<Navbar />
+	</nav>
 {/if}
 
-{#if !root || !mobile}
-	<div style="margin-{mobile ? 'top' : 'left'}: {margin}px;">
-		{@render children()}
-	</div>
-{/if}
+<div style="margin-{mobile ? 'top' : 'left'}: {margin}px;">
+	{@render children()}
+</div>
 
 <style lang="scss">
-	.backbar {
-		background-color: var(--theme-navbar-background);
-		border-bottom: 1px solid var(--theme-navbar-border);
+	nav {
+		min-width: fit-content;
 		position: fixed;
-		display: flex;
-		width: 100%;
-	}
-
-	.back {
-		padding: 8px;
+		height: 100vh;
+		width: 15vw;
+		left: 0;
+		top: 0;
 	}
 </style>
