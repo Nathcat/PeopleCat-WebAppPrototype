@@ -2,7 +2,6 @@
 	import { removeToast, type ToastData, type ToastType } from "./Toaster.svelte";
 	import { melt, type Toast, type ToastsElements } from "@melt-ui/svelte";
 	import { fly } from "svelte/transition";
-	import { onMount } from "svelte";
 	import Fa from "svelte-fa";
 	import {
 		faCircleCheck,
@@ -11,6 +10,7 @@
 		faXmark,
 		type IconDefinition,
 	} from "@fortawesome/free-solid-svg-icons";
+	import { animationFrame, hammer } from "$lib/util";
 
 	const ICONS: Record<ToastType, IconDefinition> = {
 		error: faTriangleExclamation,
@@ -27,39 +27,38 @@
 
 	let dragging = false;
 	let x = $state(0);
-	let offset = 0;
 
-	function ontouchmove(e: TouchEvent) {
-		for (const touch of e.targetTouches) x = offset - touch.clientX;
-		dragging = true;
+	function gestures(hammer: HammerManager) {
+		hammer.add(new Hammer.Swipe({ direction: Hammer.DIRECTION_RIGHT }));
+		hammer.on("swipe", (e) => {
+			if (e.pointerType === "touch") removeToast(toast.id);
+		});
+
+		hammer.add(new Hammer.Pan({ direction: Hammer.DIRECTION_HORIZONTAL }));
+		hammer.on("pan", (e) => {
+			if (e.pointerType !== "touch") return;
+			x = -e.deltaX;
+
+			if (e.isFinal) {
+				if (x < -100) removeToast(toast.id);
+				dragging = false;
+			} else dragging = true;
+		});
 	}
 
-	function ontouchend() {
-		if (x < -100) removeToast(toast.id);
-		dragging = false;
-	}
-
-	onMount(() => {
-		let request: number;
-
-		(function spring() {
-			request = requestAnimationFrame(spring);
-			if (!dragging) x -= x / 4;
-		})();
-
-		return () => cancelAnimationFrame(request);
+	animationFrame(() => {
+		if (dragging) return;
+		x -= x / 4;
 	});
 </script>
 
 <div
-	ontouchstart={(e) => (offset = e.targetTouches[0].clientX + x)}
 	out:fly={{ duration: 250, x: "100%" }}
 	in:fly={{ duration: 250, x: "100%" }}
 	use:melt={$content(toast.id)}
+	class="toast no-swipe"
+	use:hammer={gestures}
 	style:right="{x}px"
-	{ontouchmove}
-	class="toast"
-	{ontouchend}
 >
 	<h4 style="color: var(--theme-toast-{toast.data.type})">
 		<Fa {icon} />

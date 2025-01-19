@@ -1,5 +1,5 @@
 <script lang="ts">
-	import MobileWrapper from "./MobileWrapper.svelte";
+	import MobileNavbar from "./MobileNavbar.svelte";
 	import Navbar from "./Navbar.svelte";
 	let { children } = $props();
 
@@ -11,7 +11,7 @@
 <svelte:window bind:innerWidth />
 
 {#if mobile}
-	<MobileWrapper />
+	<MobileNavbar />
 {:else}
 	<nav bind:clientWidth={margin}>
 		<Navbar />

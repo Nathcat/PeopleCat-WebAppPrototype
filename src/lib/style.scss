@@ -56,6 +56,8 @@ body {
 	background-color: var(--theme-body);
 	font-family: "Montserrat", sans-serif;
 	color: var(--theme-default-text);
+	touch-action: pan-y;
+	height: 100vh;
 }
 
 .island {

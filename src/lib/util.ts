@@ -1,3 +1,40 @@
+import { onMount } from "svelte";
+import type { Action } from "svelte/action";
+
+/**
+ * Set up a self-requesting animation frame.
+ * @param fn Callback to run every animation frame
+ */
+export const animationFrame = (fn: () => void) =>
+	onMount(() => {
+		let request: number;
+
+		function wrapper() {
+			request = requestAnimationFrame(wrapper);
+			fn();
+		}
+
+		request = requestAnimationFrame(wrapper);
+		return () => cancelAnimationFrame(request);
+	});
+
+/**
+ * Sets up HammerJS oh this element
+ * @param element The element to setup HammerJS on
+ * @param fn A setup callback the {@link HammerManager} is passed to
+ */
+export const hammer: Action<HTMLElement, (hammer: HammerManager) => any, {}> = (element, fn) =>
+	onMount(() => {
+		let hammer: HammerManager;
+
+		import("hammerjs").then(() => {
+			hammer = new Hammer(element, { recognizers: [] });
+			fn(hammer);
+		});
+
+		return () => hammer?.destroy();
+	});
+
 /**
  * Call a server-side action
  * @param action The name of the action to call
