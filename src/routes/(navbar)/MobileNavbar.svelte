@@ -1,8 +1,9 @@
 <script lang="ts">
 	import Navbar from "./Navbar.svelte";
 	import { hammer } from "$lib/util";
+	import { afterNavigate } from "$app/navigation";
 
-	let { open }: { open?: boolean } = $props();
+	let open = $state(false);
 
 	function gestures(hammer: HammerManager) {
 		hammer.add(new Hammer.Swipe({ direction: Hammer.DIRECTION_HORIZONTAL }));
@@ -11,12 +12,14 @@
 			open = e.direction === Hammer.DIRECTION_RIGHT;
 		});
 	}
+
+	afterNavigate(() => (open = false));
 </script>
 
 <svelte:body use:hammer={gestures} />
 
 <nav class:open>
-	<Navbar onnavigate={() => (open = false)} />
+	<Navbar />
 </nav>
 
 <style lang="scss">
@@ -26,7 +29,7 @@
 		left: calc(-100vw - 1px);
 		position: fixed;
 		height: 100vh;
-		z-index: 100;
+		z-index: 50;
 
 		&.open {
 			left: 0;

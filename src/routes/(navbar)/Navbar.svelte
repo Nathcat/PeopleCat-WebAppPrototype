@@ -3,28 +3,17 @@
 	import { faCog } from "@fortawesome/free-solid-svg-icons";
 	import { page } from "$app/stores";
 	import Fa from "svelte-fa";
-
-	let { onnavigate }: { onnavigate?: () => any } = $props();
-
-	function onclick() {
-		if (onnavigate) onnavigate();
-	}
 </script>
 
 <div class="container">
 	{#each Object.values(application.cache.chats) as chat}
-		<a
-			{onclick}
-			href="/chat/{chat.id}"
-			class:selected={$page.url.pathname == `/chat/${chat.id}`}
-		>
+		<a href="/chat/{chat.id}" class:selected={$page.url.pathname == `/chat/${chat.id}`}>
 			<div class="icon" style="background-image: url({chat.icon})"></div>
 			<span>{chat.name}</span>
 		</a>
 	{/each}
 
 	<a
-		{onclick}
 		href="/settings"
 		style="margin-top: auto;"
 		class:selected={$page.url.pathname == "/settings"}

@@ -10,10 +10,27 @@
 	import "greset";
 	import "$lib/style.scss";
 	import { dev } from "$app/environment";
+	import { beforeNavigate, goto } from "$app/navigation";
 
 	onMount(() => {
 		application.settings.persist();
 		application.connect();
+
+		// Disable back gesture on mobile devices by disabling history
+		if ("ontouchstart" in window) {
+			let previousNavigation: string = "";
+			beforeNavigate((navigation) => {
+				if (
+					navigation.to &&
+					window.innerWidth < 768 &&
+					navigation.to.url.toString() != previousNavigation
+				) {
+					previousNavigation = navigation.to.url.toString();
+					goto(navigation.to.url, { replaceState: true });
+					navigation.cancel();
+				}
+			});
+		}
 
 		// @ts-ignore
 		if (dev) window.application = application;
