@@ -3,7 +3,7 @@
 	import { hammer } from "$lib/util";
 	import { afterNavigate } from "$app/navigation";
 
-	let open = $state(false);
+	let { open = $bindable(false) } = $props();
 
 	function gestures(hammer: HammerManager) {
 		hammer.add(new Hammer.Swipe({ direction: Hammer.DIRECTION_HORIZONTAL }));
