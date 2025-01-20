@@ -1,10 +1,10 @@
 import { ApplicationCache, type Message, type User } from "./cache.svelte";
-import { addToast } from "../../routes/(components)/toast/Toaster.svelte";
 import notificationSfx from "$lib/assets/notification.mp3";
 import { ApplicationSettings } from "./settings.svelte";
 import { getCookie, isCORS } from "./authcat";
 import { env } from "$env/dynamic/public";
 import { goto } from "$app/navigation";
+import { toast } from "$lib/util";
 import {
 	type IncomingPacket,
 	type OutgoingPacket,
@@ -72,7 +72,7 @@ export class Application {
 		switch (packet.type) {
 			case PacketType.ERROR:
 				console.error(packet.payload);
-				addToast({
+				toast({
 					type: "error",
 					title: packet.payload.name,
 					description: packet.payload.msg,

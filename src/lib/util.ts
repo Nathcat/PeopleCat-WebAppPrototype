@@ -1,5 +1,29 @@
-import { onMount } from "svelte";
+import { helpers, type ToastData } from "../routes/Toaster.svelte";
+import { loadUntil } from "../routes/Loading.svelte";
 import type { Action } from "svelte/action";
+import { onMount } from "svelte";
+
+Promise.prototype.loading = function () {
+	loadUntil(this);
+	return this;
+};
+
+/**
+ * Create and display a toast with the given data.
+ * @param data The toast data to display.
+ * @returns The created toast.
+ */
+export const toast = (data: ToastData) => helpers.addToast({ data });
+
+Promise.prototype.catchToast = function (title?: string) {
+	return this.catch((e) => {
+		toast({
+			type: "error",
+			title: title ?? "Error",
+			description: e instanceof Error ? e.message : "An unknown error occurred",
+		});
+	});
+};
 
 /**
  * Set up a self-requesting animation frame.

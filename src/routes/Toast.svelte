@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { removeToast, type ToastData, type ToastType } from "./Toaster.svelte";
+	import { helpers, type ToastData, type ToastType } from "./Toaster.svelte";
 	import { melt, type Toast, type ToastsElements } from "@melt-ui/svelte";
+	import { animationFrame, hammer } from "$lib/util";
 	import { fly } from "svelte/transition";
 	import Fa from "svelte-fa";
 	import {
@@ -10,7 +11,6 @@
 		faXmark,
 		type IconDefinition,
 	} from "@fortawesome/free-solid-svg-icons";
-	import { animationFrame, hammer } from "$lib/util";
 
 	const ICONS: Record<ToastType, IconDefinition> = {
 		error: faTriangleExclamation,
@@ -31,7 +31,7 @@
 	function gestures(hammer: HammerManager) {
 		hammer.add(new Hammer.Swipe({ direction: Hammer.DIRECTION_RIGHT }));
 		hammer.on("swipe", (e) => {
-			if (e.pointerType === "touch") removeToast(toast.id);
+			if (e.pointerType === "touch") helpers.removeToast(toast.id);
 		});
 
 		hammer.add(new Hammer.Pan({ direction: Hammer.DIRECTION_HORIZONTAL }));
@@ -40,7 +40,7 @@
 			x = -e.deltaX;
 
 			if (e.isFinal) {
-				if (x < -100) removeToast(toast.id);
+				if (x < -100) helpers.removeToast(toast.id);
 				dragging = false;
 			} else dragging = true;
 		});

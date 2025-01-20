@@ -1,12 +1,10 @@
 <script lang="ts">
 	import { isCORS, logout as acLogout, getCookie } from "$lib/application/authcat";
 	import ProfilePicture from "$lib/components/profile/ProfilePicture.svelte";
-	import { catchToast } from "../../(components)/toast/Toaster.svelte";
 	import { application } from "$lib/application/application.svelte";
-	import { loadUntil } from "../../(components)/Loading.svelte";
 	import Dropdown from "$lib/components/Dropdown.svelte";
-	import { env } from "$env/dynamic/public";
 	import { action } from "$lib/util";
+	import { env } from "$env/dynamic/public";
 	import { onMount } from "svelte";
 	import Fa from "svelte-fa";
 	import {
@@ -22,11 +20,10 @@
 	let notificationPermission = $state(Notification.permission);
 
 	function logout() {
-		loadUntil(
-			(isCORS() ? action("logout") : acLogout(getCookie()!)).then(() =>
-				application.authenticate(),
-			),
-		).catch(catchToast("Logout failed"));
+		(isCORS() ? action("logout") : acLogout(getCookie()!))
+			.then(() => application.authenticate())
+			.catchToast("Log Out Failed")
+			.loading();
 	}
 
 	onMount(() => {

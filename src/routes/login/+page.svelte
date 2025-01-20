@@ -1,18 +1,33 @@
 <script lang="ts">
 	import { application } from "$lib/application/application.svelte";
-	import { addToast } from "../(components)/toast/Toaster.svelte";
-	import { felteLoader } from "../(components)/Loading.svelte";
 	import { createForm, type FelteSubmitError } from "felte";
 	import { validator } from "@felte/validator-zod";
 	import { env } from "$env/dynamic/public";
 	import { goto } from "$app/navigation";
+	import { toast } from "$lib/util";
 	import { page } from "$app/stores";
 	import { z } from "zod";
+	import type { Extender } from "@felte/common";
 
 	const schema = z.object({
 		username: z.string().min(1).max(32),
 		password: z.string().min(1),
 	});
+
+	const felteLoader: Extender<any> = ({ isSubmitting }) => {
+		let resolve: () => void;
+		const unsubscribe = isSubmitting.subscribe((v) => {
+			if (v) new Promise<void>((r) => (resolve = r)).loading();
+			else if (resolve) resolve();
+		});
+
+		return {
+			destroy() {
+				if (resolve) resolve();
+				unsubscribe();
+			},
+		};
+	};
 
 	const { form } = createForm<z.infer<typeof schema>>({
 		extend: [validator({ schema }), felteLoader],
@@ -23,7 +38,7 @@
 		// @ts-ignore
 		onError: (e: FelteSubmitError) =>
 			e.response.json().then((j) => {
-				addToast({ type: "error", title: "Login Failed", description: j.error.message });
+				toast({ type: "error", title: "Login Failed", description: j.error.message });
 			}),
 	});
 </script>

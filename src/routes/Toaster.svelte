@@ -16,14 +16,7 @@
 		states: { toasts },
 	} = createToaster<ToastData>({ closeDelay: 10000 });
 
-	export const addToast = (data: ToastData) => helpers.addToast({ data });
-	export const removeToast = helpers.removeToast;
-	export const catchToast = (title?: string) => (e: any) =>
-		addToast({
-			type: "error",
-			title: title ?? "Error",
-			description: e instanceof Error ? e.message : "An unknown error occurred",
-		});
+	export { helpers };
 </script>
 
 <div class="container">

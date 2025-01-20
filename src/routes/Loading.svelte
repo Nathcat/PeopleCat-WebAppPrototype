@@ -1,6 +1,5 @@
 <script lang="ts" module>
 	import { createDialog, melt } from "@melt-ui/svelte";
-	import type { Extender } from "@felte/common";
 	import { fade } from "svelte/transition";
 
 	let tasks = $state<Promise<any>[]>([]);
@@ -22,21 +21,6 @@
 				tasks.pop();
 				next();
 			});
-
-	export const felteLoader: Extender<any> = ({ isSubmitting }) => {
-		let resolve: () => void;
-		const unsubscribe = isSubmitting.subscribe((v) => {
-			if (v) loadUntil(new Promise<void>((r) => (resolve = r)));
-			else if (resolve) resolve();
-		});
-
-		return {
-			destroy() {
-				if (resolve) resolve();
-				unsubscribe();
-			},
-		};
-	};
 </script>
 
 <script lang="ts">
