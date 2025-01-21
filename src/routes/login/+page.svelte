@@ -34,7 +34,9 @@
 		onSuccess: () =>
 			application
 				.authenticate()
-				.then(() => goto($page.url.searchParams.get("return-page") ?? "/")),
+				.then(() =>
+					goto($page.url.searchParams.get("return-page") ?? "/", { replaceState: true }),
+				),
 		// @ts-ignore
 		onError: (e: FelteSubmitError) =>
 			e.response.json().then((j) => {

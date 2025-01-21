@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { application } from "$lib/application/application.svelte";
+	import { browser, dev } from "$app/environment";
 	import Freeze from "./Connecting.svelte";
 	import Loading from "./Loading.svelte";
 	import Toaster from "./Toaster.svelte";
@@ -9,44 +10,43 @@
 
 	import "greset";
 	import "$lib/style.scss";
-	import { dev } from "$app/environment";
-	import { beforeNavigate, goto } from "$app/navigation";
 
 	onMount(() => {
 		application.settings.persist();
 		application.connect();
 
-		// Disable back gesture on mobile devices by disabling history
-		if ("ontouchstart" in window) {
-			let previousNavigation: string = "";
-			beforeNavigate((navigation) => {
-				if (
-					navigation.to &&
-					window.innerWidth < 768 &&
-					navigation.to.url.toString() != previousNavigation
-				) {
-					previousNavigation = navigation.to.url.toString();
-					goto(navigation.to.url, { replaceState: true });
-					navigation.cancel();
-				}
-			});
-		}
-
 		// @ts-ignore
 		if (dev) window.application = application;
 	});
+
+	function iOS() {
+		return (
+			[
+				"iPad Simulator",
+				"iPhone Simulator",
+				"iPod Simulator",
+				"iPad",
+				"iPhone",
+				"iPod",
+			].includes(navigator.platform) ||
+			// iPad on iOS 13 detection
+			(navigator.userAgent.includes("Mac") && "ontouchend" in document)
+		);
+	}
 </script>
 
-<Toaster />
-<Freeze />
-<Loading />
+<div data-sveltekit-replacestate={browser && iOS()}>
+	<Toaster />
+	<Freeze />
+	<Loading />
 
-<!-- Only render page when loading is complete -->
-{#if application.loaded}
-	<main>
-		{@render children()}
-	</main>
-{/if}
+	<!-- Only render page when loading is complete -->
+	{#if application.loaded}
+		<main>
+			{@render children()}
+		</main>
+	{/if}
+</div>
 
 <style lang="scss">
 	main {
