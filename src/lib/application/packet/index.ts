@@ -13,7 +13,10 @@ export enum PacketType {
 }
 
 /** Base payload all packets extend */
-export interface Packet<T extends PacketType = PacketType, P = unknown> {
+export interface Packet<
+	T extends PacketType = PacketType,
+	P extends Record<string, any> | undefined = any,
+> {
 	type: T;
 	payload: P;
 }
@@ -39,8 +42,7 @@ export function encode(packet: Packet): Uint8Array {
 export function decode(buffer: Parameters<typeof ByteBuffer.wrap>[0]): Packet {
 	const bb = ByteBuffer.wrap(buffer);
 	const type: PacketType = bb.readUint32();
-	if (type == PacketType.PING) return { type: PacketType.PING, payload: null };
 	const final = Boolean(bb.readUint8());
-	const payload = JSON.parse(bb.readIString());
-	return { type, payload };
+	const payload = bb.readIString();
+	return { type, payload: payload.length === 0 ? undefined : JSON.parse(payload) };
 }

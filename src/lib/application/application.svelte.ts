@@ -79,7 +79,7 @@ export class Application {
 				});
 				break;
 			case PacketType.GET_MESSAGE_QUEUE:
-				if ("message-count" in packet.payload) break;
+				if ("messageCount" in packet.payload) break;
 				this.cache.pushMessage(packet.payload);
 				break;
 			case PacketType.NOTIFICATION_MESSAGE:

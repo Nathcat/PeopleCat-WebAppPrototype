@@ -2,6 +2,7 @@ import type { Packet, PacketType } from ".";
 import type { Message } from "../cache.svelte";
 
 export type OutgoingPacket =
+	| Packet<PacketType.PING>
 	| Packet<
 			PacketType.ERROR,
 			{

@@ -2,6 +2,7 @@ import type { Message, User } from "../cache.svelte";
 import type { Packet, PacketType } from ".";
 
 export type IncomingPacket =
+	| Packet<PacketType.PING>
 	| Packet<
 			PacketType.ERROR,
 			{
@@ -13,7 +14,7 @@ export type IncomingPacket =
 	| Packet<
 			PacketType.GET_MESSAGE_QUEUE,
 			| {
-					"message-count": number;
+					messageCount: number;
 			  }
 			| Message
 	  >
