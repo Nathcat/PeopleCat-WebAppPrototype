@@ -3,10 +3,12 @@
 	import MobileNavbar from "./MobileNavbar.svelte";
 	import Navbar from "./Navbar.svelte";
 	import Fa from "svelte-fa";
+	import { elements } from "./Titlebar.svelte";
 
 	let { children } = $props();
 
-	let margin = $state(0);
+	let marginTop = $state(0);
+	let marginLeft = $state(0);
 	let innerWidth = $state(0);
 	let mobile = $derived(innerWidth < 768);
 	let open = $state(false);
@@ -14,25 +16,32 @@
 
 <svelte:window bind:innerWidth />
 
-{#if mobile}
-	<div class="titlebar" bind:clientHeight={margin}>
+{#if mobile || elements}
+	<div
+		class="titlebar"
+		bind:clientHeight={marginTop}
+		style:margin-left="{mobile ? 0 : marginLeft}px"
+	>
 		{#if mobile}
 			<button class="back" onclick={() => (open = true)}>
 				<Fa icon={faArrowLeft} />
 			</button>
 		{/if}
+		{#each elements as element}
+			{@render element()}
+		{/each}
 	</div>
 {/if}
 
 {#if mobile}
 	<MobileNavbar bind:open />
 {:else}
-	<nav bind:clientWidth={margin}>
+	<nav bind:clientWidth={marginLeft}>
 		<Navbar />
 	</nav>
 {/if}
 
-<div style="margin-{mobile ? 'top' : 'left'}: {margin}px">
+<div style="margin-{mobile ? 'top' : 'left'}: {mobile ? marginTop : marginLeft}px">
 	{@render children()}
 </div>
 
