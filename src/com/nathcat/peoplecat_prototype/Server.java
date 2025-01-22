@@ -84,7 +84,9 @@ public class Server {
             ((HttpsServer) server).setHttpsConfigurator(new HttpsConfigurator(sslContext) {
                 public void configure(HttpsParameters params) {
                     try {
-                        SSLContext context = getSSLContext();
+                        JSONObject sslConfig = (JSONObject) new JSONParser().parse(new String(new FileInputStream("Assets/SSL_Config.json").readAllBytes()));
+                        LetsEncryptProvider provider = new LetsEncryptProvider(sslConfig);
+                        SSLContext context = provider.getContext();
                         SSLEngine engine = context.createSSLEngine();
                         params.setNeedClientAuth(false);
                         params.setCipherSuites(engine.getEnabledCipherSuites());
