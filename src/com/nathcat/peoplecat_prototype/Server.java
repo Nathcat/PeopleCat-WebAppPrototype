@@ -80,7 +80,9 @@ public class Server {
         HttpServer server;
         if (usingSSL) {
             server = HttpsServer.create(new InetSocketAddress(Math.toIntExact((long) config.get("port"))), 0);
-            SSLContext sslContext = getSSLContext();
+            JSONObject sslConfig = (JSONObject) new JSONParser().parse(new String(new FileInputStream("Assets/SSL_Config.json").readAllBytes()));
+            LetsEncryptProvider provider = new LetsEncryptProvider(sslConfig);
+            SSLContext sslContext = provider.getContext();
             ((HttpsServer) server).setHttpsConfigurator(new HttpsConfigurator(sslContext) {
                 public void configure(HttpsParameters params) {
                     try {
