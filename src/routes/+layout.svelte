@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { application } from "$lib/application/application.svelte";
-	import { browser, dev } from "$app/environment";
 	import Freeze from "./Connecting.svelte";
+	import { dev } from "$app/environment";
 	import Loading from "./Loading.svelte";
 	import Toaster from "./Toaster.svelte";
 	import { onMount } from "svelte";
@@ -10,6 +10,7 @@
 
 	import "greset";
 	import "$lib/style.scss";
+	import { isIos } from "@melt-ui/svelte/internal/helpers";
 
 	onMount(() => {
 		application.settings.persist();
@@ -18,24 +19,9 @@
 		// @ts-ignore
 		if (dev) window.application = application;
 	});
-
-	function iOS() {
-		return (
-			[
-				"iPad Simulator",
-				"iPhone Simulator",
-				"iPod Simulator",
-				"iPad",
-				"iPhone",
-				"iPod",
-			].includes(navigator.platform) ||
-			// iPad on iOS 13 detection
-			(navigator.userAgent.includes("Mac") && "ontouchend" in document)
-		);
-	}
 </script>
 
-<div data-sveltekit-replacestate={browser && iOS()}>
+<div data-sveltekit-replacestate={isIos()}>
 	<Toaster />
 	<Freeze />
 	<Loading />

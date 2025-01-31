@@ -2,12 +2,12 @@
 	import { application } from "$lib/application/application.svelte";
 	import { createForm, type FelteSubmitError } from "felte";
 	import { validator } from "@felte/validator-zod";
+	import type { Extender } from "@felte/common";
 	import { env } from "$env/dynamic/public";
-	import { goto } from "$app/navigation";
 	import { toast } from "$lib/util";
 	import { page } from "$app/stores";
+	import { goto } from "$lib/util";
 	import { z } from "zod";
-	import type { Extender } from "@felte/common";
 
 	const schema = z.object({
 		username: z.string().min(1).max(32),
@@ -34,9 +34,7 @@
 		onSuccess: () =>
 			application
 				.authenticate()
-				.then(() =>
-					goto($page.url.searchParams.get("return-page") ?? "/", { replaceState: true }),
-				),
+				.then(() => goto($page.url.searchParams.get("return-page") ?? "/")),
 		// @ts-ignore
 		onError: (e: FelteSubmitError) =>
 			e.response.json().then((j) => {

@@ -2,7 +2,20 @@ import { helpers, type ToastData } from "../routes/Toaster.svelte";
 import { loadUntil } from "../routes/Loading.svelte";
 import type { Action } from "svelte/action";
 import { onMount } from "svelte";
+import { goto as _goto } from "$app/navigation";
+import { isIos } from "@melt-ui/svelte/internal/helpers";
 
+/**
+ * A wrapper around {@link _goto|SvelteKit's `goto`} function to always replace state on iOS.
+ * @param url Where to navigate to.
+ * @param opts Options related to the navigation.
+ */
+export const goto: typeof _goto = (url, opts) => {
+	if (opts && isIos()) opts.replaceState = true;
+	return _goto(url, opts);
+};
+
+// Prototype to extend promise
 Promise.prototype.loading = function () {
 	loadUntil(this);
 	return this;
@@ -15,6 +28,7 @@ Promise.prototype.loading = function () {
  */
 export const toast = (data: ToastData) => helpers.addToast({ data });
 
+// Prototype to extend promise
 Promise.prototype.catchToast = function (title?: string) {
 	return this.catch((e) => {
 		toast({

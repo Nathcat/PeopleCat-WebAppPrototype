@@ -3,8 +3,8 @@ import notificationSfx from "$lib/assets/notification.mp3";
 import { ApplicationSettings } from "./settings.svelte";
 import { getCookie, isCORS } from "./authcat";
 import { env } from "$env/dynamic/public";
-import { goto } from "$app/navigation";
 import { toast } from "$lib/util";
+import { goto } from "$lib/util";
 import {
 	type IncomingPacket,
 	type OutgoingPacket,
