@@ -74,6 +74,9 @@ importers:
       svelte-fa:
         specifier: ^4.0.3
         version: 4.0.3(svelte@5.13.0)
+      svelte-resize-observer-action:
+        specifier: ^0.0.4
+        version: 0.0.4
       typescript:
         specifier: ^5.6.3
         version: 5.6.3
@@ -772,6 +775,9 @@ packages:
     peerDependencies:
       svelte: ^4.0.0 || ^5.0.0
 
+  svelte-resize-observer-action@0.0.4:
+    resolution: {integrity: sha512-PbhdQKCzf6r9a8p7N8BuSIY6GhL/oM+G2j9OPXTwMD10t33rkwPgJdQNp15d+9uFrPC9luiLDl5fdoz02iT+Fg==}
+
   svelte@5.13.0:
     resolution: {integrity: sha512-ZG4VmBNze/j2KxT2GEeUm8Jr3RLYQ3P5Y9/flUDCgaAxgzx4ZRTdiyh+PCr7qRlOr5M8uidIqr+3DwUFVrdL+A==}
     engines: {node: '>=18'}
@@ -1416,6 +1422,8 @@ snapshots:
   svelte-fa@4.0.3(svelte@5.13.0):
     dependencies:
       svelte: 5.13.0
+
+  svelte-resize-observer-action@0.0.4: {}
 
   svelte@5.13.0:
     dependencies:
