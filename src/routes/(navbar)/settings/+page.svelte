@@ -1,4 +1,5 @@
 <script>
+	import AppearenceSettings from "./AppearanceSettings.svelte";
 	import GeneralSettings from "./GeneralSettings.svelte";
 </script>
 
@@ -7,7 +8,7 @@
 		<GeneralSettings />
 	</div>
 	<div class="island">
-		<h3>Appearance Settings</h3>
+		<AppearenceSettings />
 	</div>
 </div>
 

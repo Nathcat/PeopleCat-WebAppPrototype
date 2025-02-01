@@ -1,4 +1,5 @@
 <script lang="ts" module>
+	import { application } from "$lib/application/application.svelte";
 	import { createToaster } from "@melt-ui/svelte";
 	import { flip } from "svelte/animate";
 	import Toast from "./Toast.svelte";
@@ -19,7 +20,7 @@
 	export { helpers };
 </script>
 
-<div class="container">
+<div class="container" style:bottom="{application.settings.margin}px">
 	{#each $toasts as toast (toast.id)}
 		<div animate:flip={{ duration: 250 }}>
 			<Toast {toast} {...elements} />

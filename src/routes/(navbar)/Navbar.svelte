@@ -5,7 +5,7 @@
 	import Fa from "svelte-fa";
 </script>
 
-<div class="container">
+<div class="container" style:padding-bottom="{application.settings.margin + 5}px">
 	{#each Object.values(application.cache.chats) as chat}
 		<a href="/chat/{chat.id}" class:selected={$page.url.pathname == `/chat/${chat.id}`}>
 			<div class="icon" style="background-image: url({chat.icon})"></div>

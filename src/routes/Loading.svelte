@@ -69,7 +69,7 @@
 			position: absolute;
 			inset: 0px;
 			border-radius: 50%;
-			border: 5px solid var(--theme-loading-color);
+			border: 5px solid var(--theme-loading);
 			animation: prixClipFix 2s linear forwards;
 		}
 

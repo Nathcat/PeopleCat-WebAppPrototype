@@ -26,15 +26,20 @@
 	--theme-dropdown-text: var(--theme-default-text);
 	--theme-dropdown-hover-background: var(--primary-2);
 	--theme-dropdown-hover-text: var(--theme-default-text);
-	--theme-error-color: #f55454;
+	--theme-error: #f55454;
+	--theme-slider-track: var(--dark-1);
+	--theme-slider-fill: var(--primary-2);
+	--theme-slider-thumb: white;
+	--theme-slider-tick: #535353;
+	--theme-slider-tick-filled: white;
 
 	--theme-connecting-background: var(--dark-2);
 	--theme-connecting-text: var(--theme-default-text);
 	--theme-loading-background: #00000080;
-	--theme-loading-color: var(--text-1);
+	--theme-loading: var(--text-1);
 	--theme-loading-accent: var(--primary-2);
 	--theme-toast-background: var(--dark-1);
-	--theme-toast-error: var(--theme-error-color);
+	--theme-toast-error: var(--theme-error);
 	--theme-toast-info: #4193f1;
 	--theme-toast-ok: #41f391;
 
@@ -76,7 +81,7 @@ body {
 }
 
 .error {
-	color: var(--theme-error-color);
+	color: var(--theme-error);
 }
 
 p {

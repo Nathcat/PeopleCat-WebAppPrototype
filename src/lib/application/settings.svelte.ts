@@ -6,9 +6,13 @@ function load(key: string, initial: any) {
 
 export class ApplicationSettings {
 	notification = $state<"none" | "browser" | "push">("none");
+	margin = $state<number>(0);
 
 	public persist() {
 		this.notification = load("settings.notification", this.notification);
 		$effect(() => save("settings.notification", this.notification));
+
+		this.margin = load("settings.margin", this.margin);
+		$effect(() => save("settings.margin", this.margin));
 	}
 }
