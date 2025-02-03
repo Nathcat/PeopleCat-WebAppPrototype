@@ -30,7 +30,7 @@ export function encode(packet: Packet): Uint8Array {
 	const bb = new ByteBuffer()
 		.writeUint32(packet.type)
 		.writeUint8(1)
-		.writeIString(JSON.stringify(packet.payload));
+		.writeIString(packet.payload ? JSON.stringify(packet.payload) : "");
 	return bb.buffer;
 }
 
