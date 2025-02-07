@@ -4,9 +4,9 @@
 	import { validator } from "@felte/validator-zod";
 	import type { Extender } from "@felte/common";
 	import { env } from "$env/dynamic/public";
-	import { toast } from "$lib/util";
+	import { toast } from "$lib/util.svelte";
 	import { page } from "$app/stores";
-	import { goto } from "$lib/util";
+	import { goto } from "$lib/util.svelte";
 	import { z } from "zod";
 
 	const schema = z.object({

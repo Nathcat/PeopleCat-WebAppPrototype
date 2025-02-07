@@ -27,12 +27,7 @@
 </script>
 
 <div style="width: 100%" bind:clientWidth>
-	<div
-		class="input-container"
-		style:padding-bottom="{application.settings.margin}px"
-		style="width: {clientWidth}px"
-		bind:clientHeight
-	>
+	<div class="input-container" style="width: {clientWidth}px" bind:clientHeight>
 		<form class="input-box" {onsubmit}>
 			<input type="text" name="content" autocomplete="off" bind:value />
 			<button type="submit">
@@ -49,6 +44,8 @@
 		position: fixed;
 		padding: 10px;
 		bottom: 0px;
+
+		padding-bottom: var(--bottom-spacing);
 	}
 
 	.input-box {

@@ -5,7 +5,7 @@
 	import Fa from "svelte-fa";
 </script>
 
-<div class="container" style:padding-bottom="{application.settings.margin + 5}px">
+<div class="container">
 	{#each Object.values(application.cache.chats) as chat}
 		<a href="/chat/{chat.id}" class:selected={$page.url.pathname == `/chat/${chat.id}`}>
 			<div class="icon" style="background-image: url({chat.icon})"></div>
@@ -34,6 +34,8 @@
 		padding: 5px;
 		z-index: 2;
 		gap: 5px;
+
+		padding-bottom: calc(var(--bottom-spacing) + 5px);
 
 		a {
 			transition: background-color 150ms;

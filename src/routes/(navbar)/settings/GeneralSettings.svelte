@@ -3,7 +3,7 @@
 	import ProfilePicture from "$lib/components/profile/ProfilePicture.svelte";
 	import { application } from "$lib/application/application.svelte";
 	import Dropdown from "$lib/components/Dropdown.svelte";
-	import { action } from "$lib/util";
+	import { action } from "$lib/util.svelte";
 	import { env } from "$env/dynamic/public";
 	import { onMount } from "svelte";
 	import Fa from "svelte-fa";
@@ -16,6 +16,7 @@
 		faUser,
 		faWindowMaximize,
 	} from "@fortawesome/free-solid-svg-icons";
+	import Settings from "$lib/application/settings.svelte";
 
 	let notificationPermission = $state(Notification.permission);
 
@@ -64,7 +65,7 @@
 	<h5>Notification Settings</h5>
 	<div style="width: 25%;">
 		<Dropdown
-			bind:value={application.settings.notification}
+			bind:value={Settings.notification.value}
 			options={{
 				none: { label: "Disabled", icon: faBan },
 				browser: {
@@ -78,12 +79,12 @@
 			}}
 		/>
 	</div>
-	{#if application.settings.notification == "browser"}
+	{#if Settings.notification.value == "browser"}
 		<p>Notifications will be displayed while this tab is open.</p>
 		{#if notificationPermission != "granted"}
 			<p class="error"><Fa icon={faCircleXmark} /> Permission not granted</p>
 		{/if}
-	{:else if application.settings.notification == "push"}
+	{:else if Settings.notification.value == "push"}
 		<p>Not implemented yet.</p>
 	{/if}
 </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { helpers, type ToastData, type ToastType } from "./Toaster.svelte";
 	import { melt, type Toast, type ToastsElements } from "@melt-ui/svelte";
-	import { animationFrame, hammer } from "$lib/util";
+	import { animationFrame, hammer } from "$lib/util.svelte";
 	import { fly } from "svelte/transition";
 	import Fa from "svelte-fa";
 	import {

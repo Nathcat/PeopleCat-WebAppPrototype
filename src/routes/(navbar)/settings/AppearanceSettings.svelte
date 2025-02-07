@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { application } from "$lib/application/application.svelte";
+	import Settings from "$lib/application/settings.svelte";
 	import Slider from "$lib/components/Slider.svelte";
 </script>
 
@@ -8,7 +8,7 @@
 <div class="section">
 	<h5>Bottom Margin</h5>
 	<div style="width: 35%; min-width: min(400px, 100%);">
-		<Slider bind:value={application.settings.margin} max={51} step={3} />
+		<Slider bind:value={Settings.spacing.value} max={51} step={3} />
 	</div>
 </div>
 

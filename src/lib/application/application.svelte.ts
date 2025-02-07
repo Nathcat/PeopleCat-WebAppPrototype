@@ -1,10 +1,10 @@
 import { ApplicationCache, type Message, type User } from "./cache.svelte";
 import notificationSfx from "$lib/assets/notification.mp3";
-import { ApplicationSettings } from "./settings.svelte";
+import Settings from "$lib/application/settings.svelte";
 import { getCookie, isCORS } from "./authcat";
 import { env } from "$env/dynamic/public";
-import { toast } from "$lib/util";
-import { goto } from "$lib/util";
+import { toast } from "$lib/util.svelte";
+import { goto } from "$lib/util.svelte";
 import {
 	type IncomingPacket,
 	type OutgoingPacket,
@@ -20,7 +20,6 @@ import {
  * Contains shared applciation data and functions.
  */
 export class Application {
-	public settings = new ApplicationSettings();
 	public cache = new ApplicationCache();
 
 	public user: null | User = null;
@@ -86,7 +85,7 @@ export class Application {
 				this.cache.pushMessage(packet.payload.message);
 				if (
 					this.user?.id !== packet.payload.message.senderId &&
-					this.settings.notification == "browser"
+					Settings.notification.value == "browser"
 				)
 					this.createNotification(packet.payload.message);
 				break;

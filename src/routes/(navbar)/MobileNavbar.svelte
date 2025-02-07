@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Navbar from "./Navbar.svelte";
-	import { hammer } from "$lib/util";
+	import { hammer } from "$lib/util.svelte";
 	import { afterNavigate } from "$app/navigation";
 
 	let { open = $bindable(false) } = $props();

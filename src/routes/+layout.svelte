@@ -11,9 +11,9 @@
 	import "greset";
 	import "$lib/style.scss";
 	import { isIos } from "@melt-ui/svelte/internal/helpers";
+	import Settings from "$lib/application/settings.svelte";
 
 	onMount(() => {
-		application.settings.persist();
 		application.connect();
 
 		// @ts-ignore
@@ -21,7 +21,7 @@
 	});
 </script>
 
-<div data-sveltekit-replacestate={isIos()}>
+<div data-sveltekit-replacestate={isIos()} style:--bottom-spacing="{Settings.spacing.value}px">
 	<Toaster />
 	<Freeze />
 	<Loading />

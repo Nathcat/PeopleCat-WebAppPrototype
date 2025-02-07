@@ -4,6 +4,34 @@ import type { Action } from "svelte/action";
 import { onMount } from "svelte";
 import { goto as _goto } from "$app/navigation";
 import { isIos } from "@melt-ui/svelte/internal/helpers";
+import { browser } from "$app/environment";
+
+/**
+ * Create persistent state, stored in `localStorage`
+ * @param key The `localsStorage` key
+ */
+export function persist<T>(key: string): { value: T | undefined };
+
+/**
+ * Create persistent state, stored in `localStorage`
+ * @param key The `localStorage` key
+ * @param initial Initial value if unset in `localStorage`
+ */
+export function persist<T>(key: string, initial: T): { value: T };
+export function persist<T>(key: string, initial?: T) {
+	const stored = browser ? localStorage.getItem(key) : "null";
+	let value = $state<T>(stored === null ? initial : JSON.parse(stored));
+
+	return {
+		get value() {
+			return value;
+		},
+		set value(v) {
+			localStorage.setItem(key, JSON.stringify(v));
+			value = v;
+		},
+	};
+}
 
 /**
  * A wrapper around {@link _goto|SvelteKit's `goto`} function to always replace state on iOS.
