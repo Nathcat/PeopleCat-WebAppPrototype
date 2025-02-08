@@ -85,6 +85,17 @@ export const animationFrame = (fn: () => void) =>
 	});
 
 /**
+ * Set up a interval to be cleared on component destruction.
+ * @param ms The number of milliseconds between each execution.
+ * @param fn Callback to run every animation frame
+ */
+export const interval = (ms: number, fn: () => void) =>
+	onMount(() => {
+		let i = setInterval(fn, ms);
+		return () => clearInterval(i);
+	});
+
+/**
  * Sets up HammerJS oh this element
  * @param element The element to setup HammerJS on
  * @param fn A setup callback the {@link HammerManager} is passed to

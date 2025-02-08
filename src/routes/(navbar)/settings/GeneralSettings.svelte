@@ -2,10 +2,10 @@
 	import { isCORS, logout as acLogout, getCookie } from "$lib/application/authcat";
 	import ProfilePicture from "$lib/components/profile/ProfilePicture.svelte";
 	import { application } from "$lib/application/application.svelte";
+	import Settings from "$lib/application/settings.svelte";
 	import Dropdown from "$lib/components/Dropdown.svelte";
-	import { action } from "$lib/util.svelte";
+	import { action, interval } from "$lib/util.svelte";
 	import { env } from "$env/dynamic/public";
-	import { onMount } from "svelte";
 	import Fa from "svelte-fa";
 	import {
 		faBan,
@@ -16,7 +16,6 @@
 		faUser,
 		faWindowMaximize,
 	} from "@fortawesome/free-solid-svg-icons";
-	import Settings from "$lib/application/settings.svelte";
 
 	let notificationPermission = $state(Notification.permission);
 
@@ -27,15 +26,8 @@
 			.loading();
 	}
 
-	onMount(() => {
-		let unsubscribe: (() => void) | undefined;
-		const update = () => (notificationPermission = Notification.permission);
-		navigator.permissions.query({ name: "notifications" }).then((perm) => {
-			unsubscribe = () => perm.removeEventListener("change", update);
-			perm.addEventListener("change", update);
-		});
-
-		return () => (unsubscribe ? unsubscribe() : 0);
+	interval(250, () => {
+		notificationPermission = Notification.permission;
 	});
 </script>
 
@@ -82,7 +74,9 @@
 	{#if Settings.notification.value == "browser"}
 		<p>Notifications will be displayed while this tab is open.</p>
 		{#if notificationPermission != "granted"}
-			<p class="error"><Fa icon={faCircleXmark} /> Permission not granted</p>
+			<p class="error">
+				<Fa icon={faCircleXmark} /> Permission not granted
+			</p>
 		{/if}
 	{:else if Settings.notification.value == "push"}
 		<p>Not implemented yet.</p>
