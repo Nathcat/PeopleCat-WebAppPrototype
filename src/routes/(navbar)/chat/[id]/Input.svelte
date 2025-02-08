@@ -45,7 +45,7 @@
 		padding: 10px;
 		bottom: 0px;
 
-		padding-bottom: var(--bottom-spacing);
+		padding-bottom: calc(var(--bottom-spacing) + 10px);
 	}
 
 	.input-box {

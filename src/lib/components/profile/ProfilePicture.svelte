@@ -9,24 +9,34 @@
 {#await author}
 	<div class="loading" style:--size="{size}px"></div>
 {:then author}
-	<div
-		style:background-image="url({env.PUBLIC_AUTHCAT_URL}pfps/{author.pfpPath})"
-		style:--size="{size}px"
-	></div>
+	<div class="outline" style:--size="{size}px">
+		<div
+			class="image"
+			style:background-image="url({env.PUBLIC_AUTHCAT_URL}pfps/{author.pfpPath})"
+		></div>
+	</div>
 {/await}
 
 <style lang="scss">
 	@use "$lib/util" as util;
 
-	div {
-		background-position: center;
-		background-size: cover;
+	.outline {
+		background: linear-gradient(45deg, #e600ff 0%, #00ccff 100%);
 		border-radius: 50%;
 
 		width: var(--size);
 		min-width: var(--size);
 		height: var(--size);
 		min-height: var(--size);
+	}
+
+	.image {
+		background-position: center;
+		background-size: cover;
+		border-radius: 50%;
+
+		height: 95%;
+		width: 95%;
 	}
 
 	.loading {
