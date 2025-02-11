@@ -1,27 +1,6 @@
+import type { Message, User } from "./peoplecat";
 import globalImg from "$lib/assets/global.png";
 import { fetchUser } from "./authcat";
-
-export interface Message {
-	/** The chat id this message belongs to */
-	chatId: number;
-	/** The text content of this message */
-	content: string;
-	/** The user ID of this message's author */
-	senderId: number;
-	/** The unix timestamp this message was sent at */
-	timeSent: number;
-}
-
-export interface User {
-	/** The ID of the currently user */
-	id: number;
-	/** The username of the current user */
-	username: string;
-	/** The display name of the current user */
-	fullName: string;
-	/** The path to the current user's profile picture from `https://data.nathcat.net/pfps` */
-	pfpPath: string;
-}
 
 export interface Chat {
 	id: number;
@@ -29,12 +8,51 @@ export interface Chat {
 	icon: string;
 }
 
+export class CacheContainer<T> {
+	private loader: (id: number) => Promise<T>;
+	private _store = $state<Record<number, T>>({});
+	private _fetched = $state<number[]>([]);
+	private _tasks: Record<number, Promise<T>> = [];
+
+	constructor(loader: (id: number) => Promise<T>) {
+		this.loader = loader;
+	}
+
+	get(id: number) {
+		if (id in this._tasks) this.fetch(id);
+		return this._store[id] as T | undefined;
+	}
+
+	async fetch(id: number) {
+		if (!(id in this._tasks))
+			this._tasks[id] = this.loader(id).then((v) => {
+				this._fetched.push(id);
+				this.set(id, v);
+				return v;
+			});
+		return this._tasks[id];
+	}
+
+	fetched(id: number) {
+		return this._fetched.includes(id);
+	}
+
+	set(id: number, value: T) {
+		this._store[id] = value;
+	}
+}
+
+namespace Cache {
+	export const users = new CacheContainer<User>(async (id) => await fetchUser(id));
+}
+
+export default Cache;
+
 /**
  * Helper class for caching data recieved from the PeopleCat server
  */
 export class ApplicationCache {
 	public messages: Record<number, Message[]> = $state({});
-	private users: Record<number, Promise<User>> = {};
 	public chats: Record<number, Chat> = $state({
 		1: { id: 1, name: "Global Chat", icon: globalImg },
 	});
@@ -47,27 +65,5 @@ export class ApplicationCache {
 		// todo: sort messages
 		if (!(message.chatId in this.messages)) this.messages[message.chatId] = [];
 		this.messages[message.chatId].push(message);
-	}
-
-	/**
-	 * Add a user to the user cache
-	 * @param user The {@link User} object
-	 */
-	public pushUser(user: User) {
-		this.users[user.id] = new Promise((r) => r(user));
-	}
-
-	/**
-	 * Get a {@link User} object by their user ID
-	 *
-	 * If cache miss, data is fetched from AuthCat
-	 * @param id The ID of the user to fetch
-	 * @returns A promise that resolves to a {@link User}
-	 */
-	public getUser(id: number) {
-		if (!(id in this.users))
-			// Create a promise that resolves when the user has been fetched
-			this.users[id] = new Promise((r) => fetchUser(id).then((u) => r(u)));
-		return this.users[id];
 	}
 }

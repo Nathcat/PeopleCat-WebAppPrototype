@@ -1,9 +1,9 @@
-import { ApplicationCache, type Message, type User } from "./cache.svelte";
 import notificationSfx from "$lib/assets/notification.mp3";
 import Settings from "$lib/application/settings.svelte";
 import { getCookie, isCORS } from "./authcat";
 import { env } from "$env/dynamic/public";
 import { toast } from "$lib/util.svelte";
+import type { Message, User } from "./peoplecat";
 import { goto } from "$lib/util.svelte";
 import {
 	type IncomingPacket,
@@ -13,6 +13,8 @@ import {
 	decode,
 	encode,
 } from "./packet";
+
+import Cache, { ApplicationCache } from "./cache.svelte";
 
 /**
  * Represents an instance of the application.
@@ -96,7 +98,7 @@ export class Application {
 	}
 
 	private async createNotification(message: Message) {
-		const author = await this.cache.getUser(message.senderId);
+		const author = await Cache.users.fetch(message.senderId);
 		const chat = this.cache.chats[message.chatId];
 
 		new Audio(notificationSfx).play();
@@ -127,7 +129,7 @@ export class Application {
 			]);
 
 			if (response.type == PacketType.AUTHENTICATE) {
-				this.cache.pushUser(response.payload);
+				Cache.users.set(response.payload.id, response.payload);
 				this.user = response.payload;
 				return;
 			}

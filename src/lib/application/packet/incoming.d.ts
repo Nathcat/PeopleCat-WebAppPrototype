@@ -1,4 +1,4 @@
-import type { Message, User } from "../cache.svelte";
+import type { Message, User } from "../peoplecat.d";
 import type { Packet, PacketType } from ".";
 
 export type IncomingPacket =

@@ -1,5 +1,5 @@
 import type { Packet, PacketType } from ".";
-import type { Message } from "../cache.svelte";
+import type { Message } from "../peoplecat.d";
 
 export type OutgoingPacket =
 	| Packet<PacketType.PING>

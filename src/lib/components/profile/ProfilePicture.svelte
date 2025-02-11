@@ -1,21 +1,21 @@
 <script lang="ts">
-	import { application } from "$lib/application/application.svelte";
+	import Cache from "$lib/application/cache.svelte";
 	import { env } from "$env/dynamic/public";
 
 	let { id, size = 50 }: { id: number; size?: number } = $props();
-	let author = $state(application.cache.getUser(id));
+	let user = $derived(Cache.users.get(id));
 </script>
 
-{#await author}
-	<div class="loading" style:--size="{size}px"></div>
-{:then author}
+{#if user}
 	<div class="outline" style:--size="{size}px">
 		<div
 			class="image"
-			style:background-image="url({env.PUBLIC_AUTHCAT_URL}pfps/{author.pfpPath})"
+			style:background-image="url({env.PUBLIC_AUTHCAT_URL}pfps/{user.pfpPath})"
 		></div>
 	</div>
-{/await}
+{:else}
+	<div class="loading" style:--size="{size}px"></div>
+{/if}
 
 <style lang="scss">
 	@use "$lib/util" as util;

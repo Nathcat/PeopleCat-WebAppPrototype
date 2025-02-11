@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { application } from "$lib/application/application.svelte";
+	import Cache from "$lib/application/cache.svelte";
 
 	let { id }: { id: number } = $props();
-	let author = $state(application.cache.getUser(id));
+	let user = $derived(Cache.users.get(id));
 </script>
 
-{#await author}
+{#if user}
+	<span>{user.fullName}</span>
+{:else}
 	<span class="loading"></span>
-{:then author}
-	<span>{author.fullName}</span>
-{/await}
+{/if}
 
 <style lang="scss">
 	@use "$lib/util" as util;
