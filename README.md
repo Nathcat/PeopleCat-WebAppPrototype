@@ -4,6 +4,12 @@ systems basic messaging system.
 
 _PeopleCat © Nathcat 2024_
 
+## Archiving
+This project is no longer being maintained. This was a basic application meant to show the core features of PeopleCat, and it has served its purpose.
+
+With the future changes coming to PeopleCat, it is easiest to stop maintenance on this project. For a modern PeopleCat client which will be kept up to date
+with the newest PeopleCat features, please see [brooke-ec/PeopleCat-WebApp](https://github.com/brooke-ec/peoplecat-webapp/).
+
 ## Usage
 To use, clone the repository, and either:
 - Compile the project yourself using Intellij Idea.
